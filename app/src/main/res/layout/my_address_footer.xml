@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@string/continue_text"
+        android:textColor="@color/white"
+        android:background="@color/brown"
+        android:textSize="@dimen/padding_20"
+        android:layout_marginLeft="@dimen/padding_90"
+        android:layout_marginRight="@dimen/padding_90"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+
+        />
+
+
+</RelativeLayout>

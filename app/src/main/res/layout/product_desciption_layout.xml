@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    >
+    <!--<include
+        android:id="@+id/app_bar"
+        layout="@layout/category_list_toolbar" />-->
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@color/white"
+        android:layout_marginBottom="2dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_prodname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_100"
+                android:layout_marginTop="@dimen/padding_5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Onions - 1kg  "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/padding_5"
+                android:textSize="@dimen/padding_18"
+                />
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/padding_18"
+                android:textStyle="normal"
+                android:text="Rs 500"
+                android:layout_below="@+id/tv_prodname"
+                android:layout_marginLeft="@dimen/padding_5"
+
+
+                />
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:layout_marginTop="@dimen/padding_50"
+                android:layout_marginLeft="@dimen/padding_100"
+                android:layout_marginRight="@dimen/padding_100"
+
+                />
+            <ImageView
+                android:id="@+id/bike"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="@dimen/padding_5"
+                android:layout_toLeftOf="@+id/fav"
+                android:src="@drawable/bike_new"
+                android:layout_marginTop="@dimen/padding_5"
+
+                />
+            <ToggleButton
+                android:id="@+id/fav"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/padding_5"
+                android:background="@drawable/check"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textOff=""
+                android:layout_marginTop="@dimen/padding_10"
+                android:textOn="" />
+
+
+                <Button
+                    android:id="@+id/add_to_cart"
+                    android:layout_width="85dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/padding_5"
+                    android:background="@drawable/button_red"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_5"
+                    android:text="Add"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/padding_15"
+                    android:textStyle="normal"
+                    android:layout_below="@+id/slider"
+                    android:layout_marginBottom="@dimen/padding_5"
+
+                    />
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/rating_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="2dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="0.01dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_5"
+            android:layout_marginTop="@dimen/padding_15"
+            android:layout_marginLeft="@dimen/padding_10"
+            >
+
+            <RatingBar
+                android:id="@+id/ratingbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="1"
+                android:theme="@style/RatingBar"
+                style="?attr/ratingBarStyle"
+
+                />
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_5"
+                android:layout_toRightOf="@+id/ratingbar"
+                android:text="(100 Ratings)"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/padding_15"
+                android:textStyle="normal"
+                android:layout_marginTop="@dimen/padding_10"
+                android:layout_marginRight="@dimen/padding_10"
+                android:gravity="center_horizontal"
+
+
+                />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginLeft="@dimen/padding_5"
+        android:layout_marginRight="@dimen/padding_5"
+
+        >
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardview2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/padding_10"
+            card_view:cardCornerRadius="5dp"
+            android:layout_marginLeft="2dp"
+            card_view:cardElevation="0.01dp">
+
+
+            <RelativeLayout
+                android:id="@+id/ingredients_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/desc_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_10"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/desc"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/padding_12" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/tab_line"
+                    android:layout_below="@+id/desc_title"
+                    android:layout_toLeftOf="@+id/view1"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/tab_view1"
+                    android:visibility="gone"
+
+
+
+                    />
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:layout_marginRight="@dimen/padding_5"
+                    android:layout_marginTop="@dimen/padding_5"
+                    android:layout_toRightOf="@+id/desc_title"
+                    android:background="@color/tab_line"
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/nutri_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_10"
+                    android:layout_toRightOf="@+id/view1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/nutri"
+                    android:textColor="@color/black"
+                    android:maxLines="2"
+                    android:textSize="@dimen/padding_12" />
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:background="@color/tab_line"
+                    android:layout_below="@+id/desc_title"
+                    android:layout_toLeftOf="@+id/view2"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@+id/view1"
+                    android:id="@+id/tab_view2"
+                    android:visibility="gone"
+
+
+
+                    />
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:layout_marginRight="@dimen/padding_5"
+                    android:layout_marginTop="@dimen/padding_5"
+                    android:layout_toRightOf="@+id/nutri_info"
+                    android:background="@color/tab_line"
+
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/supplr_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_10"
+                    android:layout_toRightOf="@+id/view2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/supplr"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/padding_12" />
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="2dp"
+                    android:background="@color/tab_line"
+                    android:layout_below="@+id/desc_title"
+                    android:layout_toRightOf="@+id/view2"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/tab_view3"
+                    android:visibility="gone"
+
+
+                    />
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardview2"
+            android:layout_marginBottom="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:textSize="@dimen/padding_15"
+            android:layout_marginLeft="@dimen/padding_5"
+
+
+            />
+
+        <TextView
+            android:id="@+id/textview1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardview2"
+            android:layout_marginBottom="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/padding_15"
+            android:visibility="gone"
+
+
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/similar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout"
+        android:layout_marginTop="@dimen/padding10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:src="@drawable/line"
+
+            />
+
+        <TextView
+            android:id="@+id/similar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10"
+            android:gravity="center_horizontal"
+            android:text="SIMILAR PRODUCTS"
+            android:textColor="@color/black"
+            android:textSize="@dimen/padding_14"
+            android:textAllCaps="true"
+
+
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/similar"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:src="@drawable/line"
+
+
+            />
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_similar_products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/similar_layout"
+        android:layout_marginBottom="@dimen/padding_10"
+        android:layout_marginTop="@dimen/padding_15" />
+
+
+</LinearLayout>
+    </ScrollView>

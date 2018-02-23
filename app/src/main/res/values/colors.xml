@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#7b9072</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="facebook">#3b5998</color>
+    <color name="google_plus">#d34836</color>
+    <color name="email">#a1be95</color>
+    <color name="yellow_toolbar">#e2dfa2</color>
+    <color name="app_bg">#599933</color>
+    <color name="dark_green">#599933</color>
+    <color name="tab_line">#8E908F</color>
+    <color name="brown">#5B5C5B</color>
+    <color name="gray">#DCDCDC</color>
+    <color name="btn_add">#F08080</color>
+    <color name="rating_star">#FFB402</color>
+
+
+</resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/logintoolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_green"
+    android:fitsSystemWindows="true"
+    android:minHeight="?attr/actionBarSize">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/padding_50"
+
+        >
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="@dimen/padding_10"
+            android:src="@drawable/back_button"
+
+            />
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:gravity="left"
+            android:text="Toolbar"
+            android:layout_marginTop="@dimen/padding_5"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/padding_15"
+            android:layout_toRightOf="@+id/img"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="@dimen/padding_15"
+            android:layout_toLeftOf="@+id/settings"
+            android:src="@drawable/search_icon"
+            android:visibility="gone"
+
+            />
+
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/padding_5"
+            android:src="@drawable/settings"
+            android:visibility="gone"
+
+            />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

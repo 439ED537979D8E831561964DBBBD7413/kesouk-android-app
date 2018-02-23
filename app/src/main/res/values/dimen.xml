@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--padding-->
+    <dimen name="padding10">10dp</dimen>
+    <dimen name="padding15">10dp</dimen>
+    <dimen name="padding20">20dp</dimen>
+    <dimen name="padding23">22dp</dimen>
+    <dimen name="padding25">25dp</dimen>
+    <dimen name="padding30">20dp</dimen>
+    <dimen name="padding40">40dp</dimen>
+    <dimen name="padding50">50dp</dimen>
+    <dimen name="padding60">60dp</dimen>
+    <dimen name="padding70">60dp</dimen>
+    <dimen name="padding80">80dp</dimen>
+    <dimen name="padding100">100dp</dimen>
+<dimen name="textSize">7dp</dimen>
+    <dimen name="iconSize">65dp</dimen>
+    <dimen name="profile_size_size">10dp</dimen>
+    <dimen name="notification_size">100dp</dimen>
+    <dimen name="view_size">3dp</dimen>
+
+    <!--New Padding-->
+    <dimen name="textPadding8">8dp</dimen>
+    <dimen name="text_size20">20sp</dimen>
+    <dimen name="flag_padding">20dp</dimen>
+    <dimen name="text_sizeSlide">60sp</dimen>
+    <dimen name="text_sizeSlide1">10sp</dimen>
+    <dimen name="text_sizeSlide2">15sp</dimen>
+    <dimen name="search_result_padding">4dp</dimen>
+    <dimen name="edit_text_hint_size">10sp</dimen>
+    <dimen name="login_dialog">270dp</dimen>
+    <dimen name="inbox_pic">55dp</dimen>
+    <dimen name="minimum_margin">8dp</dimen>
+    <dimen name="req_pic_size">80dp</dimen>
+    <dimen name="ins_txt_size">8sp</dimen>
+</resources>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/padding30"
+        android:layout_marginTop="@dimen/padding30"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/otp_text"
+            android:textSize="@dimen/padding_20"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/padding30"
+            android:textColor="@color/black"
+            android:id="@+id/otp_text"
+
+
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OTP"
+            android:textSize="@dimen/padding_20"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/padding30"
+            android:layout_marginTop="@dimen/padding30"
+            android:textColor="@color/black"
+            android:id="@+id/otp"
+
+            />
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            >
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_one"
+                android:layout_width="@dimen/padding_50"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:maxLength="1"
+                app:backgroundTint="@color/app_bg"
+                android:inputType="number"
+                android:nextFocusLeft="@+id/et_one"
+                android:nextFocusRight="@+id/et_two"
+                android:imeOptions="actionDone"
+                >
+
+
+            </android.support.v7.widget.AppCompatEditText>
+            <android.support.v7.widget.AppCompatEditText
+                android:layout_width="@dimen/padding_50"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:maxLength="1"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/app_bg"
+                android:id="@+id/et_two"
+                android:inputType="number"
+                android:nextFocusLeft="@+id/et_one"
+                android:nextFocusRight="@+id/et_three"
+                android:imeOptions="actionDone"
+
+                >
+
+
+            </android.support.v7.widget.AppCompatEditText>
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_three"
+                android:layout_width="@dimen/padding_50"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:maxLength="1"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/app_bg"
+                android:inputType="number"
+                android:nextFocusLeft="@+id/et_two"
+                android:nextFocusRight="@+id/et_four"
+                android:imeOptions="actionDone"
+                >
+            </android.support.v7.widget.AppCompatEditText>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_four"
+                android:layout_width="@dimen/padding_50"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:maxLength="1"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/app_bg"
+                android:inputType="number"
+                android:nextFocusLeft="@+id/et_three"
+                android:nextFocusRight="@+id/et_four"
+                android:imeOptions="actionDone">
+            </android.support.v7.widget.AppCompatEditText>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding30"
+            android:layout_marginTop="@dimen/padding30"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/verify"
+            android:textSize="@dimen/padding30"
+            android:textColor="@color/white"
+            android:background="@color/dark_green"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/resend_otp"
+            android:text="@string/resend_passwd"
+            android:textSize="@dimen/padding_20"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            />
+    </LinearLayout>
+
+</LinearLayout>

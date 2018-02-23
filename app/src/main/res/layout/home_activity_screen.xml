@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+
+    android:fillViewport="true">
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+
+            >
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/deals_list"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/slider"
+                android:layout_marginTop="@dimen/padding_5"
+                android:background="@color/gray"
+                android:nestedScrollingEnabled="false"
+
+                >
+
+            </android.support.v7.widget.RecyclerView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding10"
+                android:id="@+id/Deals_layout"
+                android:orientation="horizontal"
+                android:layout_below="@+id/deals_list"
+                >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/line"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="FOOD RECIPIES"
+                    android:textSize="@dimen/padding_14"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:id="@+id/food_recipes"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/padding_10"
+                    android:layout_marginBottom="@dimen/padding_10"
+
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/line"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/food_recipes"
+
+
+                    />
+
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/receipe_list"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/Deals_layout"
+                android:layout_marginTop="@dimen/padding_5"
+                android:background="@color/gray"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="@dimen/padding_30"
+
+
+                >
+
+            </android.support.v7.widget.RecyclerView>
+
+
+
+            <!--  <LinearLayout
+
+
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="@dimen/padding30"
+                 android:id="@+id/Category_layout"
+                 android:layout_below="@id/deals_list"
+                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                 >
+                 <TextView
+                     android:layout_width="40dp"
+                     android:layout_height="40dp"
+                     android:background="@drawable/home_circle_style"
+                     android:text="B"
+                     android:textSize="@dimen/padding_25"
+                     android:layout_gravity="center"
+                     android:gravity="center"
+                     android:textStyle="bold"
+                     android:id="@+id/b"
+                     android:textColor="@color/dark_green"
+
+                     />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/browseCategory"
+                     android:textSize="@dimen/padding_20"
+                     android:layout_gravity="center"
+                     android:textColor="@color/dark_green"
+                     android:paddingLeft="@dimen/padding30"
+                     android:id="@+id/category"
+                     android:textStyle="bold"
+
+                     />
+
+                 <RelativeLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                     >
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:paddingLeft="@dimen/padding30"
+                         android:id="@+id/seeall"
+                         android:src="@drawable/next_fpl"
+                         android:layout_alignParentRight="true"
+
+                         />
+                 </RelativeLayout>
+             </LinearLayout>
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:id="@+id/list_category"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/Category_layout"
+                  android:layout_marginTop="@dimen/padding_5"
+                  android:layout_marginBottom="@dimen/padding_10"
+                  >
+
+              </android.support.v7.widget.RecyclerView>
+      -->
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:fillViewport="true">
+  <!--  <include
+        android:id="@+id/app_bar"
+        layout="@layout/toolbar_menu" />
+-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        android:layout_below="@+id/app_bar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/filter_layout"
+                android:layout_marginBottom="@dimen/padding_5"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:paddingBottom="2dp"
+
+
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2 Items - SH 40"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/padding_5"
+                    android:id="@+id/item_count"
+                    android:drawableLeft="@drawable/cart_icon"
+                    android:gravity="center"
+                    android:drawablePadding="@dimen/padding_20"
+
+                    />
+
+
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/recycler_main"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filter_layout"
+                android:layout_marginTop="@dimen/padding_5"
+                android:background="@color/gray"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="@dimen/padding_30"
+
+                >
+
+            </android.support.v7.widget.RecyclerView>
+            <Button
+                android:id="@+id/checkout"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/padding_10"
+                android:text="@string/checkout"
+                android:textSize="@dimen/padding_20"
+                android:textColor="@color/white"
+                android:background="@drawable/round_button_brown"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/padding_10"
+                android:layout_marginBottom="@dimen/padding_80"
+                android:layout_below="@+id/recycler_main"
+
+                />
+            <Button
+                android:id="@+id/no_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/explore_prod"
+                android:textSize="@dimen/padding_18"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:background="@drawable/round_button_brown"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/padding_80"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/no_items_basket"
+                android:id="@+id/no_items_basket"
+                android:textSize="@dimen/padding_25"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

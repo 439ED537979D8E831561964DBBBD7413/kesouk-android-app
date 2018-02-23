@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    >
+
+
+    <item
+        android:id="@+id/action_notification1"
+        android:icon="@drawable/settings_resize"
+        android:title="action_notification"
+        app:showAsAction="always"
+
+
+        >
+
+        <menu>
+
+            <item
+                android:id="@+id/my_acc"
+                android:title="@string/my_acc"
+                app:showAsAction="never"
+
+                />
+
+
+            <item
+                android:id="@+id/my_orders"
+                android:title="@string/my_orders"
+                app:showAsAction="never"
+
+
+                >
+            </item>
+
+            <item
+                android:id="@+id/my_addr"
+                android:title="@string/my_address"
+                app:showAsAction="never"
+
+                />
+            <item
+                android:id="@+id/faq"
+                android:title="@string/faq"
+                app:showAsAction="never"
+
+                />
+            <item
+                android:id="@+id/contact"
+                android:title="@string/contact"
+                app:showAsAction="never"
+
+                />
+            <item
+                android:id="@+id/about"
+                android:title="@string/about"
+                app:showAsAction="never"
+
+                />
+            <item
+                android:id="@+id/terms"
+                android:title="@string/termscond"
+                app:showAsAction="never"
+
+                />
+            <item
+                android:id="@+id/change_pass"
+                android:title="@string/changepass"
+                app:showAsAction="never"
+
+                />
+
+            <item
+                android:id="@+id/signin"
+                android:title="@string/logout"
+                app:showAsAction="never"
+
+
+                />
+        </menu>
+    </item>
+
+</menu>

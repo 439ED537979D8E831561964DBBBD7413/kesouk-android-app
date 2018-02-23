@@ -1,0 +1,278 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/account_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/category_list_toolbar" />
+
+        <LinearLayout
+            android:id="@+id/layer_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_bar"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:weightSum="1">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:hintTextAppearance="@style/loginTextInputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/first_name"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:singleLine="true"
+                    android:textSize="@dimen/padding_20"
+                    app:backgroundTint="@color/dark_green" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/loginTextInputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_lastname1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="@string/last_name"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:singleLine="true"
+                    android:textSize="@dimen/padding_20"
+                    app:backgroundTint="@color/dark_green"
+
+                    />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layer_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layer_one"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/loginTextInputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email_id"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:singleLine="true"
+                    android:textSize="@dimen/padding_20"
+                    app:backgroundTint="@color/dark_green"
+                    android:inputType="textEmailAddress"
+
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layer_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layer_email"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/loginTextInputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/dob"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:singleLine="true"
+                    android:textSize="@dimen/padding_20"
+                    app:backgroundTint="@color/dark_green"
+
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/padding_20"
+                android:src="@drawable/dropdown_icon"
+                android:id="@+id/calender"
+
+                />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layer_mob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layer_dob"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_mob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/loginTextInputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_mob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/mob"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:singleLine="true"
+                    android:textSize="@dimen/padding_20"
+                    app:backgroundTint="@color/dark_green"
+                    android:maxLength="10"
+                    android:inputType="number"
+
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/layer_landline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layer_mob"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_landline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/loginTextInputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_landline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/landline"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:singleLine="true"
+                    android:textSize="@dimen/padding_20"
+                    app:backgroundTint="@color/dark_green"
+                    android:inputType="number"
+
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:id="@+id/send_offers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layer_landline"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:layout_marginRight="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_30"
+
+            >
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkbox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/brown"
+
+
+                />
+
+            <TextView
+                android:id="@+id/remeber_me1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_5"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@+id/checkbox1"
+                android:gravity="center"
+                android:text="@string/send_offers"
+                android:textColor="@color/black"
+                android:textSize="@dimen/padding_15"
+
+
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/send_offers"
+            android:layout_marginTop="@dimen/padding_30"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="@dimen/padding_120"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_button_brown"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="@dimen/padding_20"
+                android:layout_centerHorizontal="true"
+
+                />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "926610516730",
+    "firebase_url": "https://kesouk-191606.firebaseio.com",
+    "project_id": "kesouk-191606",
+    "storage_bucket": "kesouk-191606.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926610516730:android:08979ff8a50ab8bc",
+        "android_client_info": {
+          "package_name": "com.tstl.kesouk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926610516730-dndnamji6rpv4i1qfvfbmht232q6484r.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "926610516730-peadvq72apvpnc8euilgq2ptnh4mojmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tstl.kesouk",
+            "certificate_hash": "6ae6a949ffbc381d399078b1a9d95c221d1ea8b8"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIGnKOxxxyFVHxSi-HIigPONG18r6FVCE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

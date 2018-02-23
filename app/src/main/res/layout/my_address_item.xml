@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/dropdown_icon"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:id="@+id/location_icon"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_addr"
+            android:textSize="@dimen/padding_17"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding30"
+            android:id="@+id/address"
+            android:layout_marginRight="@dimen/padding_40"
+            android:layout_toRightOf="@+id/location_icon"
+
+            />
+
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/dropdown_icon"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/padding_10"
+            android:id="@+id/edit"
+
+            />
+
+        <View android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/address"
+            android:background="@color/tab_line"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:layout_marginRight="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10"
+            android:layout_marginBottom="@dimen/padding_5"
+            android:id="@+id/line"
+
+
+            />
+
+    </RelativeLayout>
+</LinearLayout>

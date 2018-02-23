@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+
+        android:layout_width="@dimen/padding_300"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding30"
+        android:id="@+id/address_layout"
+        android:gravity="center_horizontal"
+        android:background="@drawable/button_red"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="@dimen/padding_5"
+        android:paddingBottom="@dimen/padding_5"
+        >
+        <ImageView
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/dropdown_icon"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_addr"
+            android:textSize="@dimen/padding_20"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_10"
+            android:id="@+id/add_new_addr"
+            android:textStyle="bold"
+
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

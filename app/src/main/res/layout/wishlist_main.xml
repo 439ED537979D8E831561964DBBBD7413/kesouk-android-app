@@ -1,0 +1,138 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    >
+    <!--android:fillViewport="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="false"-->
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:fillViewport="true">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            >
+          <!--  <include
+                android:id="@+id/app_bar"
+                layout="@layout/toolbar_menu" />-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_bar"
+                android:id="@+id/filter_layout"
+                android:layout_marginTop="@dimen/padding_5"
+                android:layout_marginBottom="@dimen/padding_5"
+                android:layout_marginLeft="@dimen/padding_5"
+                android:layout_marginRight="@dimen/padding_5"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 Items"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/padding_5"
+                    android:id="@+id/item_count"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:text="Filter"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/filter"
+                    android:layout_marginTop="@dimen/padding_5"
+
+                    />
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/filter_icon_new"
+                    android:layout_toLeftOf="@+id/filter"
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/filter_icon"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:text="Express"
+                    android:id="@+id/express"
+                    android:layout_toLeftOf="@+id/filter_icon"
+                    android:layout_marginRight="@dimen/padding_10"
+                    android:layout_marginTop="@dimen/padding_5"
+
+
+                    />
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/bike_new"
+                    android:layout_toLeftOf="@+id/express"
+                    android:layout_marginTop="@dimen/padding_5"
+                    android:id="@+id/bike"
+
+                    />
+
+
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/product_listing"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filter_layout"
+                android:layout_marginTop="@dimen/padding_5"
+                android:layout_marginBottom="@dimen/padding_30"
+                >
+
+            </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/no_items_wishlist"
+                android:id="@+id/no_items"
+                android:textSize="@dimen/padding_25"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/explore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_15"
+                android:text="@string/explore_prod"
+                android:textColor="@color/white"
+                android:background="@color/app_bg"
+                android:textSize="@dimen/padding_15"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/padding_50"
+                />
+        </RelativeLayout>
+    </ScrollView>
+
+
+</LinearLayout>
+
