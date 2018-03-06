@@ -10,7 +10,7 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:text="@string/continue_text"
         android:textColor="@color/white"
-        android:background="@color/brown"
+        android:background="@drawable/round_button_brown"
         android:textSize="@dimen/padding_20"
         android:layout_marginLeft="@dimen/padding_90"
         android:layout_marginRight="@dimen/padding_90"

@@ -130,8 +130,8 @@
 
             </android.support.design.widget.TextInputLayout>
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/padding_25"
+                android:layout_height="@dimen/padding_25"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/padding_20"
                 android:src="@drawable/dropdown_icon"

@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -64,14 +65,14 @@ public class MyAddress_Activity extends AppCompatActivity {
     private TextView mToolbarTitle;
     RecyclerView recycler_view;
     DB db;
-    String firstName = "", lastname = "", email = "", countrycode = "", mobilnumber = "", gender = "", age = "", country = "", city = "", district = "", location_text = "", profile_image = "";
+    String firstName = "", lastname = "", email = "", countrycode = "", mobilnumber = "", gender = "", age = "", country = "", city = "", district = "", location_text = "", profile_image = "",house_no="",area="";
     String first_name, last_name;
     String id_add;
     public static int edit_img_click = 0;
     public static int add_addr_click = 0;
     private ImageView backBtn,settings,search;
     public static String delvy_pickup;
-    int status_code;
+    int status_code,default_address,address_position;
     public ArrayList<Login_Credentials> login_credentials = null;
 
     @Override
@@ -141,29 +142,82 @@ public class MyAddress_Activity extends AppCompatActivity {
 
                             JSONArray jsonArray = JObject.getJSONArray("data");
                             if (jsonArray.length() != 0) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                    default_address = jsonObject1.getInt("default_address");
+                                    login = new Login_Credentials();
+                                    if (default_address==1)
+                                    {
+                                        Log.e("postion", String.valueOf(i));
+                                        address_position=1;
+
+                                        location_text = jsonObject1.getString("location");
+                                        country = jsonObject1.getString("country");
+                                        city = jsonObject1.getString("city");
+                                        district = jsonObject1.getString("district");
+                                        id_add = jsonObject1.getString("id");
+                                        first_name = jsonObject1.getString("first_name");
+                                        last_name = jsonObject1.getString("last_name");
+                                        default_address = jsonObject1.getInt("default_address");
+                                        String contact_no = jsonObject1.getString("contact_no");
+                                        String country_code = jsonObject1.getString("country_code");
+
+                                        house_no = jsonObject1.getString("house_no");
+                                        area = jsonObject1.getString("area");
+
+                                        login.setFirstname(first_name);
+                                        login.setLastname(last_name);
+                                        login.setAddId(id_add);
+                                        login.setLocation(location_text);
+                                        login.setCountry(country);
+                                        login.setCity(city);
+                                        login.setDistrict(district);
+                                        login.setHouse(house_no);
+                                        login.setArea(area);
+                                        login.setContact(contact_no);
+                                        login.setCountry_code(country_code);
+
+
+                                        login.setDefault_address(address_position);
+                                        login_credentials.add(login);
+                                    }
+                                }
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     login = new Login_Credentials();
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                    location_text = jsonObject1.getString("location");
-                                    country = jsonObject1.getString("country");
-                                    city = jsonObject1.getString("city");
-                                    district = jsonObject1.getString("district");
-                                    id_add = jsonObject1.getString("id");
-                                    first_name = jsonObject1.getString("first_name");
-                                    last_name = jsonObject1.getString("last_name");
-                                    String contact_no = jsonObject1.getString("contact_no");
-                                    String country_code = jsonObject1.getString("country_code");
-                                    login.setFirstname(first_name);
-                                    login.setLastname(last_name);
-                                    login.setAddId(id_add);
-                                    login.setLocation(location_text);
-                                    login.setCountry(country);
-                                    login.setCity(city);
-                                    login.setDistrict(district);
-                                    login.setContact(contact_no);
-                                    login.setCountry_code(country_code);
-                                    login_credentials.add(login);
+                                    default_address = jsonObject1.getInt("default_address");
+                                    if (default_address==0)
+                                    {
+                                        location_text = jsonObject1.getString("location");
+                                        country = jsonObject1.getString("country");
+                                        city = jsonObject1.getString("city");
+                                        district = jsonObject1.getString("district");
+                                        id_add = jsonObject1.getString("id");
+                                        first_name = jsonObject1.getString("first_name");
+                                        last_name = jsonObject1.getString("last_name");
+                                        default_address = jsonObject1.getInt("default_address");
+                                        String contact_no = jsonObject1.getString("contact_no");
+                                        String country_code = jsonObject1.getString("country_code");
+                                        house_no = jsonObject1.getString("house_no");
+                                        area = jsonObject1.getString("area");
+
+                                        login.setFirstname(first_name);
+                                        login.setLastname(last_name);
+                                        login.setAddId(id_add);
+                                        login.setLocation(location_text);
+                                        login.setCountry(country);
+                                        login.setCity(city);
+                                        login.setDistrict(district);
+                                        login.setContact(contact_no);
+                                        login.setCountry_code(country_code);
+                                        login.setHouse(house_no);
+                                        login.setArea(area);
+                                        login_credentials.add(login);
+                                    }
+
                                 }
+
                                 Log.e("addid", id_add);
                                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(MyAddress_Activity.this, login_credentials);
                                 recycler_view.setLayoutManager(new LinearLayoutManager(MyAddress_Activity.this, LinearLayoutManager.VERTICAL, false));
@@ -218,6 +272,8 @@ public class MyAddress_Activity extends AppCompatActivity {
         private static final int TYPE_ITEM = 2;
         private int lastSelectedPosition = -1;
         public String address_id;
+        int selectedPosition=-1;
+        int onClick=0;
 
         public RecyclerViewAdapter(Context context, ArrayList<Login_Credentials> login_credentialses) {
             this.mContext = context;
@@ -434,12 +490,43 @@ public class MyAddress_Activity extends AppCompatActivity {
 
             } else if (holder instanceof ItemViewHolder) {
                 ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+               // login_credentialsArrayList.get(address_position);
+                if(position==1)
+                {
+                    itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_listview));
+
+                }
+                if (onClick==1)
+                {
+                    if (position > 0) {
+
+                    if (lastSelectedPosition == position) {
+                        //itemViewHolder.relativeLayout.setBackgroundColor(getResources().getColor(R.color.app_bg));
+                        itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_listview));
+                    } else {
+                        itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                    }
+                }
+                }
+
+                /*if(selectedPosition==position)
+                {
+                    itemViewHolder.relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
+                }
+
+                else{
+                    itemViewHolder.relativeLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+
+                }
+*/
                 if (position > 0) {
+                   // itemViewHolder .relativeLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.border_selector));
+
 
                         address_id = login_credentialsArrayList.get(position - 1).getAddId();
 
                     final Login_Credentials login_credentials = login_credentialsArrayList.get(position - 1);
-                    itemViewHolder.address_field.setText(login_credentials.getFirstname() + " " + login_credentials.getLastname() + "\n" + login_credentials.getLocation() + "\n" + login_credentials.getDistrict() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getCountry() + "\n");
+                    itemViewHolder.address_field.setText(login_credentials.getFirstname() + " " + login_credentials.getLastname() + "\n" + login_credentials.getHouse() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getArea());
                     itemViewHolder.mEdit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -527,15 +614,28 @@ public class MyAddress_Activity extends AppCompatActivity {
         private class ItemViewHolder extends RecyclerView.ViewHolder {
             ImageView mEdit;
             TextView address_field;
+            RelativeLayout relativeLayout;
 
-            public ItemViewHolder(View view) {
+            public ItemViewHolder( View view) {
                 super(view);
                 mEdit = (ImageView) view.findViewById(R.id.edit);
                 address_field = (TextView) view.findViewById(R.id.address);
+                relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_item);
                 address_field.setTypeface(mDynoRegular);
+                relativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClick=1;
+                        lastSelectedPosition = getAdapterPosition();
+                        notifyDataSetChanged();
+                    }
+                });
 
             }
+
         }
+
+
     }
 
     private void setFont() {

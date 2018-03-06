@@ -464,6 +464,7 @@ public class Register_Activity  extends AppCompatActivity {
                                 } else {
                                     String reason = object.getString("reason");
                                     Toast.makeText(Register_Activity.this, reason, Toast.LENGTH_LONG).show();
+                                    progressDialog.cancel();
 
                                 }
 
@@ -477,7 +478,7 @@ public class Register_Activity  extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-
+                    progressDialog.cancel();
                     Log.e("verify_otp_error", "error" + volleyError);
                     if (volleyError instanceof TimeoutError) {
                         Toast.makeText(Register_Activity.this, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();

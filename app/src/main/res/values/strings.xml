@@ -51,6 +51,20 @@
     <string name="dob">Date of Birth (MM/DD/YYYY)</string>
     <string name="landline">Landline Number (Optional)</string>
     <string name="send_offers">Send me Emails on Promotions,Offers and Services</string>
+    <string name="default_location">Your Default Delivery Location</string>
+    <string name="cart_value">Your cart value is $120 for 10 items.</string>
+    <string name="order_delivered_to">Your Order will be delivered to </string>
+    <string name="date">Date :</string>
+    <string name="time">Time :</string>
+    <string name="charge">Charge :</string>
+    <string name="cont_pay">Continue to Payment ></string>
+    <string name="info">Information</string>
+    <string name="popup_text">Note : Based on choosing the Express Delivery for a few items in your basket, the rest of the items will
+    arrive in a separate delivery as per the time slot chosen by you.</string>
+    <string name="note">Note :</string>
+
+
+
 
 
     <string name="select_lang">Select Language</string>

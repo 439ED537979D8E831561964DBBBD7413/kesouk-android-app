@@ -58,7 +58,7 @@ public class Home_Activity extends AppCompatActivity {
 
         mToolbarTitle= (TextView) findViewById(R.id.toolbar_title);
         otp_text= (TextView) findViewById(R.id.otp_text);
-        mToolbarTitle.setText("HOME");
+        mToolbarTitle.setText("wel");
         mToolbarTitle.setVisibility(View.VISIBLE);
         setFont();
 

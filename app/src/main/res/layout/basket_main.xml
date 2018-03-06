@@ -42,6 +42,15 @@
 
 
                 >
+                <ImageView
+                    android:id="@+id/cart_icon"
+                    android:layout_width="@dimen/padding_25"
+                    android:layout_height="@dimen/padding_25"
+                    android:src="@drawable/cart_icon"
+                    android:paddingTop="@dimen/padding_5"
+
+
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,9 +58,9 @@
                     android:textSize="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/padding_5"
                     android:id="@+id/item_count"
-                    android:drawableLeft="@drawable/cart_icon"
                     android:gravity="center"
-                    android:drawablePadding="@dimen/padding_20"
+                    android:layout_toRightOf="@+id/cart_icon"
+                    android:layout_marginLeft="@dimen/padding_10"
 
                     />
 

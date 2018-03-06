@@ -80,8 +80,8 @@
 
                 <ImageView
                     android:id="@+id/bike"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/padding_35"
+                    android:layout_height="@dimen/padding_35"
                     android:layout_marginRight="@dimen/padding_5"
                     android:src="@drawable/bike_new"
                     android:layout_alignParentRight="true"
@@ -123,8 +123,8 @@
 
                 <ImageView
                     android:id="@+id/remove"
-                    android:layout_width="35dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/padding_35"
+                    android:layout_height="@dimen/padding_30"
                     android:layout_marginRight="@dimen/padding_5"
                     android:src="@drawable/delete_icon"
                     android:layout_alignParentRight="true"
@@ -177,8 +177,8 @@
 
                     <ImageView
                         android:id="@+id/minusimg"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/padding_20"
+                        android:layout_height="@dimen/padding_20"
                         android:src="@drawable/minus_icon"
                         android:layout_marginTop="@dimen/padding_5"
                         />
@@ -190,7 +190,6 @@
                         android:layout_marginLeft="@dimen/padding_10"
                         android:layout_marginRight="@dimen/padding_10"
                         android:layout_toRightOf="@+id/minusimg"
-                        android:gravity="center"
                         android:text="1"
                         android:textColor="@color/white"
                         android:textSize="@dimen/padding_25"
@@ -198,8 +197,8 @@
 
                     <ImageView
                         android:id="@+id/plusimg"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/padding_20"
+                        android:layout_height="@dimen/padding_20"
                         android:layout_toRightOf="@+id/count_cart"
                         android:src="@drawable/plus_icon"
                         android:layout_marginTop="@dimen/padding_5"

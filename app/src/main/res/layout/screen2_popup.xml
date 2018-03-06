@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="400dp"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_bg"
+        android:orientation="horizontal"
+        android:id="@+id/title_layout"
+        android:paddingTop="@dimen/padding_10"
+        android:paddingBottom="@dimen/padding_10"
+        android:gravity="center_horizontal"
+
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:id="@+id/ttle"
+            android:layout_marginLeft="@dimen/padding_5"
+
+            />
+
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="28dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:src="@drawable/cross_icon"
+            android:layout_marginRight="@dimen/padding_5"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+    <!--<TextView
+        android:id="@+id/note_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/note"
+        android:textSize="@dimen/padding_15"
+        android:textColor="@color/google_plus"
+        android:layout_below="@+id/title_layout"
+        android:layout_marginTop="@dimen/padding_10"
+
+        />-->
+    <TextView
+        android:id="@+id/note_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/popup_text"
+        android:textSize="@dimen/padding_15"
+        android:layout_below="@+id/title_layout"
+        android:layout_marginTop="@dimen/padding_10"
+
+
+        />
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@string/submit"
+        android:textSize="@dimen/padding30"
+        android:textColor="@color/white"
+        android:background="@color/app_bg"
+        android:layout_marginTop="@dimen/padding_50"
+        android:layout_alignParentBottom="true"
+
+        />
+
+
+</RelativeLayout>

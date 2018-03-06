@@ -15,11 +15,11 @@
         android:paddingBottom="@dimen/padding_5"
         >
         <ImageView
-            android:layout_width="33dp"
-            android:layout_height="33dp"
+            android:layout_width="@dimen/padding_25"
+            android:layout_height="@dimen/padding_25"
             android:layout_gravity="center"
             android:gravity="center"
-            android:src="@drawable/dropdown_icon"
+            android:src="@drawable/ic_plus_sign"
 
             />
         <TextView

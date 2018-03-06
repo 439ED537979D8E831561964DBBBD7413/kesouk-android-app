@@ -82,6 +82,10 @@
         <item name="colorControlNormal">@color/rating_star</item>
         <item name="colorControlActivated">@color/rating_star</item>
     </style>
+    <style name="RatingBarSmall" parent="@android:style/Widget.Material.RatingBar.Small">
+        <item name="android:minHeight">35dip</item>
+        <item name="android:maxHeight">35dip</item>
+    </style>
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="android:textColor">@color/white</item>
     </style>

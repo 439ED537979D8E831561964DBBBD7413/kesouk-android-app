@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/number_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:layout_marginRight="@dimen/padding_5"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn1"
+                android:layout_width="@dimen/padding_30"
+                android:layout_height="@dimen/padding_30"
+                android:background="@drawable/circle_button"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/padding_20" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:layout_marginRight="@dimen/padding_5"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn2"
+                android:layout_width="@dimen/padding_30"
+                android:layout_height="@dimen/padding_30"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_button"
+                android:text="2"
+                android:textSize="@dimen/padding_20" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:layout_marginRight="@dimen/padding_5"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn3"
+                android:layout_width="@dimen/padding_30"
+                android:layout_height="@dimen/padding_30"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_button_green"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="@dimen/padding_20" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:layout_marginRight="@dimen/padding_5"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn4"
+                android:layout_width="@dimen/padding_30"
+                android:layout_height="@dimen/padding_30"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_button"
+                android:text="4"
+                android:textSize="@dimen/padding_20" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cart_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/number_layout"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/padding_20"
+        android:text="@string/cart_value"
+
+        />
+
+    <TextView
+        android:id="@+id/order_delivered_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cart_value"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/padding_10"
+        android:text="@string/order_delivered_to"
+
+        />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/order_delivered_to"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/padding_10"
+        android:text="Address number"
+
+        />
+
+    <LinearLayout
+        android:id="@+id/date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/address"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/padding_10"
+        android:weightSum="1"
+
+
+        >
+
+        <TextView
+            android:id="@+id/date_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/date"
+            android:textSize="@dimen/padding_15"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/input_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="12/04/2018"
+            android:textSize="@dimen/padding_15"
+
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_layout"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/padding_10"
+        android:weightSum="1"
+
+
+        >
+
+        <TextView
+            android:id="@+id/time_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/time"
+            android:textSize="@dimen/padding_15"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/input_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Within two hours"
+            android:textSize="@dimen/padding_15"
+
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/charge_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_layout"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/padding_10"
+        android:weightSum="1"
+
+
+        >
+
+        <TextView
+            android:id="@+id/charge_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/charge"
+            android:textSize="@dimen/padding_15"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/input_charge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="kshs 50.00 (Express Delivery)"
+            android:textSize="@dimen/padding_15"
+
+            />
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/app_bg"
+        android:text="@string/cont_pay"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

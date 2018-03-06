@@ -79,8 +79,8 @@
 
                 <ToggleButton
                     android:id="@+id/fav"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/padding_25"
+                    android:layout_height="@dimen/padding_25"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/padding_5"
@@ -93,8 +93,8 @@
 
                 <ImageView
                     android:id="@+id/bike"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/padding_35"
+                    android:layout_height="@dimen/padding_37"
                     android:layout_marginRight="@dimen/padding_5"
                     android:layout_toLeftOf="@+id/fav"
                     android:src="@drawable/bike_new"

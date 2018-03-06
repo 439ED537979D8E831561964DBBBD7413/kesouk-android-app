@@ -191,8 +191,8 @@
                 app:backgroundTint="@color/dark_green" />
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/padding_25"
+                android:layout_height="@dimen/padding_25"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:src="@drawable/dropdown_icon"
@@ -316,8 +316,8 @@
                 />
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/padding_25"
+                android:layout_height="@dimen/padding_25"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:src="@drawable/dropdown_icon"

@@ -65,6 +65,35 @@ public class Login_Credentials implements Serializable{
     public String district;
     public String location;
 
+    public String getHouse() {
+        return house;
+    }
+
+    public void setHouse(String house) {
+        this.house = house;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String house;
+    public String area;
+
+    public int getDefault_address() {
+        return default_address;
+    }
+
+    public void setDefault_address(int default_address) {
+        this.default_address = default_address;
+    }
+
+    public int default_address;
+
     public String getContact() {
         return contact;
     }

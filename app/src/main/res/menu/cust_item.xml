@@ -21,6 +21,7 @@
                 android:id="@+id/my_acc"
                 android:title="@string/my_acc"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_my_account"
 
                 />
 
@@ -29,6 +30,7 @@
                 android:id="@+id/my_orders"
                 android:title="@string/my_orders"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_my_orders"
 
 
                 >
@@ -38,36 +40,42 @@
                 android:id="@+id/my_addr"
                 android:title="@string/my_address"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_resize"
 
                 />
             <item
                 android:id="@+id/faq"
                 android:title="@string/faq"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_faq"
 
                 />
             <item
                 android:id="@+id/contact"
                 android:title="@string/contact"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_contact_us"
 
                 />
             <item
                 android:id="@+id/about"
                 android:title="@string/about"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_about_us"
 
                 />
             <item
                 android:id="@+id/terms"
                 android:title="@string/termscond"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_terms"
 
                 />
             <item
                 android:id="@+id/change_pass"
                 android:title="@string/changepass"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_resize"
 
                 />
 
@@ -75,6 +83,7 @@
                 android:id="@+id/signin"
                 android:title="@string/logout"
                 app:showAsAction="never"
+                android:icon="@drawable/settings_logout"
 
 
                 />

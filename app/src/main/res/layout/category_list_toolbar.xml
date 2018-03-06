@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/padding_30"
+            android:layout_height="@dimen/padding_30"
             android:layout_marginRight="@dimen/padding_10"
             android:src="@drawable/back_button"
 
@@ -33,7 +33,7 @@
             android:layout_marginTop="@dimen/padding_5"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/padding_15"
+            android:textSize="@dimen/padding_20"
             android:layout_toRightOf="@+id/img"
             android:textStyle="bold" />
 
