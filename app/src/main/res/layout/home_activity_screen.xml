@@ -30,7 +30,7 @@
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/padding_225"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
 

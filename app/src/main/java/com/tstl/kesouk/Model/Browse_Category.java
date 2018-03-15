@@ -215,15 +215,15 @@ public class Browse_Category implements Serializable {
 
     private String quantityId;
 
-    public int getIs_express_delivery() {
+    public String getIs_express_delivery() {
         return is_express_delivery;
     }
 
-    public void setIs_express_delivery(int is_express_delivery) {
+    public void setIs_express_delivery(String is_express_delivery) {
         this.is_express_delivery = is_express_delivery;
     }
 
-    int is_express_delivery;
+    String is_express_delivery;
 
     public String getTotalAmount() {
         return totalAmount;

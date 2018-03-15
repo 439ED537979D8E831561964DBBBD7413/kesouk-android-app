@@ -52,6 +52,7 @@ import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 import static com.tstl.kesouk.Activity.Register_Activity.address_added;
 import static com.tstl.kesouk.Activity.Register_Activity.mAddAddress;
 import static com.tstl.kesouk.Activity.Register_Activity.temp_addr_edit;
+import static com.tstl.kesouk.Activity.CheckoutScreen1.CheckoutAddress;
 
 
 /**
@@ -351,10 +352,12 @@ public class Add_New_Address_Activity extends AppCompatActivity {
         params.put("nick_name", mNickname.getText().toString());
         params.put("country_shortname", "KE");
         params.put("country_code","214");
+        Log.e("json",params.toString());
+
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                Constants.ADD_NEW_ADDRESS, new JSONObject(params),
+                Constants.UPDATE_ADDRESS, new JSONObject(params),
 
                 new Response.Listener<JSONObject>() {
 
@@ -365,19 +368,32 @@ public class Add_New_Address_Activity extends AppCompatActivity {
                             String status = object.getString("status");
                             if (status.equals("Success")||status.equals("success")) {
 
-                                String reason = object.getString("reason");
+                                String reason = object.getString("message");
                                 Toast.makeText(Add_New_Address_Activity.this, reason, Toast.LENGTH_LONG).show();
                                 progressDialog.cancel();
+                                if(CheckoutAddress==1)
+                                {
+                                    Intent intent = new Intent(Add_New_Address_Activity.this, CheckoutScreen1.class);
+                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
 
-                                Intent intent = new Intent(Add_New_Address_Activity.this, MyAddress_Activity.class);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(Add_New_Address_Activity.this, MyAddress_Activity.class);
+                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
 
 
                             } else {
-                                String reason = object.getString("reason");
+                                String reason = object.getString("message");
                                 Toast.makeText(Add_New_Address_Activity.this, reason, Toast.LENGTH_LONG).show();
 
                             }

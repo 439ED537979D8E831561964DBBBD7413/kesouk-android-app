@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import com.daimajia.slider.library.SliderLayout;
 import com.tstl.kesouk.R;
 
+import static com.tstl.kesouk.Activity.TabMain_Activity.search;
+import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
+
 /**
  * Created by user on 17-Jan-18.
  */
@@ -41,6 +44,9 @@ public class Login_Fragment extends Fragment {
         toolbar_back.setVisibility(View.GONE);
 
 */
+        search.setVisibility(View.VISIBLE);
+        search.setText("");
+        toolbar_title.setVisibility(View.GONE);
         return view;
     }
 

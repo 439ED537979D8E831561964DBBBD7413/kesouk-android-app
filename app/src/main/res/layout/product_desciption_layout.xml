@@ -45,6 +45,22 @@
                 android:textSize="@dimen/padding_18"
                 />
             <TextView
+                android:id="@+id/tv_strike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/padding_12"
+                android:textStyle="normal"
+                android:text="Rs 500"
+                android:layout_below="@+id/tv_prodname"
+                android:layout_marginLeft="@dimen/padding_5"
+                android:visibility="gone"
+
+
+                />
+            <TextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,8 +70,8 @@
                 android:textSize="@dimen/padding_18"
                 android:textStyle="normal"
                 android:text="Rs 500"
-                android:layout_below="@+id/tv_prodname"
                 android:layout_marginLeft="@dimen/padding_5"
+                android:layout_below="@+id/tv_strike"
 
 
                 />

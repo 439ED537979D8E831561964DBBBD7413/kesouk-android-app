@@ -71,6 +71,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.tstl.kesouk.Activity.CheckoutScreen1;
 import com.tstl.kesouk.Activity.Login_Activity;
 import com.tstl.kesouk.Activity.Login_Register_Activity;
 import com.tstl.kesouk.Activity.MyAddress_Activity;
@@ -168,26 +169,26 @@ public class Basket_Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.basket_main, container, false);
-      //  img_back = (ImageView) view.findViewById(R.id.img);
-      //  settings = (ImageView) view.findViewById(R.id.settings);
-      //  search = (ImageView) view.findViewById(R.id.search);
+        //  img_back = (ImageView) view.findViewById(R.id.img);
+        //  settings = (ImageView) view.findViewById(R.id.settings);
+        //  search = (ImageView) view.findViewById(R.id.search);
         items_layout = (RelativeLayout) view.findViewById(R.id.filter_layout);
         noCart = (Button) view.findViewById(R.id.no_cart);
 
         recyler_main = (RecyclerView) view.findViewById(R.id.recycler_main);
         mCheckout = (Button) view.findViewById(R.id.checkout);
-       // settings.setVisibility(View.VISIBLE);
-       // search.setVisibility(View.GONE);
-       // img_back.setVisibility(View.GONE);
+        // settings.setVisibility(View.VISIBLE);
+        // search.setVisibility(View.GONE);
+        // img_back.setVisibility(View.GONE);
         db = new DB(getActivity());
         mCheckout.setVisibility(View.GONE);
 
-       // mToolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
+        // mToolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
         item_count = (TextView) view.findViewById(R.id.item_count);
         noItemsbasket = (TextView) view.findViewById(R.id.no_items_basket);
 
-       // mToolbarTitle.setVisibility(View.VISIBLE);
-       // mToolbarTitle.setText("REVIEW ORDER");
+        // mToolbarTitle.setVisibility(View.VISIBLE);
+        // mToolbarTitle.setText("REVIEW ORDER");
         search.setVisibility(View.GONE);
         toolbar_title.setVisibility(View.VISIBLE);
         toolbar_title.setText("REVIEW ORDER");
@@ -195,9 +196,9 @@ public class Basket_Fragment extends Fragment {
         getCart();
 
 
-       // ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        // ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
 
-     //   mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
+        //   mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
 
 
         setFont();
@@ -218,8 +219,8 @@ public class Basket_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (db.getAllLogin().size() == 1) {
-                    //  Intent intent=new Intent(getActivity(), Order_details_Activity.class);
-                    //  getActivity().startActivity(intent);
+                      Intent intent=new Intent(getActivity(), CheckoutScreen1.class);
+                      getActivity().startActivity(intent);
                 } else if (db.getAllLogin().size() == 0) {
                     cart_backpress = 1;
                     Intent intent = new Intent(getActivity(), Login_Activity.class);
@@ -251,7 +252,7 @@ public class Basket_Fragment extends Fragment {
 
         mDynoRegular = Typeface.createFromAsset(getActivity().getAssets(),
                 "font/Roboto_Regular.ttf");
-       // mToolbarTitle.setTypeface(mDynoRegular);
+        // mToolbarTitle.setTypeface(mDynoRegular);
         item_count.setTypeface(mDynoRegular);
     }
 
@@ -590,7 +591,7 @@ public class Basket_Fragment extends Fragment {
                                 String status = object.getString("status");
                                 if (status.equals("Success")) {
                                     JSONObject JObject = new JSONObject(String.valueOf(object));
-                                     cartcount = JObject.getInt("cartcount");
+                                    cartcount = JObject.getInt("cartcount");
 
                                     if (cartcount == 0) {
                                         recyler_main.setVisibility(View.GONE);
@@ -1511,8 +1512,4 @@ public class Basket_Fragment extends Fragment {
 
 
 }
-
-
-
-
 

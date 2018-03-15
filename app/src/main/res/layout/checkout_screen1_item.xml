@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
+        android:id="@+id/relative_item"
+        android:layout_marginLeft="@dimen/padding_5"
+        android:layout_marginRight="@dimen/padding_5"
+        android:background="@drawable/rectangle_gray"
+        android:paddingTop="@dimen/padding_5"
+        android:paddingBottom="@dimen/padding_5"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dsfffj"
+            android:textSize="@dimen/padding_17"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:id="@+id/name_txt"
+            android:layout_marginRight="@dimen/padding_5"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/padding_10"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dsffdgdfgndsfgdnfgkjfdgkjskjgnfsngjgsgnffksjnffsngfnsjggsdkgdskjgkjdfgkjdfj"
+            android:textSize="@dimen/padding_15"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/padding_15"
+            android:id="@+id/address_txt"
+            android:layout_marginRight="@dimen/padding_5"
+            android:layout_toLeftOf="@+id/edit"
+            android:layout_below="@+id/name_txt"
+
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_20"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/padding_10"
+            android:id="@+id/edit_txt"
+            android:layout_marginTop="@dimen/padding_10"
+            android:text="Change"
+            android:background="@drawable/rectangle_gray"
+
+
+            />
+
+
+
+    </RelativeLayout>
+</LinearLayout>

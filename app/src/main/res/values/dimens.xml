@@ -33,8 +33,12 @@
     <dimen name="padding_300">300dp</dimen>
     <dimen name="padding_400">400dp</dimen>
     <dimen name="padding_180">180dp</dimen>
+    <dimen name="padding_190">190dp</dimen>
+    <dimen name="padding_150">150dp</dimen>
     <dimen name="padding_160">160dp</dimen>
+    <dimen name="padding_170">170dp</dimen>
     <dimen name="padding_200">200dp</dimen>
+    <dimen name="padding_225">225dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>

@@ -130,8 +130,8 @@ public class Favorites_Fragment extends Fragment {
     ArrayList<Browse_Category> browse_category_list = new ArrayList<>();
     int search_option = 0, horizontal_category_option = 0;
     public static int sort_Option = 0;
-    String product_price_amount, product_selling_price, product_qty_name, product_random_id = "";
-    int currentpage = 1, lastpage = 0, is_express_delivery = 0;
+    String product_price_amount, product_selling_price, product_qty_name, product_random_id = "",is_express_delivery="";
+    int currentpage = 1, lastpage = 0;
     int product_discount;
     String search_word = "";
     public ArrayList<String> quantityList;
@@ -722,7 +722,7 @@ public class Favorites_Fragment extends Fragment {
                                             product_random_id = jsonObject.getString("product_random_id");
                                             product_price = jsonObject.getString("price");
                                             product_quantity_type = jsonObject.getInt("quantity_type");
-                                            is_express_delivery = jsonObject.getInt("is_express_delivery");
+                                            is_express_delivery = jsonObject.getString("is_express_delivery");
                                             int id = jsonObject.getInt("id");
                                             int category_id = jsonObject.getInt("category");
                                             product_selling_price = jsonObject.getString("actual_selling_amount");
@@ -1028,8 +1028,12 @@ public class Favorites_Fragment extends Fragment {
 
                         holder.tagprice.setText(browse_category.getProduct_discount() + " % off");
                         holder.marketprice.setPaintFlags(holder.marketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        int express = browse_category.getIs_express_delivery();
-                        if (express == 1) {
+                       /* if(browse_category.getIs_express_delivery().equals("null"))
+                        {
+                            holder.mExpress.setVisibility(View.GONE);
+                        }*/
+                        String express = browse_category.getIs_express_delivery();
+                        if (express.equals("1") ) {
                             holder.mExpress.setVisibility(View.VISIBLE);
                         } else {
                             holder.mExpress.setVisibility(View.GONE);

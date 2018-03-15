@@ -65,6 +65,53 @@ public class Login_Credentials implements Serializable{
     public String district;
     public String location;
 
+    public int getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(int defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
+    public int defaultAddress;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getComplex() {
+        return complex;
+    }
+
+    public void setComplex(String complex) {
+        this.complex = complex;
+    }
+
+    public String getLandMark() {
+        return landMark;
+    }
+
+    public void setLandMark(String landMark) {
+        this.landMark = landMark;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    public String nickName;
+    public String complex;
+    public String landMark;
+    public String streetName;
+
     public String getHouse() {
         return house;
     }

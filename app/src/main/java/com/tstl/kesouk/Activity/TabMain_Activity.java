@@ -182,6 +182,7 @@ public class TabMain_Activity extends AppCompatActivity implements  NavigationVi
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.rldContainer, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack("Some String");
         ft.commit();
     }
     private void enableExpandableList() {

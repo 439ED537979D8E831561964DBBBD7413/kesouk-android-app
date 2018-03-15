@@ -63,7 +63,9 @@ import java.util.Map;
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_category_selected_name;
+import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_search_home;
 import static com.tstl.kesouk.Fragments.Home_Fragment.home_category_selected_name;
+import static com.tstl.kesouk.Fragments.Home_Fragment.search_home;
 
 
 public class Category_Fragment extends Fragment {
@@ -76,7 +78,7 @@ public class Category_Fragment extends Fragment {
     private EditText mSearch;
     Category_Adapter browse_category_adapter;
     int sub_category_id, status, product_quantity_type;
-    String name, image_url, icon_url, product_name, product_image, product_price, product_price_id,product_price_MarketPrice,product_price_kesoukPrice,product_price_displayname;
+    String name, image_url, icon_url, product_name, product_image, product_price, product_price_id, product_price_MarketPrice, product_price_kesoukPrice, product_price_displayname;
     private ArrayList<String> product_pricelist = new ArrayList<>();
     Integer[] Bcatid = {
             R.drawable.prod4,
@@ -89,7 +91,7 @@ public class Category_Fragment extends Fragment {
     View view;
     private int mPosition = -1;
     DB db;
-    private TextView mB_lable, mBrowse_label, mLow, mHigh, mAlpha,mToolbarTitle,item_count;
+    private TextView mB_lable, mBrowse_label, mLow, mHigh, mAlpha, mToolbarTitle, item_count;
 
 
     ImageView mHL_Check, mAO_Check, mLH_Check;
@@ -106,15 +108,15 @@ public class Category_Fragment extends Fragment {
     ArrayList<Browse_Category> browse_category_list = new ArrayList<>();
     int search_option = 0, horizontal_category_option = 0;
     public static int sort_Option = 0;
-    String searchText, product_selling_price,product_qty_name,product_random_id="";
-    int currentpage = 1, lastpage = 0,is_express_delivery=0;
+    String searchText, product_selling_price, product_qty_name, product_random_id = "", is_express_delivery = "";
+    int currentpage = 1, lastpage = 0;
     int product_discount;
-  //  ImageView img_back,settings,search;
-    String search_word = "";
-   public  ArrayList<String> quantityList ;
-    public  ArrayList<String> pricelist ;
-    public   ArrayList<String> actual_pricelist ;
-    String similar_category,similar_subcategory,similar_id,total_amount,quanity_with_name;
+    //  ImageView img_back,settings,search;
+    String search_word1 = "";
+    public ArrayList<String> quantityList;
+    public ArrayList<String> pricelist;
+    public ArrayList<String> actual_pricelist;
+    String similar_category, similar_subcategory, similar_id, total_amount, quanity_with_name;
 
     public static Category_Fragment newInstance() {
         Category_Fragment fragment = new Category_Fragment();
@@ -130,31 +132,31 @@ public class Category_Fragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         products_listview = (RecyclerView) view.findViewById(R.id.product_listing);
-       // mSearch = (EditText) view.findViewById(R.id.search_new);
+        // mSearch = (EditText) view.findViewById(R.id.search_new);
 
 
-      //  mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
+        //  mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
 
-      //  img_back = (ImageView) view.findViewById(R.id.img);
-       // settings = (ImageView) view.findViewById(R.id.settings);
-       // search = (ImageView) view.findViewById(R.id.search);
-       // settings.setVisibility(View.GONE);
-       // search.setVisibility(View.GONE);
-       // mFilter = (ImageView) view.findViewById(R.id.filter);
-      //  mSort = (ImageView) view.findViewById(R.id.sort);
+        //  img_back = (ImageView) view.findViewById(R.id.img);
+        // settings = (ImageView) view.findViewById(R.id.settings);
+        // search = (ImageView) view.findViewById(R.id.search);
+        // settings.setVisibility(View.GONE);
+        // search.setVisibility(View.GONE);
+        // mFilter = (ImageView) view.findViewById(R.id.filter);
+        //  mSort = (ImageView) view.findViewById(R.id.sort);
         //mClose = (ImageView) view.findViewById(R.id.close_img);
 //
 
 
         db = new DB(getActivity());
 
-      //  mToolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
+        //  mToolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
         item_count = (TextView) view.findViewById(R.id.item_count);
 
-      //  mToolbarTitle.setVisibility(View.VISIBLE);
+        //  mToolbarTitle.setVisibility(View.VISIBLE);
 
 
-    //    ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        //    ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         setFont();
 
         /*mToolbar.setNavigationIcon(R.drawable.back_button);
@@ -207,14 +209,37 @@ public class Category_Fragment extends Fragment {
         Bundle bundle1 = this.getArguments();
         if (bundle1 != null) {
 
-            search_word = bundle1.getString("name");
-
+            search_word1 = bundle1.getString("name");
             search.setVisibility(View.GONE);
             toolbar_title.setVisibility(View.VISIBLE);
-            toolbar_title.setText(search_word);
+            toolbar_title.setText(search_word1);
 
 
         }
+        if (search_home == 1) {
+            Bundle bundle2 = this.getArguments();
+            if (bundle2 != null) {
+
+                search_word1 = bundle2.getString("search");
+                search.setVisibility(View.GONE);
+                toolbar_title.setVisibility(View.VISIBLE);
+                toolbar_title.setText(search_word1.toUpperCase());
+
+
+            }
+        } else if (cust_search_home == 1) {
+            Bundle bundle2 = this.getArguments();
+            if (bundle2 != null) {
+
+                search_word1 = bundle2.getString("search");
+                search.setVisibility(View.GONE);
+                toolbar_title.setVisibility(View.VISIBLE);
+                toolbar_title.setText(search_word1.toUpperCase());
+
+
+            }
+        }
+
         getQuantityType();
 
 
@@ -562,37 +587,47 @@ public class Category_Fragment extends Fragment {
             }
 
 
-        }
 
-        if (search_home == 1) {
+
+
+        }*/
+
+     /*   if (search_home == 1) {
             if (db.getAllLogin().size() == 0) {
-                if (search_word.equals("") || search_word.equals("null") || search_word.equals(null)) {
+                if (search_word1.equals("") || search_word1.equals("null") || search_word1.equals(null)) {
 
                     getProductList(home_category_selected_name);
                 } else {
-                    getProductList(search_word);
+                    getProductList(search_word1);
 
                 }
 
             } else {
-                if (search_word.equals("") || search_word.equals("null") || search_word.equals(null)) {
+                if (search_word1.equals("") || search_word1.equals("null") || search_word1.equals(null)) {
 
-                    getProductList(category_selected_name);
+                    getProductList(cust_category_selected_name);
                 } else {
-                    getProductList(search_word);
+                    getProductList(search_word1);
 
                 }
 
 
             }
-        }*/
+        }
+        else
+            if (cust_search_home==1)
+            {
+                if (search_word1.equals("") || search_word1.equals("null") || search_word1.equals(null)) {
 
+                    getProductList(cust_category_selected_name);
+                } else {
+                    getProductList(search_word1);
 
-
-
+                }
+            }
+*/
         return view;
     }
-
 
 
     private void getQuantityType() {
@@ -609,28 +644,33 @@ public class Category_Fragment extends Fragment {
                         try {
 
                             sort_Option = 0;
-                            if (db.getAllLogin().size() == 1) {
+                           /* if (db.getAllLogin().size() == 1) {
                                 getProductList(cust_category_selected_name);
-                               /*     if (cust_search_home == 1) {
-                                        getProductList(search_word);
-                                        temp_search_home = 1;
-                                    } else {
-                                        getProductList(category_selected_name);
 
-                                    }
-                                } else {
-                                    if (search_home == 1) {
-                                        getProductList(search_word);
-                                        temp_cust_home = 1;
-                                    } else {*/
-                                // getProductList(home_category_selected_name);
-
-                                //}
                             }
                             else
                             {
                                 getProductList(home_category_selected_name);
+                            }*/
+
+                            if (db.getAllLogin().size() == 1) {
+                                if (cust_search_home == 1) {
+                                    getProductList(search_word1);
+                                    temp_search_home = 1;
+                                } else {
+                                    getProductList(cust_category_selected_name);
+
+                                }
+                            } else {
+                                if (search_home == 1) {
+                                    getProductList(search_word1);
+                                    temp_cust_home = 1;
+                                } else {
+                                    getProductList(home_category_selected_name);
+
+                                }
                             }
+
                             if (spinner.getSelectedItemPosition() == 0) {
 
                             }
@@ -726,12 +766,12 @@ public class Category_Fragment extends Fragment {
                                 JSONArray DataArray = JObject1.getJSONArray("data");
                                 Log.e("data", "data");
                                 Browse_Category browse_category = null;
-                                Recipe recipe=null;
+                                Recipe recipe = null;
 
                                 if (DataArray.length() != 0) {
-                                    item_count.setText(DataArray.length()+ " Items");
+                                    item_count.setText(DataArray.length() + " Items");
                                     list_browse_products = new ArrayList<>();
-                                    receipe_productQtyList=new ArrayList<>();
+                                    receipe_productQtyList = new ArrayList<>();
                                     for (int i = 0; i < DataArray.length(); i++) {
                                         Log.e("datacount", String.valueOf(DataArray.length()));
                                         JSONObject jsonObject = DataArray.getJSONObject(i);
@@ -740,13 +780,12 @@ public class Category_Fragment extends Fragment {
                                         product_random_id = jsonObject.getString("product_random_id");
                                         product_price = jsonObject.getString("price");
                                         product_quantity_type = jsonObject.getInt("quantity_type");
-                                        if (jsonObject.has("is_express_delivery")&&!jsonObject.isNull("is_express_delivery"))
-                                        {
-                                            is_express_delivery = jsonObject.getInt("is_express_delivery");
+                                        if (jsonObject.has("is_express_delivery") && !jsonObject.isNull("is_express_delivery")) {
+                                            is_express_delivery = jsonObject.getString("is_express_delivery");
 
                                         }
                                         int id = jsonObject.getInt("id");
-                                        int category_id = jsonObject.getInt("category");
+                                        // int category_id = jsonObject.getInt("category");
                                         product_selling_price = jsonObject.getString("actual_selling_amount");
                                         product_discount = jsonObject.getInt("discount");
                                         float rating = jsonObject.getInt("rating_star");
@@ -762,19 +801,18 @@ public class Category_Fragment extends Fragment {
                                         browse_category.setProduct_random_id(product_random_id);
                                         browse_category.setProduct_quantity_type(product_quantity_type);
                                         browse_category.setProduct_id(id);
-                                        browse_category.setCategoryId(category_id);
+                                        //browse_category.setCategoryId(category_id);
                                         browse_category.setProduct_selling_price(product_selling_price);
                                         browse_category.setProduct_discount(product_discount);
                                         browse_category.setRatingStar(rating);
-                                        if (jsonObject.has("is_express_delivery"))
-                                        {
+                                        if (jsonObject.has("is_express_delivery")) {
                                             browse_category.setIs_express_delivery(is_express_delivery);
 
                                         }
                                         browse_category.setSimilar_category(similar_category);
                                         browse_category.setSimilar_subcategory(similar_subcategory);
                                         browse_category.setSimilar_id(similar_id);
-                                        recipe=new Recipe();
+                                        recipe = new Recipe();
 
 
                                         JSONArray product_price = jsonObject.getJSONArray("product_price");
@@ -800,8 +838,6 @@ public class Category_Fragment extends Fragment {
                                                 actual_pricelist.add(jsonObject1.getString("actual_selling_amount").toString());
 
 
-
-
                                             }
                                             browse_category.setProduct_priceId(product_price_id);
                                             Log.e("quantityList", String.valueOf(quantityList));
@@ -811,18 +847,15 @@ public class Category_Fragment extends Fragment {
                                             receipe_productQtyList.add(recipe);
                                             Log.e("setQuantityListPojo", String.valueOf(recipe.getQuantityListPojo()));
 
-                                        }else
-                                        {
+                                        } else {
 
                                         }
-
 
 
                                         JSONObject jsonObject1 = jsonObject.getJSONObject("product_quantity");
                                         product_qty_name = jsonObject1.getString("display_name");
                                         browse_category.setProduct_qty_name(product_qty_name);
                                         Log.e("product_qty_name", String.valueOf(browse_category.getProduct_qty_name()));
-
 
 
                                         Log.e("product_name", browse_category.getProd_name());
@@ -836,10 +869,11 @@ public class Category_Fragment extends Fragment {
                                         Log.e("product_list_adapter", String.valueOf(list_browse_products));
 
                                     }
-                                   // search_home = 0;
+                                    //search_home = 0;
+                                    // cust_search_home=0;
                                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                                     products_listview.setLayoutManager(mLayoutManager);
-                                    browse_category_adapter = new Category_Adapter(getActivity(), list_browse_products,receipe_productQtyList, 1,quantityList,search_word);
+                                    browse_category_adapter = new Category_Adapter(getActivity(), list_browse_products, receipe_productQtyList, 1, quantityList, search_word1);
                                     //Horizontal_Category_list();
                                     Log.e("product_list_if", String.valueOf(list_browse_products));
 
@@ -855,7 +889,7 @@ public class Category_Fragment extends Fragment {
                                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                                     products_listview.setLayoutManager(mLayoutManager);
 
-                                    browse_category_adapter = new Category_Adapter(getActivity(), list_browse_products,receipe_productQtyList, 2, quantityList,search_word);
+                                    browse_category_adapter = new Category_Adapter(getActivity(), list_browse_products, receipe_productQtyList, 2, quantityList, search_word1);
                                     //Horizontal_Category_list();
                                     Log.e("product_list_if", String.valueOf(list_browse_products));
 
@@ -922,13 +956,12 @@ public class Category_Fragment extends Fragment {
     }
 
 
-
     private void setFont() {
 
         mDynoRegular = Typeface.createFromAsset(getActivity().getAssets(),
                 "font/Roboto_Regular.ttf");
 
-       // mToolbarTitle.setTypeface(mDynoRegular);
+        // mToolbarTitle.setTypeface(mDynoRegular);
         item_count.setTypeface(mDynoRegular);
     }
 

@@ -75,17 +75,17 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
     DB db;
     //ImageView img_back, settings, search;
    // private TextView mToolbarTitle;
-    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products;
+    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products,other_price;
     Button mAddtoCart;
     ImageView mExpress;
     ToggleButton mFav;
     SliderLayout slider;
     RatingBar ratingBar;
     RecyclerView similar_products_recylerview;
-    String product_random_id;
-    int category_id, is_express_delivery;
+    String product_random_id,is_express_delivery="";
+    int category_id;
     private ArrayList<String> imageslidinglist = new ArrayList<>();
-    String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory,qty_name,search_word,amount,spinner_quantity;
+    String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory,qty_name,search_word,amount,spinner_quantity,other_price_amount;
     TextSliderView textSliderView;
     String product_price_id="",price_product_id="";
     int product_id=1;
@@ -107,6 +107,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         mProductName = (TextView) view.findViewById(R.id.tv_prodname);
         mAmount = (TextView) view.findViewById(R.id.tv_amount);
         mRatingText = (TextView) view.findViewById(R.id.rating_text);
+        other_price = (TextView) view.findViewById(R.id.tv_strike);
         description_title = (TextView) view.findViewById(R.id.desc_title);
         nutrition_title = (TextView) view.findViewById(R.id.nutri_info);
         supplier_information = (TextView) view.findViewById(R.id.supplr_info);
@@ -155,6 +156,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             similar_id = bundle1.getString("id");
             qty_name = bundle1.getString("qty_name");
             amount = bundle1.getString("price");
+            other_price_amount = bundle1.getString("other_price");
             spinner_quantity = bundle1.getString("qty");
             search_word = bundle1.getString("search_word");
             similar_products.setText("SIMILAR "+ search_word);
@@ -498,7 +500,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                         Log.e("datacount", String.valueOf(DataArray.length()));
                                         JSONObject jsonObject = DataArray.getJSONObject(i);
                                         product_name = jsonObject.getString("product_name");
-                                        is_express_delivery = jsonObject.getInt("is_express_delivery");
+                                        is_express_delivery = jsonObject.getString("is_express_delivery");
                                         description = jsonObject.getString("description");
                                         nutrition_info = jsonObject.getString("nutrition_info");
 
@@ -542,7 +544,19 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
                                         mProductName.setText(product_name+ " -"+spinner_quantity);
                                         mAmount.setText(amount);
-                                        if (is_express_delivery == 1) {
+                                        if(other_price_amount.equals("empty"))
+                                        {
+                                            other_price.setVisibility(View.GONE);
+                                        }
+                                        else
+                                        {
+                                            other_price.setVisibility(View.VISIBLE);
+                                            other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                                            other_price.setText(other_price_amount);
+
+                                        }
+                                        if (is_express_delivery .equals("1") ) {
                                             mExpress.setVisibility(View.VISIBLE);
                                         } else {
                                             mExpress.setVisibility(View.GONE);

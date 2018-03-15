@@ -65,6 +65,7 @@ public class Profile_Activity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     int month,day;
     public static int checkbox_value_email_promotions=0;
+    String finalDate="";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,8 +149,10 @@ public class Profile_Activity extends AppCompatActivity {
 
                                 if (monthOfYear < 9 &&dayOfMonth>9) {
                                     // set day of month , month and year value in the edit text
-                                    mDOB.setText(year + "-" + "0"
-                                            + (monthOfYear + 1) + "-" + dayOfMonth);
+                                    mDOB.setText(year + "/" + "0"
+                                            + (monthOfYear + 1) + "/" + dayOfMonth);
+                                    finalDate=year + "-" + "0"
+                                            + (monthOfYear + 1) + "-" + dayOfMonth;
                                     Log.e("if","one");
                                 } /*else {
                                     // set day of month , month and year value in the edit text
@@ -160,9 +163,11 @@ public class Profile_Activity extends AppCompatActivity {
 
                                 if (dayOfMonth < 9 && (monthOfYear+1)>9) {
                                     // set day of month , month and year value in the edit text
-                                    mDOB.setText(year + "-" + "0"
-                                            + (dayOfMonth) + "-" + (monthOfYear+1));
+                                    mDOB.setText(year + "/" + "0"
+                                            + (dayOfMonth) + "/" + (monthOfYear+1));
                                     Log.e("if","two");
+                                    finalDate=year + "-" + "0"
+                                            + (dayOfMonth) + "-" + (monthOfYear+1);
                                 } /*else {
                                     // set day of month , month and year value in the edit text
                                     mDOB.setText(year + "/"
@@ -172,8 +177,11 @@ public class Profile_Activity extends AppCompatActivity {
 */
                                 if (dayOfMonth < 9  && monthOfYear < 9) {
                                     // set day of month , month and year value in the edit text
-                                    mDOB.setText(year + "-" + "0"
-                                            + (dayOfMonth ) + "-" + "0"+ (monthOfYear+1));
+                                    mDOB.setText(year + "/" + "0"
+                                            + (dayOfMonth ) + "/" + "0"+ (monthOfYear+1));
+                                    Log.e("if","3");
+                                    finalDate=year + "-" + "0"
+                                            + (dayOfMonth ) + "-" + "0"+ (monthOfYear+1);
                                     Log.e("if","3");
                                 } /* else {
                                     // set day of month , month and year value in the edit text
@@ -184,9 +192,11 @@ public class Profile_Activity extends AppCompatActivity {
 
                                 if (dayOfMonth >9  && (monthOfYear+1) > 9) {
                                     // set day of month , month and year value in the edit text
-                                    mDOB.setText((year+1) + "-"
-                                            + (dayOfMonth ) + "-" + (monthOfYear+1));
+                                    mDOB.setText((year+1) + "/"
+                                            + (dayOfMonth ) + "/" + (monthOfYear+1));
                                     Log.e("if","3");
+                                    finalDate=(year+1) + "-"
+                                            + (dayOfMonth ) + "-" + (monthOfYear+1);
                                 }
 
 
@@ -262,7 +272,7 @@ public class Profile_Activity extends AppCompatActivity {
         params.put("first_name", mFirstName.getText().toString());
         params.put("last_name", mLastName.getText().toString());
         params.put("email", mEmail.getText().toString());
-        params.put("dob", mDOB.getText().toString());
+        params.put("dob", finalDate);
         params.put("mobilenumber", mMobile.getText().toString());
         params.put("landline", mLandline.getText().toString());
         params.put("promotions_and_offers_mail", String.valueOf(checkbox_value_email_promotions));

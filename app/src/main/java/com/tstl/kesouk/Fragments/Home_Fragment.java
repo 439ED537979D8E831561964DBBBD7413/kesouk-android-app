@@ -148,6 +148,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     RecyclerView my_recycler_view;
     ArrayList<String> imageList = new ArrayList<>();
     RecyclerView foodrecyclerView;
+    public static int search_home=0;
 
     Integer[] Bcatid = {
             R.drawable.prod4,
@@ -190,7 +191,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
         foodrecyclerView.setHasFixedSize(true);
         relativeLayout.setVisibility(View.GONE);
-
+        search_home=0;
 
         getBannerImage();
 
@@ -224,7 +225,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
        // navigationView = (NavigationView) view.findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
 
-     /*   search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
@@ -235,12 +236,29 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                     inputManager.hideSoftInputFromWindow(
                             getActivity().getCurrentFocus().getWindowToken(),
                             InputMethodManager.HIDE_NOT_ALWAYS);
+                    search_home = 1;
+                    home_category_flag = 5;
+                    home_home_frag = 5;
+
+                    Category_Fragment newFragment = new Category_Fragment();
+
+                    Bundle args = new Bundle();
+                    args.putString("search", search.getText().toString());
+                    newFragment.setArguments(args);
+
+
+                    FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.rldContainer, newFragment);
+                    transaction.addToBackStack("Some String");
+                    transaction.commit();
+                    search.setText("");
+
+
                     handled = true;
                 }
                 return handled;
             }
-        });*/
-
+        });
 
         if (SplashActivity.isNetworkAvailable(getActivity())) {
             // getCategorySubcategory();

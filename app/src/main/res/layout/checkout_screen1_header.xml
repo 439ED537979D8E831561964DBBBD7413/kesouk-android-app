@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="vertical">
 
@@ -82,13 +82,15 @@
         </LinearLayout>
     </LinearLayout>
 
-   <TextView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:text="@string/default_location"
-       android:layout_marginLeft="@dimen/padding_5"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/default_location"
+        android:layout_marginLeft="@dimen/padding_5"
+        android:textStyle="bold"
+        android:id="@+id/defaultaddr"
 
-       />
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -102,18 +104,37 @@
         android:paddingTop="@dimen/padding_5"
         android:paddingBottom="@dimen/padding_5"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dsfffj"
+            android:textSize="@dimen/padding_17"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:id="@+id/name_def"
+            android:layout_marginRight="@dimen/padding_5"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/padding_10"
+            android:textStyle="bold"
+
+
+
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="dsffdgdfgndsfgdnfgkjfdgkjskjgnfsngjgsgnffksjnffsngfnsjggsdkgdskjgkjdfgkjdfj"
-            android:textSize="@dimen/padding_17"
+            android:textSize="@dimen/padding_15"
             android:layout_gravity="center"
             android:textColor="@color/black"
-            android:layout_marginLeft="@dimen/padding_5"
-            android:id="@+id/address"
+            android:layout_marginLeft="@dimen/padding_15"
+            android:id="@+id/address_def"
             android:layout_marginRight="@dimen/padding_5"
             android:layout_toLeftOf="@+id/edit"
+            android:layout_below="@+id/name_def"
+            android:layout_marginBottom="@dimen/padding_5"
 
             />
 
@@ -125,7 +146,7 @@
             android:gravity="center"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/padding_10"
-            android:id="@+id/edit"
+            android:id="@+id/edit_def"
             android:layout_marginTop="@dimen/padding_10"
             android:text="Change"
             android:background="@drawable/rectangle_gray"
@@ -141,6 +162,9 @@
         android:layout_height="wrap_content"
         android:text="@string/other_addr"
         android:layout_marginLeft="@dimen/padding_5"
+        android:id="@+id/otheraddr"
+        android:textStyle="bold"
+
 
         />
 </LinearLayout>

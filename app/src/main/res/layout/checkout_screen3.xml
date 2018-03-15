@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical">
-
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/category_list_toolbar" />
     <LinearLayout
         android:id="@+id/number_layout"
         android:layout_width="match_parent"
@@ -13,6 +15,7 @@
         android:layout_marginBottom="@dimen/padding_20"
         android:layout_marginTop="@dimen/padding_20"
         android:gravity="center"
+        android:layout_below="@+id/app_bar"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -238,6 +241,8 @@
         android:layout_alignParentBottom="true"
         android:background="@color/app_bg"
         android:text="@string/cont_pay"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:id="@+id/continue_btn"
+        />
 
 </RelativeLayout>

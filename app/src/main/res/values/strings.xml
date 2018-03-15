@@ -42,10 +42,12 @@
     <string name="default_addr">Make this my default address</string>
     <string name="save">Save</string>
     <string name="addaddr">ADD ADDRESS</string>
+    <string name="addaddr1">ADD NEW ADDRESS</string>
     <string name="no_items_basket">Your Basket is Empty</string>
     <string name="my_acc">My Account</string>
     <string name="my_address">My Address</string>
     <string name="faq">FAQs</string>
+    <string name="other_addr">Other Addresses</string>
     <string name="my_orders">My Orders</string>
     <string name="email_id">Email Id</string>
     <string name="dob">Date of Birth (MM/DD/YYYY)</string>
@@ -62,6 +64,9 @@
     <string name="popup_text">Note : Based on choosing the Express Delivery for a few items in your basket, the rest of the items will
     arrive in a separate delivery as per the time slot chosen by you.</string>
     <string name="note">Note :</string>
+    <string name="expressdel">Express Delivery</string>
+    <string name="getexprr">Get Express Delivery</string>
+    <string name="expressdelnote">Get 10 out of 11 items within two hours for a charge of kshs 12</string>
 
 
 

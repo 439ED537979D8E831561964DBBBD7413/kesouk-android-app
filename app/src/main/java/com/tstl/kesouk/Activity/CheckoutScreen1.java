@@ -1,19 +1,11 @@
 package com.tstl.kesouk.Activity;
 
-/**
- * Created by user on 21-Feb-18.
- */
-
-
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +28,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.tstl.kesouk.DB.DB;
@@ -47,19 +36,21 @@ import com.tstl.kesouk.Model.Login_Credentials;
 import com.tstl.kesouk.R;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
- * Created by user on 30-Nov-17.
+ * Created by user on 07-Mar-18.
  */
 
-public class MyAddress_Activity extends AppCompatActivity {
+
+
+
+
+public class CheckoutScreen1 extends AppCompatActivity {
     private Typeface mDynoRegular;
     private Toolbar mToolbar;
     private TextView mToolbarTitle;
@@ -74,12 +65,17 @@ public class MyAddress_Activity extends AppCompatActivity {
     public static String delvy_pickup;
     int status_code,default_address,address_position;
     public ArrayList<Login_Credentials> login_credentials = null;
+    public static int CheckoutAddress=0;
+    String def_id;
+    int def_checkbox;
+    String defaultaddressTextView,defaultNameTextView,def_nickname,def_fNmae,def_LName,def_mob,def_city,def_house,def_resident,def_area,def_street,def_land;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db=new DB(this);
+        CheckoutAddress=0;
         setContentView(R.layout.my_address_activity);
-        db = new DB(this);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
         // recycler_view.setNestedScrollingEnabled(false);
@@ -89,7 +85,7 @@ public class MyAddress_Activity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         mToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        mToolbarTitle.setText("CHOOSE ADDRESS");
+        mToolbarTitle.setText("ORDER SUMMARY");
         mToolbarTitle.setVisibility(View.VISIBLE);
         backBtn = (ImageView) findViewById(R.id.img);
 
@@ -114,17 +110,15 @@ public class MyAddress_Activity extends AppCompatActivity {
         }
         getUserAddress();
 
-
     }
 
     private void getUserAddress() {
-        final ProgressDialog progressDialog = new ProgressDialog(MyAddress_Activity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CheckoutScreen1.this);
         progressDialog.setMessage("Please wait ...");
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-        RequestQueue queue = Volley.newRequestQueue(MyAddress_Activity.this);
-        Log.e("url",Constants.GET_USER_ADDRESS+db.getAllLogin().get(0));
+        RequestQueue queue = Volley.newRequestQueue(CheckoutScreen1.this);
         StringRequest jsObjRequest = new StringRequest(
                 Request.Method.GET, Constants.GET_USER_ADDRESS+db.getAllLogin().get(0),
 
@@ -151,25 +145,30 @@ public class MyAddress_Activity extends AppCompatActivity {
                                     {
                                         Log.e("postion", String.valueOf(i));
                                         address_position=1;
+                                        def_checkbox=1;
 
                                         location_text = jsonObject1.getString("location");
                                         country = jsonObject1.getString("country");
-                                        city = jsonObject1.getString("city");
+                                        def_city = jsonObject1.getString("city");
                                         district = jsonObject1.getString("district");
-                                        id_add = jsonObject1.getString("id");
-                                        first_name = jsonObject1.getString("first_name");
-                                        last_name = jsonObject1.getString("last_name");
+                                        def_id = jsonObject1.getString("id");
+                                        def_fNmae = jsonObject1.getString("first_name");
+                                        def_LName = jsonObject1.getString("last_name");
                                         default_address = jsonObject1.getInt("default_address");
-                                        String contact_no = jsonObject1.getString("contact_no");
+                                        def_mob = jsonObject1.getString("contact_no");
                                         String country_code = jsonObject1.getString("country_code");
 
-                                        String nickname = jsonObject1.getString("nick_name");
-                                        String complex = jsonObject1.getString("complex");
-                                        String streetname = jsonObject1.getString("street_name");
-                                        String landmark = jsonObject1.getString("land_mark");
+                                        def_nickname = jsonObject1.getString("nick_name");
+                                        def_resident = jsonObject1.getString("complex");
+                                        def_street = jsonObject1.getString("street_name");
+                                        def_land = jsonObject1.getString("land_mark");
 
-                                        house_no = jsonObject1.getString("house_no");
-                                        area = jsonObject1.getString("area");
+                                        def_house = jsonObject1.getString("house_no");
+                                        def_area = jsonObject1.getString("area");
+                                        defaultaddressTextView=def_house+ "\n"+def_city+"\n"+def_area;
+                                        defaultNameTextView=def_fNmae;
+/*
+                    itemViewHolder.address_field.setText(login_credentials.getFirstname() + " " + login_credentials.getLastname() + "\n" + login_credentials.getHouse() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getArea());
 
                                         login.setFirstname(first_name);
                                         login.setLastname(last_name);
@@ -190,7 +189,7 @@ public class MyAddress_Activity extends AppCompatActivity {
 
 
                                         login.setDefault_address(address_position);
-                                        login_credentials.add(login);
+                                        login_credentials.add(login);*/
                                     }
                                 }
                                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -239,8 +238,8 @@ public class MyAddress_Activity extends AppCompatActivity {
                                 }
 
                                 Log.e("addid", id_add);
-                                RecyclerViewAdapter adapter = new RecyclerViewAdapter(MyAddress_Activity.this, login_credentials);
-                                recycler_view.setLayoutManager(new LinearLayoutManager(MyAddress_Activity.this, LinearLayoutManager.VERTICAL, false));
+                                RecyclerViewAdapter adapter = new RecyclerViewAdapter(CheckoutScreen1.this, login_credentials);
+                                recycler_view.setLayoutManager(new LinearLayoutManager(CheckoutScreen1.this, LinearLayoutManager.VERTICAL, false));
                                 recycler_view.setAdapter(adapter);
                             }
 
@@ -256,9 +255,9 @@ public class MyAddress_Activity extends AppCompatActivity {
                 progressDialog.cancel();
                 Log.e("Err", String.valueOf(volleyError));
                 if (volleyError instanceof TimeoutError) {
-                    Toast.makeText(MyAddress_Activity.this, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CheckoutScreen1.this, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
                 } else
-                    Toast.makeText(MyAddress_Activity.this, "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CheckoutScreen1.this, "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
             }
         }) {
@@ -266,11 +265,11 @@ public class MyAddress_Activity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
 
                 Map<String, String> header = new HashMap<String, String>();
-               // String title = String.valueOf(db.getCookie());
-               // String role = title.substring(1, title.length() - 1);
-              //  Log.e("cookie", role);
+                // String title = String.valueOf(db.getCookie());
+                // String role = title.substring(1, title.length() - 1);
+                //  Log.e("cookie", role);
                 header.put("Content-Type", "application/json; charset=utf-8");
-               // header.put("Authorization", "Bearer " + role);
+                // header.put("Authorization", "Bearer " + role);
                 return header;
             }
         };
@@ -304,15 +303,15 @@ public class MyAddress_Activity extends AppCompatActivity {
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE_ITEM) {
                 //Inflating recycle view item layout
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_address_item, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.checkout_screen1_item, parent, false);
                 return new ItemViewHolder(itemView);
             } else if (viewType == TYPE_HEADER) {
                 //Inflating header view
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_address_header, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.checkout_screen1_header, parent, false);
                 return new HeaderViewHolder(itemView);
             } else if (viewType == TYPE_FOOTER) {
                 //Inflating footer view
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_address_footer, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.checkout_screen1_footer, parent, false);
                 return new FooterViewHolder(itemView);
             } else return null;
         }
@@ -322,15 +321,33 @@ public class MyAddress_Activity extends AppCompatActivity {
 
             if (holder instanceof HeaderViewHolder) {
                 HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-                headerHolder.address_layout.setOnClickListener(new View.OnClickListener() {
+                headerHolder.defaultName.setText(defaultNameTextView);
+                headerHolder.defaultAddress.setText(defaultaddressTextView);
+                headerHolder.defaultEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        add_addr_click = 1;
-                        Intent intent = new Intent(MyAddress_Activity.this, Add_New_Address_Activity.class);
+                        edit_img_click = 1;
+                        CheckoutAddress=1;
+                        Intent intent = new Intent(CheckoutScreen1.this, Add_Update_Address_Activity.class);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putString("one", def_nickname);
+                        mBundle.putString("two", def_fNmae);
+                        mBundle.putString("three", def_LName);
+                        mBundle.putString("four", def_mob);
+                        mBundle.putString("five", def_city);
+                        mBundle.putString("six", def_house);
+                        mBundle.putString("seven", def_resident);
+                        mBundle.putString("eight", def_area);
+                        mBundle.putString("nine", def_street);
+                        mBundle.putString("ten", def_land);
+                        mBundle.putInt("default", def_checkbox);
+                        mBundle.putString("id", def_id);
+                        intent.putExtras(mBundle);
                         startActivity(intent);
-
                     }
                 });
+
+
 
             } else if (holder instanceof RecyclerViewAdapter.FooterViewHolder) {
                 FooterViewHolder footerHolder = (FooterViewHolder) holder;
@@ -338,222 +355,54 @@ public class MyAddress_Activity extends AppCompatActivity {
 
                     @Override
                     public void onClick(View v) {
-                      /*  if (lastSelectedPosition == -1) {
-                            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(My_Address_Activity.this);
-                            alertDialogBuilder.setMessage("Select a Address to Deliver");
-                            alertDialogBuilder.setCancelable(false);
-                            alertDialogBuilder.setPositiveButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            arg0.dismiss();
-                                        }
-                                    });
+                        Intent intent = new Intent(CheckoutScreen1.this, CheckoutScreen2.class);
+                        startActivity(intent);
+                    }
 
-                            final AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
-                        } else {
+                });
 
-
-                            RequestQueue queue = Volley.newRequestQueue(My_Address_Activity.this);
-                            Map<String, String> params = new HashMap<String, String>();
-                            final ProgressDialog progressDialog = new ProgressDialog(My_Address_Activity.this);
-                            progressDialog.setMessage("Please wait ...");
-                            progressDialog.show();
-                            progressDialog.setCanceledOnTouchOutside(false);
-                            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                            TextView tv1 = (TextView) progressDialog.findViewById(android.R.id.message);
-                            tv1.setTextSize(20);
-                            tv1.setTypeface(mDynoRegular);
-                            tv1.setText("Please wait ...");
-
-
-                            //  params.put("customer_id",db.getAllLogin().get(0));
-                            JSONArray array = new JSONArray();
-                            JSONObject obj;
-                            for (int i = 0; i < Order_details_Activity.cart_priceList.size(); i++) {
-                                obj = new JSONObject();
-                                try {
-                                    obj.put("actual_selling_amount", "0");
-                                    obj.put("discount", "0");
-                                    obj.put("finalamount", "0");
-                                    obj.put("finalsaveamount", "0");
-                                    obj.put("price_id", Order_details_Activity.cart_priceList.get(i).getCart_price_id());
-                                    obj.put("product_id", Order_details_Activity.cart_priceList.get(i).getCart_productId());
-                                    obj.put("quantity", Order_details_Activity.cart_priceList.get(i).getCart_quantity());
-                                    obj.put("price", Order_details_Activity.cartArrayList.get(i).getMarketPrice());
-                                    obj.put("quantity_type_id", Order_details_Activity.cartArrayList.get(i).getQuantity_type());
-                                    obj.put("saved_amount", "0");
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                array.put(obj);
-                            }
-
-
-                            // params.put("products", String.valueOf(array));
-                            JSONObject obj1 = new JSONObject();
-                            try {
-                                obj1.put("deliverytype", delvy_pickup);
-                                obj1.put("payment_type", "cod");
-                                obj1.put("addressselection", address_id);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            //  params.put("order", String.valueOf(obj1));
-                            JSONObject jsonObject = new JSONObject();
-                            try {
-                                jsonObject.put("customer_id", db.getAllLogin().get(0));
-                                jsonObject.put("products", array);
-                                jsonObject.put("order", obj1);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                            Log.e("json_placeorder", jsonObject.toString());
-
-                            JsonObjectRequest jsonObjReq = null;
-                            try {
-                                jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                        Constants.PLACE_ORDER, new JSONObject(jsonObject.toString()),
-                                        new Response.Listener<JSONObject>() {
-
-                                            @Override
-                                            public void onResponse(JSONObject object) {
-                                                try {
-                                                    Log.e("place_order", String.valueOf(object));
-
-
-                                                    String status = object.getString("status");
-
-                                                    if (status.equals("Success")) {
-
-                                                        progressDialog.cancel();
-                                                        String order_id = object.getString("order_id");
-
-
-                                                        Intent intent = new Intent(My_Address_Activity.this, Payment_Gateway_Activity.class);
-                                                        Bundle mBundle = new Bundle();
-                                                        mBundle.putString("order_id", order_id);
-                                                        intent.putExtras(mBundle);
-                                                        startActivity(intent);
-
-
-
-                                                    } else {
-                                                        String reason = object.getString("reason");
-                                                        Toast.makeText(My_Address_Activity.this, reason, Toast.LENGTH_LONG).show();
-
-                                                    }
-
-
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-
-
-                                            }
-                                        }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError volleyError) {
-
-                                        Log.e("verify_otp_error", "error" + volleyError);
-                                        if (volleyError instanceof TimeoutError) {
-                                            Toast.makeText(My_Address_Activity.this, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                                        } else
-                                            Toast.makeText(My_Address_Activity.this.getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                                        VolleyLog.e("responseError" + volleyError);
-
-                                    }
-                                }) {
-
-
-                                    @Override
-                                    protected Map<String, String> getParams() throws AuthFailureError {
-                                        HashMap<String, String> params = new HashMap<>();
-
-
-                                        return params;
-                                    }
-
-                                    @Override
-                                    public Map<String, String> getHeaders() throws AuthFailureError {
-                                        Map<String, String> header = new HashMap<String, String>();
-                                        String title = String.valueOf(db.getCookie());
-                                        String role = title.substring(1, title.length() - 1);
-                                        Log.e("cookie", role);
-                                        header.put("Content-Type", "application/json; charset=utf-8");
-                                        header.put("Authorization", "Bearer " + role);
-                                        return header;
-                                    }
-
-                                };
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                                    Constants.MY_SOCKET_TIMEOUT_MS,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                            queue.add(jsonObjReq);
-
-                        }
-*/
-
+                footerHolder.mAddaddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        add_addr_click = 1;
+                        CheckoutAddress=1;
+                        Intent intent = new Intent(CheckoutScreen1.this, Add_New_Address_Activity.class);
+                        startActivity(intent);
                     }
                 });
 
             } else if (holder instanceof ItemViewHolder) {
                 ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-               // login_credentialsArrayList.get(address_position);
-                if(position==1)
-                {
-                    itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_listview));
+                // login_credentialsArrayList.get(address_position);
 
-                }else {
-                    itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_unselected));
-                }
-                if (onClick==1)
+               /* if (onClick==1)
                 {
                     if (position > 0) {
 
-                    if (lastSelectedPosition == position) {
-                        //itemViewHolder.relativeLayout.setBackgroundColor(getResources().getColor(R.color.app_bg));
-                        itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_listview));
-                    } else {
-                        itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                        if (lastSelectedPosition == position) {
+                            //itemViewHolder.relativeLayout.setBackgroundColor(getResources().getColor(R.color.app_bg));
+                            itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_listview));
+                        } else {
+                            itemViewHolder.relativeLayout.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                        }
                     }
-                }
-                }
-
-                /*if(selectedPosition==position)
-                {
-                    itemViewHolder.relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
-                }
-
-                else{
-                    itemViewHolder.relativeLayout.setBackgroundColor(Color.parseColor("#ffffff"));
-
                 }
 */
                 if (position > 0) {
-                   // itemViewHolder .relativeLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.border_selector));
+                    // itemViewHolder .relativeLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.border_selector));
 
 
-                        address_id = login_credentialsArrayList.get(position - 1).getAddId();
+                    address_id = login_credentialsArrayList.get(position - 1).getAddId();
 
                     final Login_Credentials login_credentials = login_credentialsArrayList.get(position - 1);
-                    itemViewHolder.address_field.setText(login_credentials.getFirstname() + " " + login_credentials.getLastname() + "\n" + login_credentials.getHouse() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getArea());
+                    itemViewHolder.name.setText(login_credentials.getFirstname());
+                    itemViewHolder.address_field.setText( login_credentials.getHouse() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getArea());
                     itemViewHolder.mEdit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             edit_img_click = 1;
-                            Intent intent = new Intent(MyAddress_Activity.this, Add_Update_Address_Activity.class);
+                            CheckoutAddress=1;
+                            Intent intent = new Intent(CheckoutScreen1.this, Add_Update_Address_Activity.class);
                             Bundle mBundle = new Bundle();
                             mBundle.putString("one", login_credentials.getNickName());
                             mBundle.putString("two", login_credentials.getFirstname());
@@ -614,37 +463,51 @@ public class MyAddress_Activity extends AppCompatActivity {
 */
 
         private class HeaderViewHolder extends RecyclerView.ViewHolder {
-            LinearLayout address_layout;
-            TextView myAddr;
+            TextView defaultName,defaultAddress;
+            Button defaultEdit;
+            TextView defaultaddressTxt,otherAddressText;
 
             public HeaderViewHolder(View view) {
                 super(view);
-                address_layout = (LinearLayout) view.findViewById(R.id.address_layout);
-                myAddr = (TextView) view.findViewById(R.id.add_new_addr);
-                myAddr.setTypeface(mDynoRegular);
+                defaultName = (TextView) view.findViewById(R.id.name_def);
+                defaultAddress = (TextView) view.findViewById(R.id.address_def);
+                defaultEdit = (Button) view.findViewById(R.id.edit_def);
+                defaultaddressTxt = (TextView) view.findViewById(R.id.defaultaddr);
+                otherAddressText = (TextView) view.findViewById(R.id.otheraddr);
+
+
+                defaultName.setTypeface(mDynoRegular);
+                defaultAddress.setTypeface(mDynoRegular);
+                defaultEdit.setTypeface(mDynoRegular);
+                defaultaddressTxt.setTypeface(mDynoRegular);
+                otherAddressText.setTypeface(mDynoRegular);
             }
         }
 
         private class FooterViewHolder extends RecyclerView.ViewHolder {
-            Button mContinue;
+            Button mContinue,mAddaddress;
 
             public FooterViewHolder(View view) {
                 super(view);
                 mContinue = (Button) view.findViewById(R.id.continue_btn);
+                mAddaddress = (Button) view.findViewById(R.id.add_addr);
                 mContinue.setTypeface(mDynoRegular);
+                mAddaddress.setTypeface(mDynoRegular);
             }
         }
 
         private class ItemViewHolder extends RecyclerView.ViewHolder {
-            ImageView mEdit;
-            TextView address_field;
+            Button mEdit;
+            TextView name,address_field;
             RelativeLayout relativeLayout;
 
             public ItemViewHolder( View view) {
                 super(view);
-                mEdit = (ImageView) view.findViewById(R.id.edit);
-                address_field = (TextView) view.findViewById(R.id.address);
+                mEdit = (Button) view.findViewById(R.id.edit_txt);
+                address_field = (TextView) view.findViewById(R.id.address_txt);
+                name = (TextView) view.findViewById(R.id.name_txt);
                 relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_item);
+                name.setTypeface(mDynoRegular);
                 address_field.setTypeface(mDynoRegular);
                 relativeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -667,5 +530,4 @@ public class MyAddress_Activity extends AppCompatActivity {
         mToolbarTitle.setTypeface(mDynoRegular);
 
     }
-
 }

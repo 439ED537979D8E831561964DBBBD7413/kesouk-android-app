@@ -49,6 +49,7 @@ import java.util.Map;
 import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
+import static com.tstl.kesouk.Activity.CheckoutScreen1.CheckoutAddress;
 import static com.tstl.kesouk.Activity.Register_Activity.address_added;
 import static com.tstl.kesouk.Activity.Register_Activity.mAddAddress;
 import static com.tstl.kesouk.Activity.Register_Activity.temp_addr_edit;
@@ -63,7 +64,7 @@ public class Add_Update_Address_Activity extends AppCompatActivity {
     public TextInputLayout mNicknameLayout,mFirstlayout, mLastLayout, mMobNumLayout, mHouseLayout, mResidentLayout, mStreetLayout,mLandmarkLayout;
     private Typeface mDynoRegular;
     private Toolbar mToolbar;
-    String age_item, gender_Text, mEmailId, mCity_name_lib, add_id;
+    String age_item, gender_Text, mEmailId, mCity_name_lib, add_id,Address_id;
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
     Location location;
@@ -175,26 +176,72 @@ public class Add_Update_Address_Activity extends AppCompatActivity {
         {
             String one = bundle1.getString("one");
             String two = bundle1.getString("two");
-            //String three = bundle1.getString("three");
-           // String four = bundle1.getString("four");
+            String three = bundle1.getString("three");
+            String four = bundle1.getString("four");
             String five = bundle1.getString("five");
-          //  String six = bundle1.getString("six");
+            String six = bundle1.getString("six");
             String seven = bundle1.getString("seven");
-           // String eight = bundle1.getString("eight");
-           // String nine = bundle1.getString("nine");
-           // String ten = bundle1.getString("ten");
+            String eight = bundle1.getString("eight");
+            String nine = bundle1.getString("nine");
+            String ten = bundle1.getString("ten");
+            Address_id = bundle1.getString("id");
+            int defaultAddress = bundle1.getInt("default");
+            Log.e("defaultaddress", String.valueOf(defaultAddress));
 
-            mFirstName.setText(one);
-            mLastName.setText(two);
+            mFirstName.setText(two);
+            mLastName.setText(three);
          //   mLastName.setText(three);
         //    mMobile.setText(four);
-            mMobile.setText(five);
-           // mHouse.setText(six);
-           // mCity.setText(seven);
-          //  mArea.setText(eight);
+            mMobile.setText(four);
+            mHouse.setText(six);
+            mCity.setText(five);
+            mArea.setText(eight);
          //   mStreet.setText(nine);
          //   mLandmark.setText(ten);
 //
+
+            if(defaultAddress==1)
+            {
+                checkBox.setChecked(true);
+            }
+            else {
+                checkBox.setChecked(false);
+            }
+            if(one.equals("null"))
+            {
+                mNickname.setText("");
+            }
+            else
+            {
+                mNickname.setText(one);
+            }
+
+            if(seven.equals("null"))
+            {
+                mResident.setText("");
+            }
+            else
+            {
+                mResident.setText(seven);
+            }
+
+            if(nine.equals("null"))
+            {
+                mStreet.setText("");
+            }
+            else
+            {
+                mStreet.setText(nine);
+            }
+
+            if(ten.equals("null"))
+            {
+                mLandmark.setText("");
+            }
+            else
+            {
+                mLandmark.setText(ten);
+            }
 
         }
 
@@ -377,7 +424,7 @@ public class Add_Update_Address_Activity extends AppCompatActivity {
         tv1.setTypeface(mDynoRegular);
         tv1.setText("Please wait ...");
 
-        params.put("customer_id",  db.getAllLogin().get(0));
+        params.put("user_id",  db.getAllLogin().get(0));
         params.put("nick_name", mNickname.getText().toString());
         params.put("first_name", mFirstName.getText().toString());
         params.put("last_name", mLastName.getText().toString());
@@ -389,6 +436,9 @@ public class Add_Update_Address_Activity extends AppCompatActivity {
         params.put("street_name", mStreet.getText().toString());
         params.put("land_mark", mLandmark.getText().toString());
         params.put("default_address", String.valueOf(checkbox_value));
+        params.put("country_shortname", "KE");
+        params.put("country_code","214");
+        params.put("id",Address_id);
 
 
 /*
@@ -420,12 +470,25 @@ public class Add_Update_Address_Activity extends AppCompatActivity {
                                 String reason = object.getString("message");
                                 Toast.makeText(Add_Update_Address_Activity.this, reason, Toast.LENGTH_LONG).show();
                                 progressDialog.cancel();
+                                if(CheckoutAddress==1)
+                                {
+                                    Intent intent = new Intent(Add_Update_Address_Activity.this, CheckoutScreen1.class);
+                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
 
-                                Intent intent = new Intent(Add_Update_Address_Activity.this, MyAddress_Activity.class);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(Add_Update_Address_Activity.this, MyAddress_Activity.class);
+                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
 
 
                             } else {
@@ -474,11 +537,11 @@ public class Add_Update_Address_Activity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<String, String>();
-                String title = String.valueOf(db.getCookie());
+              /*  String title = String.valueOf(db.getCookie());
                 String role = title.substring(1, title.length() - 1);
                 Log.e("cookie",role);
                 header.put("Content-Type", "application/json; charset=utf-8");
-                header.put("Authorization","Bearer "+role);
+                header.put("Authorization","Bearer "+role);*/
                 return header;
             }
 

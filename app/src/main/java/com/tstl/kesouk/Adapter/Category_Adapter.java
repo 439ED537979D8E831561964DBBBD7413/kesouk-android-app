@@ -63,7 +63,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 /**
  * Created by Ravi Tamada on 18/05/16.
  */
@@ -71,21 +70,22 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
 
     private Context mContext;
     public static ArrayList<Browse_Category> browse_categoryArrayList;
-    public  ArrayList<Recipe> recipeArrayList;
+    public ArrayList<Recipe> recipeArrayList;
     private ArrayList<String> arrayList;
     private int check;
     private Typeface mDynoRegular;
     public static int position_product_onclick;
-    Browse_Category browse_category1=new Browse_Category();
+    Browse_Category browse_category1 = new Browse_Category();
     DB db;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
-    private HashMap<Integer,Integer> selectedItem=new HashMap<Integer, Integer>();
-    private HashMap<Integer, String> totalPrices=new HashMap<Integer, String>();
-    private String total_amount=null,quanity_with_name,kgs,search_word;
+    private HashMap<Integer, Integer> selectedItem = new HashMap<Integer, Integer>();
+    private HashMap<Integer, String> totalPrices = new HashMap<Integer, String>();
+    private String total_amount = null, quanity_with_name, kgs, search_word;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, marketprice,kesoukPrice,no_prod,tagprice,spinner_text;
-        public ImageView prod_image,mExpress;
+        public TextView title, marketprice, kesoukPrice, no_prod, tagprice, spinner_text;
+        public ImageView prod_image, mExpress;
         public Spinner spinner;
         public CardView cardView;
         public ToggleButton toggleButton;
@@ -108,13 +108,13 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
             prod_image = (ImageView) view.findViewById(R.id.imageView);
             //circleImageView = (CircleImageView) view.findViewById(R.id.circleView);
             toggleButton = (ToggleButton) view.findViewById(R.id.fav);
-             spinner = (Spinner)view. findViewById(R.id.spinner);
-            cardView = (CardView) view. findViewById(R.id.card_view);
-            mAddtoCArt = (Button) view. findViewById(R.id.add_to_cart);
+            spinner = (Spinner) view.findViewById(R.id.spinner);
+            cardView = (CardView) view.findViewById(R.id.card_view);
+            mAddtoCArt = (Button) view.findViewById(R.id.add_to_cart);
             ratingBar = (RatingBar) view.findViewById(R.id.ratingbar_Small);
 
             marketprice.setPaintFlags(marketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            db=new DB(mContext);
+            db = new DB(mContext);
             title.setTypeface(mDynoRegular);
             marketprice.setTypeface(mDynoRegular);
             kesoukPrice.setTypeface(mDynoRegular);
@@ -126,10 +126,10 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
     public Category_Adapter(Context mContext, ArrayList<Browse_Category> browse_categoryArrayList, ArrayList<Recipe> receipe_productQtyList, int check, ArrayList<String> quantityList, String search_word) {
         this.mContext = mContext;
         this.browse_categoryArrayList = browse_categoryArrayList;
-        this.recipeArrayList=receipe_productQtyList;
-        this.check=check;
-        this.arrayList=quantityList;
-        this.search_word=search_word;
+        this.recipeArrayList = receipe_productQtyList;
+        this.check = check;
+        this.arrayList = quantityList;
+        this.search_word = search_word;
     }
 
     @Override
@@ -140,17 +140,15 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
         return new MyViewHolder(itemView);
 
     }
-    private void setRatingStarColor(Drawable drawable, @ColorInt int color)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+
+    private void setRatingStarColor(Drawable drawable, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             DrawableCompat.setTint(drawable, color);
-        }
-        else
-        {
+        } else {
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
+
     private RatingBar.OnRatingBarChangeListener onRatingChangedListener(final MyViewHolder holder, final int position) {
         return new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -183,70 +181,64 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
         holder.ratingBar.setOnRatingBarChangeListener(onRatingChangedListener(holder, position));
 
 
-        holder.ratingBar.setTag("rating:" +position);
+        holder.ratingBar.setTag("rating:" + position);
 
 
-        final ArrayAdapter<String > quatity=new ArrayAdapter<String>(mContext,R.layout.spinner_item,recipe.getQuantityListPojo());
+        final ArrayAdapter<String> quatity = new ArrayAdapter<String>(mContext, R.layout.spinner_item, recipe.getQuantityListPojo());
         quatity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.spinner.setAdapter(quatity);
-        if(selectedItem.get(position) != null){
+        if (selectedItem.get(position) != null) {
             //This should call after setAdapter
             holder.spinner.setSelection(selectedItem.get(position));
         }
 
-        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int i, long arg3)
-            {
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int i, long arg3) {
                 // selected item in the list
-                String item=recipe.getQuantityListPojo()+browse_category.getProduct_qty_name();
-                Log.e("item",item);
+                String item = recipe.getQuantityListPojo() + browse_category.getProduct_qty_name();
+                Log.e("item", item);
 
 
-                String state = arg0.getItemAtPosition(i).toString()+browse_category.getProduct_qty_name();
+                String state = arg0.getItemAtPosition(i).toString() + browse_category.getProduct_qty_name();
                 holder.spinner_text = (TextView) arg1.findViewById(R.id.item);
                 holder.spinner_text.setText(state);
 
-               // ((TextView)arg1. findViewById(R.id.item)).setText(state);
+                // ((TextView)arg1. findViewById(R.id.item)).setText(state);
                 Log.e("position_spinner", recipe.getQuantityListPojo().get(i));
-                Log.e("and",state);
-                kgs= recipe.getQuantityListPojo().get(i);
+                Log.e("and", state);
+                kgs = recipe.getQuantityListPojo().get(i);
 
 
-                quanity_with_name=arg0.getItemAtPosition(i).toString()+browse_category.getProduct_qty_name();
+                quanity_with_name = arg0.getItemAtPosition(i).toString() + browse_category.getProduct_qty_name();
 
-                int prod=browse_category.getProduct_discount();
-                if(prod>0)
-                {
+                int prod = browse_category.getProduct_discount();
+                if (prod > 0) {
                     holder.kesoukPrice.setText("SH " + recipe.getActualListPojo().get(i));
-                    holder.marketprice.setText( "SH "+ recipe.getPriceListPojo().get(i));
+                    holder.marketprice.setText("SH " + recipe.getPriceListPojo().get(i));
                     holder.tagprice.setVisibility(View.VISIBLE);
 
-                    holder.tagprice.setText( browse_category.getProduct_discount()+" % off");
+                    holder.tagprice.setText(browse_category.getProduct_discount() + " % off");
                     holder.marketprice.setPaintFlags(holder.marketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    int express=browse_category.getIs_express_delivery();
-                    if(express==1)
-                    {
+                    String express = browse_category.getIs_express_delivery();
+                    if (express.equals("1")) {
                         holder.mExpress.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
+                    } else {
                         holder.mExpress.setVisibility(View.GONE);
                     }
 
 
-                }else {
+                } else {
                     holder.marketprice.setVisibility(View.GONE);
                     holder.kesoukPrice.setText("SH " + recipe.getActualListPojo().get(i));
                     // holder.tagprice.setVisibility(View.GONE);
                 }
-                total_amount="SH " + recipe.getActualListPojo().get(i);
+                total_amount = "SH " + recipe.getActualListPojo().get(i);
 
 
             }
 
-            public void onNothingSelected(AdapterView<?> arg0){
+            public void onNothingSelected(AdapterView<?> arg0) {
 
             }
 
@@ -265,23 +257,22 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                         mContext));*/
 
 
-        if (check == 1)
-        {
+        if (check == 1) {
             Log.e("product_name", browse_category.getProd_name());
             Log.e("product_image", browse_category.getProduct_image());
-            Log.e("product_price", "$ "+browse_category.getDukanPrice());
+            Log.e("product_price", "$ " + browse_category.getDukanPrice());
             Log.e("product_quantity_type", String.valueOf(browse_category.getProduct_quantity_type()));
 
-            Log.e("adapter","adapter");
+            Log.e("adapter", "adapter");
 
             holder.title.setText(browse_category.getProd_name());
-           // holder.ratingBar.setRating(browse_category.getRatingStar());
+            // holder.ratingBar.setRating(browse_category.getRatingStar());
             holder.ratingBar.setRating(3);
 
 
             // loading album cover using Glide library
-           // Glide.with(mContext).load(Constants.PRODUCT_IMAGES + browse_category.getProduct_image()).into(holder.prod_image);
-            Glide.with(mContext).load(Constants.PRODUCT_IMAGES + browse_category.getProduct_image()).placeholder(R.drawable.logo) .into(holder.prod_image);
+            // Glide.with(mContext).load(Constants.PRODUCT_IMAGES + browse_category.getProduct_image()).into(holder.prod_image);
+            Glide.with(mContext).load(Constants.PRODUCT_IMAGES + browse_category.getProduct_image()).placeholder(R.drawable.logo).into(holder.prod_image);
 
            /* Glide.with(mContext).load(Constants.PRODUCT_IMAGES + browse_category.getProduct_image()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.prod_image) {
                 @Override
@@ -315,11 +306,19 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                 args.putInt("product_id", browse_category.getProduct_id());
                 args.putString("price_product_id", browse_category.getProduct_priceId());
 
+                int prod = browse_category.getProduct_discount();
+                if (prod > 0)
+                {
+                    args.putString("other_price", holder.marketprice.getText().toString());
 
+                } else {
+                    args.putString("other_price","empty");
+
+                }
                 newFragment.setArguments(args);
 
                 FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.rldContainer,newFragment);
+                transaction.replace(R.id.rldContainer, newFragment);
                 transaction.addToBackStack("Some String");
                 transaction.commit();
 
@@ -331,32 +330,26 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(mContext.getApplicationContext(),browse_category.getProd_name()+ " has been added to your Wishlist", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext.getApplicationContext(), browse_category.getProd_name() + " has been added to your Wishlist", Toast.LENGTH_LONG).show();
 
                 RequestQueue queue = Volley.newRequestQueue(mContext);
                 Map<String, String> params = new HashMap<String, String>();
 
 
-                if(db.getAllLogin().size()==1)
-                {
+                if (db.getAllLogin().size() == 1) {
                     params.put("customer_id", db.getAllLogin().get(0));
 
-                }
-                else if(db.getAllLogin().size()==0)
-                {
+                } else if (db.getAllLogin().size() == 0) {
                     params.put("customer_id", "0");
 
-                } else if(db.getAllLogin().size()==2)
-                {
+                } else if (db.getAllLogin().size() == 2) {
                     params.put("customer_id", db.getAllLogin().get(0));
 
                 }
 
                 params.put("product_id", String.valueOf((browse_category.getProduct_id())));
                 params.put("price_id", String.valueOf(recipe.getProduct_priceId()));
-                Log.e("json",params.toString());
-
-
+                Log.e("json", params.toString());
 
 
                 JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -369,27 +362,21 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                                     Log.e("wishlist", String.valueOf(object));
 
 
-                                    String status=object.getString("status");
-                                    if(status.equals("Success"))
-                                    {
-                                        String  data_id = object.getString("data");
-                                        Log.e("data_id",data_id);
+                                    String status = object.getString("status");
+                                    if (status.equals("Success")) {
+                                        String data_id = object.getString("data");
+                                        Log.e("data_id", data_id);
 
-                                        if(db.getAllLogin().size()==1)
-                                        {
+                                        if (db.getAllLogin().size() == 1) {
 
-                                        }
-                                        else if(db.getAllLogin().size()==0)
-                                        {
+                                        } else if (db.getAllLogin().size() == 0) {
                                             db.insert_wishlist(data_id);
                                             Log.e("fetch", String.valueOf(db.getAllWishlist()));
                                         }
 
-                                    }
-                                    else
-                                    {
-                                        String reason=object.getString("reason");
-                                        Toast.makeText(mContext, reason ,Toast.LENGTH_LONG).show();
+                                    } else {
+                                        String reason = object.getString("reason");
+                                        Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
 
                                     }
 
@@ -407,8 +394,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                         Log.e("verify_otp_error", "error" + volleyError);
                         if (volleyError instanceof TimeoutError) {
                             Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                        }
-                        else
+                        } else
                             Toast.makeText(mContext, "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
                         VolleyLog.d("responseError", "Error: " + volleyError);
@@ -447,27 +433,22 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                 RequestQueue queue = Volley.newRequestQueue(mContext);
                 Map<String, String> params = new HashMap<String, String>();
 
-                Log.e("customer_id ","0");
+                Log.e("customer_id ", "0");
                 Log.e("product_id ", String.valueOf((browse_category.getProduct_id())));
-                Log.e("quantity ","1");
+                Log.e("quantity ", "1");
                 Log.e("price_id ", String.valueOf(browse_category.getProduct_priceId()));
 
 
-                if(db.getAllLogin().size()==1)
-                {
+                if (db.getAllLogin().size() == 1) {
                     params.put("customer_id", db.getAllLogin().get(0));
 
-                }
-                else if(db.getAllLogin().size()==0)
-                {
+                } else if (db.getAllLogin().size() == 0) {
                     params.put("customer_id", "0");
 
                 }
                 params.put("product_id", String.valueOf((browse_category.getProduct_id())));
                 params.put("quantity", "1");
                 params.put("price_id", String.valueOf(browse_category.getProduct_priceId()));
-
-
 
 
                 JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -480,19 +461,15 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                                     Log.e("addtocart", String.valueOf(object));
 
 
-                                    String status=object.getString("status");
-                                    if(status.equals("Success"))
-                                    {
-                                        int  data_id = object.getInt("data");
-                                        String  data_id1 = object.getString("data");
+                                    String status = object.getString("status");
+                                    if (status.equals("Success")) {
+                                        int data_id = object.getInt("data");
+                                        String data_id1 = object.getString("data");
                                         Log.e("data_id", String.valueOf(data_id));
 
-                                        if(db.getAllLogin().size()==1)
-                                        {
+                                        if (db.getAllLogin().size() == 1) {
 
-                                        }
-                                        else if(db.getAllLogin().size()==0)
-                                        {
+                                        } else if (db.getAllLogin().size() == 0) {
                                             db.insert(data_id1);
                                             Log.e("fetch", String.valueOf(db.getAllData()));
                                         }
@@ -501,7 +478,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                                         AlertDialog.Builder builder =
                                                 new AlertDialog.Builder(mContext);
                                         builder.setTitle("Message");
-                                        builder.setMessage(browse_category.getProd_name().toUpperCase() +" has been added to Basket !");
+                                        builder.setMessage(browse_category.getProd_name().toUpperCase() + " has been added to Basket !");
 
                                         String positiveText = "Ok";
                                         builder.setPositiveButton(positiveText,
@@ -524,11 +501,9 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                                         AlertDialog dialog = builder.create();
                                         // display dialog
                                         dialog.show();
-                                    }
-                                    else
-                                    {
-                                        String reason=object.getString("reason");
-                                        Toast.makeText(mContext, reason ,Toast.LENGTH_LONG).show();
+                                    } else {
+                                        String reason = object.getString("reason");
+                                        Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
 
                                     }
 
@@ -546,8 +521,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
                         Log.e("verify_otp_error", "error" + volleyError);
                         if (volleyError instanceof TimeoutError) {
                             Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                        }
-                        else
+                        } else
                             Toast.makeText(mContext, "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
                         VolleyLog.d("responseError", "Error: " + volleyError);
@@ -618,11 +592,11 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
     }
 
 
-
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     @Override
     public int getItemCount() {
         return browse_categoryArrayList.size();
