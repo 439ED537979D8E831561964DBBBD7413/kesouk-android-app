@@ -123,7 +123,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     LinkedHashMap<String, List<Products>> listDataChild = new LinkedHashMap<String, List<Products>>();
     Products products = Products.getInstance();
     int sub_category_id, status, product_quantity_type;
-    String name, image_url, icon_url, product_name, product_image, product_price;
+    String name, image_url, icon_url, product_name, product_random_id, product_discount;
     private SliderLayout imageSlider;
     View.OnClickListener myOnClickListener;
     private List<Products> horizontal_category_list;
@@ -743,7 +743,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 singleItemModel.setName(name_category);
                                                 Log.e("name_category", name_category);
                                                 Log.e("image_url_category", image_url_category);
-                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1));
+                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1,product_random_id));
                                                 deals_list.add(singleItemModel);
 
                                                 Log.e("sections", "sectoims");
@@ -754,18 +754,79 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                             dm.setAllItemsInSection(singleItem);
 
                                         }
+                                        allSampleData.add(dm);
+                                        Log.e("list", String.valueOf(allSampleData));
+                                        if (categoryOrproduct == 1) {
+                                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData);
+
+                                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                                            my_recycler_view.setNestedScrollingEnabled(false);
+                                            my_recycler_view.setAdapter(adapter);
+                                        }
 
                                     }
-                                    allSampleData.add(dm);
-                                }
-                                Log.e("list", String.valueOf(allSampleData));
-                                if (categoryOrproduct == 1) {
-                                    RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData);
 
-                                    my_recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                                    my_recycler_view.setNestedScrollingEnabled(false);
-                                    my_recycler_view.setAdapter(adapter);
+
+                                    if (jsonObject.has("products")) {
+                                        categoryOrproduct = 2;
+
+                                        JSONArray product_subcategory = jsonObject.getJSONArray("products");
+                                        if (product_subcategory.length() != 0) {
+                                            Log.e("product_subcategory", String.valueOf(product_subcategory.length()));
+                                            for (int j = 0; j < product_subcategory.length(); j++) {
+                                                singleItemModel = new SingleItemModel();
+                                                JSONObject jsonObject1 = product_subcategory.getJSONObject(j);
+                                                name_category = jsonObject1.getString("product_name");
+                                                image_url_category = jsonObject1.getString("display_image");
+                                                int discount_price = jsonObject1.getInt("discount");
+                                                product_discount = jsonObject1.getString("actual_selling_amount");
+
+                                                int id = jsonObject1.getInt("id");
+                                               // int category = jsonObject1.getInt("category");
+                                                singleItemModel.setId(id);
+                                                singleItemModel.setDiscount_price(discount_price);
+
+
+                                                JSONArray product_price = jsonObject1.getJSONArray("product_price");
+                                                //list_browse_products.add(id);
+                                                if (product_price.length() != 0) {
+                                                    for (int k = 0; k < product_price.length(); k++) {
+                                                        Log.e("datacount", String.valueOf(product_price.length()));
+                                                        JSONObject jsonObject2 = product_price.getJSONObject(k);
+                                                        product_price_id = jsonObject2.getString("id");
+                                                        Log.e("product_price_id", product_price_id);
+
+
+                                                    }
+                                                    singleItemModel.setProduct_price_id(product_price_id);
+                                                    Log.e("setProduct_priceId", String.valueOf(singleItemModel.getProduct_price_id()));
+                                                }
+
+                                                SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2,product_random_id);
+                                                //singleItem.setCategory(category);
+                                                singleItemList.add(singleItem);
+
+
+                                                Log.e("sections", "sectoims");
+                                                dm.setAllItemsInSection(singleItemList);
+                                            }
+                                            allSampleData.add(dm);
+
+                                        }
+                                        if (categoryOrproduct == 2) {
+                                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData);
+
+                                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                                            my_recycler_view.setAdapter(adapter);
+                                        }
+                                    }
+
                                 }
+
+
+
+
 
                             }
                             getRecipeTypeCategory();
@@ -1084,64 +1145,54 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
             itemRowHolder.recycler_view_list.addOnItemTouchListener(new RecyclerItemListener(mContext, itemRowHolder.recycler_view_list,
                     new RecyclerItemListener.RecyclerTouchListener() {
                         public void onClickItem(View v, int position) {
-                            Log.i("Message", transaction);
-                            Home_Fragment.home_home_frag = 2;
-                            Home_Fragment.home_category_selected_name = singleSectionItems.get(position).getName();
-                            String name = singleSectionItems.get(position).getName();
-                            Category_Fragment newFragment = new Category_Fragment();
-                            Bundle args = new Bundle();
-                            args.putInt("position", position);
-                            args.putString("name", name);
-                            newFragment.setArguments(args);
-
-                            FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.rldContainer, newFragment);
-                            transaction.addToBackStack("Some String");
-                            transaction.commit();
 
 
                             if (transaction.equals("category")) {
+                                Log.i("Message", transaction);
                                 Home_Fragment.home_home_frag = 2;
-                                //  Customer_SignIn_Fragment.home_frag=2;
                                 Home_Fragment.home_category_selected_name = singleSectionItems.get(position).getName();
-                                // Customer_SignIn_Fragment.category_selected_name= singleSectionItems.get(position).getName();
+                                String name = singleSectionItems.get(position).getName();
+                                Category_Fragment newFragment = new Category_Fragment();
+                                Bundle args = new Bundle();
+                                args.putInt("position", position);
+                                args.putString("name", name);
+                                newFragment.setArguments(args);
 
-
-
-/*
-
-                            Browse_Category_Fragment newFragment = new Browse_Category_Fragment();
-                            Bundle args = new Bundle();
-                            args.putInt("position", position);
-                            newFragment.setArguments(args);
-
-                            FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container_fragment,newFragment);
-                            transaction.addToBackStack(null);
-                            transaction.commit();*/
+                                FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.rldContainer, newFragment);
+                                transaction.addToBackStack("Some String");
+                                transaction.commit();
 
                             } else if (transaction.equals("product")) {
 
-                         /*   Intent intent = new Intent(mContext, Product_Details_Activity.class);
-                            Home_Fragment.home_home_frag = 1;
-                            Customer_SignIn_Fragment.home_frag = 1;
-                            Bundle bundle = new Bundle();
-                            bundle.putString("name", singleSectionItems.get(position).getName());
-                            bundle.putInt("id", singleSectionItems.get(position).getId());
-                            bundle.putInt("category", singleSectionItems.get(position).getCategory());
-                            bundle.putInt("product_id", singleSectionItems.get(position).getId());
-                            bundle.putString("product_price_id", singleSectionItems.get(position).getProduct_price_id());
-                            bundle.putInt("discount_price", singleSectionItems.get(position).getDiscount_price());
-                            bundle.putInt("position_onclick", position);
+
+                         /*       Home_Fragment.home_home_frag = 1;
+                                Customer_Fragment.home_frag = 1;
+
+                                Product_Details_Activity newFragment = new Product_Details_Activity();
+
+                                Bundle bundle = new Bundle();
+                                bundle.putString("name", singleSectionItems.get(position).getName());
+                                bundle.putInt("id", singleSectionItems.get(position).getId());
+                                bundle.putInt("category", singleSectionItems.get(position).getCategory());
+                                bundle.putInt("product_id", singleSectionItems.get(position).getId());
+                                bundle.putString("product_price_id", singleSectionItems.get(position).getProduct_price_id());
+                                bundle.putInt("discount_price", singleSectionItems.get(position).getDiscount_price());
+                                bundle.putInt("position_onclick", position);
 
 
-                            Log.e("name",singleSectionItems.get(position).getName());
-                            Log.e("id", String.valueOf(singleSectionItems.get(position).getId()));
-                            Log.e("category", String.valueOf(singleSectionItems.get(position).getCategory()));
-                            Log.e("product_id", String.valueOf(singleSectionItems.get(position).getId()));
-                            Log.e("getDiscount_price", String.valueOf(singleSectionItems.get(position).getDiscount_price()));
-                            intent.putExtras(bundle);
-                            mContext.startActivity(intent);*/
+                                Log.e("name",singleSectionItems.get(position).getName());
+                                Log.e("id", String.valueOf(singleSectionItems.get(position).getId()));
+                                Log.e("category", String.valueOf(singleSectionItems.get(position).getCategory()));
+                                Log.e("product_id", String.valueOf(singleSectionItems.get(position).getId()));
+                                Log.e("getDiscount_price", String.valueOf(singleSectionItems.get(position).getDiscount_price()));
+                                newFragment.setArguments(bundle);
+
+                                FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.container_fragment, newFragment);
+                                transaction.addToBackStack("Some String");
+                                transaction.commit();*/
+
                             }
                         }
 

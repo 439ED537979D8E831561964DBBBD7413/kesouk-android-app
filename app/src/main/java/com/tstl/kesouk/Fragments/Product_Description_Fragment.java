@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -53,6 +54,7 @@ import com.tstl.kesouk.Model.Recipe;
 import com.tstl.kesouk.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -62,6 +64,8 @@ import java.util.Map;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
+import static com.tstl.kesouk.Fragments.Category_Fragment.wishCheckList;
+import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_onclick;
 
 /**
  * Created by user on 01-Feb-18.
@@ -74,21 +78,21 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
     //private Toolbar mToolbar;
     DB db;
     //ImageView img_back, settings, search;
-   // private TextView mToolbarTitle;
-    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products,other_price;
+    // private TextView mToolbarTitle;
+    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products, other_price;
     Button mAddtoCart;
     ImageView mExpress;
     ToggleButton mFav;
     SliderLayout slider;
     RatingBar ratingBar;
     RecyclerView similar_products_recylerview;
-    String product_random_id,is_express_delivery="";
+    String product_random_id, is_express_delivery = "";
     int category_id;
     private ArrayList<String> imageslidinglist = new ArrayList<>();
-    String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory,qty_name,search_word,amount,spinner_quantity,other_price_amount;
+    String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory, qty_name, search_word, amount, spinner_quantity, other_price_amount = "";
     TextSliderView textSliderView;
-    String product_price_id="",price_product_id="";
-    int product_id=1;
+    String product_price_id = "", price_product_id = "", addtocart, wishcheckId = "";
+    int product_id = 1, favorite;
 
 
     public ArrayList<Browse_Category> list_browse_products, list_similar_products;
@@ -146,26 +150,46 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         toolbar_title.setVisibility(View.VISIBLE);
         toolbar_title.setText("Product Info");
 
-        Bundle bundle1 = this.getArguments();
-        if (bundle1 != null) {
+        if (cust_onclick == 1) {
+            Bundle bundle1 = this.getArguments();
+            if (bundle1 != null) {
+                product_random_id = bundle1.getString("search_word");
 
-            category_id = bundle1.getInt("position");
-            product_random_id = bundle1.getString("product_random_id");
-            similar_category = bundle1.getString("category");
-            similar_subcategory = bundle1.getString("subcategory");
-            similar_id = bundle1.getString("id");
-            qty_name = bundle1.getString("qty_name");
-            amount = bundle1.getString("price");
-            other_price_amount = bundle1.getString("other_price");
-            spinner_quantity = bundle1.getString("qty");
-            search_word = bundle1.getString("search_word");
-            similar_products.setText("SIMILAR "+ search_word);
-            product_id = bundle1.getInt("product_id");
-            product_price_id = bundle1.getString("product_price_id");
-            price_product_id = bundle1.getString("price_product_id");
+            }
+        } else {
+            Bundle bundle1 = this.getArguments();
+            if (bundle1 != null) {
+
+                category_id = bundle1.getInt("position");
+                product_random_id = bundle1.getString("product_random_id");
+                similar_category = bundle1.getString("category");
+                similar_subcategory = bundle1.getString("subcategory");
+                similar_id = bundle1.getString("id");
+                qty_name = bundle1.getString("qty_name");
+                amount = bundle1.getString("price");
+                other_price_amount = bundle1.getString("other_price");
+                spinner_quantity = bundle1.getString("qty");
+                search_word = bundle1.getString("search_word");
+                similar_products.setText("SIMILAR " + search_word);
+                product_id = bundle1.getInt("product_id");
+                product_price_id = bundle1.getString("product_price_id");
+                price_product_id = bundle1.getString("price_product_id");
+                addtocart = bundle1.getString("addtocart");
+                favorite = bundle1.getInt("favorite");
+                mAddtoCart.setText(addtocart);
+
+                if (favorite == 0) {
+                    mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_deselect_fav));
+
+                } else {
+                    mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_select_fav));
+
+                }
 
 
+            }
         }
+
         getProductDescription();
         getSimilarProducts();
 
@@ -203,141 +227,144 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
             }
         });*/
+
+
         mAddtoCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestQueue queue = Volley.newRequestQueue(getActivity());
-                Map<String, String> params = new HashMap<String, String>();
-                Log.e("customer_id ","0");
-                Log.e("product_id ", String.valueOf(product_id));
-                Log.e("quantity ","1");
-                Log.e("price_id ", String.valueOf(price_product_id));
 
-                if(db.getAllLogin().size()==1)
-                {
-                    params.put("customer_id", db.getAllLogin().get(0));
+                if (mAddtoCart.getText().toString().equals("GO TO CART")) {
+                    Fragment selectedFragment = Basket_Fragment.newInstance();
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.rldContainer, selectedFragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    transaction.addToBackStack("Some String");
+                    transaction.commit();
+                } else {
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
+                    Log.e("customer_id ", "0");
+                    Log.e("product_id ", String.valueOf(product_id));
+                    Log.e("quantity ", "1");
+                    Log.e("price_id ", String.valueOf(price_product_id));
 
-                }
-                else if(db.getAllLogin().size()==0)
-                {
-                    params.put("customer_id", "0");
+                    if (db.getAllLogin().size() == 1) {
+                        params.put("customer_id", db.getAllLogin().get(0));
 
-                }
+                    } else if (db.getAllLogin().size() == 0) {
+                        params.put("customer_id", "0");
 
-                params.put("product_id", String.valueOf((product_id)));
-                params.put("quantity", "1");
-                params.put("price_id", String.valueOf(price_product_id));
+                    }
 
-
-
-
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                        Constants.ADDTOCART, new JSONObject(params),
-                        new Response.Listener<JSONObject>() {
-
-                            @Override
-                            public void onResponse(JSONObject object) {
-                                try {
-                                    Log.e("addtocart", String.valueOf(object));
+                    params.put("product_id", String.valueOf((product_price_id)));
+                    params.put("quantity", "1");
+                    params.put("price_id", String.valueOf(product_id));
+                    Log.e("json",params.toString());
 
 
-                                    String status=object.getString("status");
-                                    String  data_id = object.getString("data");
-                                    Log.e("data_id",data_id);
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.ADDTOCART, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
 
-                                    if(status.equals("Success"))
-                                    {
-                                        if(db.getAllLogin().size()==1)
-                                        {
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("addtocart", String.valueOf(object));
+
+
+                                        String status = object.getString("status");
+                                        String data_id = object.getString("data");
+                                        Log.e("data_id", data_id);
+
+                                        if (status.equals("Success")) {
+                                            if (db.getAllLogin().size() == 1) {
+                                                db.insert_addtocart_cust(data_id);
+
+                                            } else if (db.getAllLogin().size() == 0) {
+                                                db.insert(data_id);
+                                                Log.e("fetch", String.valueOf(db.getAllData()));
+                                            }
+
+
+                                            AlertDialog.Builder builder =
+                                                    new AlertDialog.Builder(getActivity());
+                                            builder.setTitle("Message");
+                                            builder.setMessage(product_name.toUpperCase() + " has been added to Basket !");
+
+                                            String positiveText = "Ok";
+                                            builder.setPositiveButton(positiveText,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+
+                                            String negativeText = getActivity().getString(android.R.string.cancel);
+                                            builder.setNegativeButton(negativeText,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // negative button logic
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+                                            AlertDialog dialog = builder.create();
+                                            // display dialog
+                                            dialog.show();
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 
                                         }
-                                        else if(db.getAllLogin().size()==0)
-                                        {
-                                            db.insert(data_id);
-                                            Log.e("fetch", String.valueOf(db.getAllData()));
-                                        }
 
 
-                                        AlertDialog.Builder builder =
-                                                new AlertDialog.Builder(getActivity());
-                                        builder.setTitle("Message");
-                                        builder.setMessage(product_name.toUpperCase() +" has been added to Basket !");
-
-                                        String positiveText = "Ok";
-                                        builder.setPositiveButton(positiveText,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                });
-
-                                        String negativeText = getActivity().getString(android.R.string.cancel);
-                                        builder.setNegativeButton(negativeText,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        // negative button logic
-                                                        dialog.dismiss();
-                                                    }
-                                                });
-                                        AlertDialog dialog = builder.create();
-                                        // display dialog
-                                        dialog.show();
-                                    }
-                                    else
-                                    {
-                                        String reason=object.getString("reason");
-                                        Toast.makeText(getActivity(), reason ,Toast.LENGTH_LONG).show();
-
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
 
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
                                 }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
 
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+                            VolleyLog.d("responseError", "Error: " + volleyError);
 
-                        Log.e("verify_otp_error", "error" + volleyError);
-                        if (volleyError instanceof TimeoutError) {
-                            Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
                         }
-                        else
-                            Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                        VolleyLog.d("responseError", "Error: " + volleyError);
-
-                    }
-                }) {
+                    }) {
 
 
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
 
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String, String> params = new HashMap<>();
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
 
 
-                        return params;
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> header = new HashMap<String, String>();
-                        header.put("Content-Type", "application/json; charset=utf-8");
-                        return header;
-                    }
-
-                };
-                jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                        Constants.MY_SOCKET_TIMEOUT_MS,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                queue.add(jsonObjReq);
+                }
 
 
             }
@@ -348,113 +375,192 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getActivity(),qty_name+ " has been added to your Wishlist", Toast.LENGTH_LONG).show();
 
-                RequestQueue queue = Volley.newRequestQueue(getActivity());
-                Map<String, String> params = new HashMap<String, String>();
+                if (favorite == 0) {
+                    // Toast.makeText(getActivity(), qty_name + " has been added to your Wishlist", Toast.LENGTH_LONG).show();
 
-
-
-                if(db.getAllLogin().size()==1)
-                {
-                    params.put("customer_id", db.getAllLogin().get(0));
-
-                }
-                else if(db.getAllLogin().size()==0)
-                {
-                    params.put("customer_id", "0");
-
-                }else if(db.getAllLogin().size()==2)
-                {
-                    params.put("customer_id", db.getAllLogin().get(1));
-
-                }
-
-                params.put("product_id", String.valueOf(product_id));
-                params.put("price_id",product_price_id );
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
 
 
+                    if (db.getAllLogin().size() == 1) {
+                        params.put("customer_id", db.getAllLogin().get(0));
+
+                    } else if (db.getAllLogin().size() == 0) {
+                        params.put("customer_id", "0");
+
+                    } else if (db.getAllLogin().size() == 2) {
+                        params.put("customer_id", db.getAllLogin().get(1));
+
+                    }
+
+                    params.put("product_id", String.valueOf(product_id));
+                    params.put("price_id", product_price_id);
+                    Log.e("json", params.toString());
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.ADDTOWISHLIST, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("wishlist", String.valueOf(object));
 
 
+                                        String status = object.getString("status");
+                                        if (status.equals("Success")) {
+                                            //  wishCheckList.set(category_id, "1");
+                                            Log.e("wishCheckList", wishCheckList.toString());
+                                            String data_id = object.getString("data");
+                                            Log.e("data_id", data_id);
+                                            mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_select_fav));
+                                            wishcheckId = data_id;
+                                            if (db.getAllLogin().size() == 1) {
+                                                db.insert_wishlist_cust(data_id);
 
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                        Constants.ADDTOWISHLIST, new JSONObject(params),
-                        new Response.Listener<JSONObject>() {
-
-                            @Override
-                            public void onResponse(JSONObject object) {
-                                try {
-                                    Log.e("wishlist", String.valueOf(object));
-
-
-                                    String status=object.getString("status");
-                                    if(status.equals("Success"))
-                                    {
-                                        String  data_id = object.getString("data");
-                                        Log.e("data_id",data_id);
-
-                                        if(db.getAllLogin().size()==1)
-                                        {
+                                            } else if (db.getAllLogin().size() == 0) {
+                                                db.insert_wishlist(data_id);
+                                                Log.e("fetch", String.valueOf(db.getAllWishlist()));
+                                            }
+                                            //getProductDescription();
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 
                                         }
-                                        else if(db.getAllLogin().size()==0)
-                                        {
-                                            db.insert_wishlist(data_id);
-                                            Log.e("fetch", String.valueOf(db.getAllWishlist()));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        String reason=object.getString("reason");
-                                        Toast.makeText(getActivity(), reason ,Toast.LENGTH_LONG).show();
 
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
 
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
                                 }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
 
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+                            VolleyLog.d("responseError", "Error: " + volleyError);
 
-                        Log.e("verify_otp_error", "error" + volleyError);
-                        if (volleyError instanceof TimeoutError) {
-                            Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
                         }
-                        else
-                            Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+                    }) {
 
-                        VolleyLog.d("responseError", "Error: " + volleyError);
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
 
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
+
+
+                } else {
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
+
+                    if (db.getAllLogin().size() == 1) {
+                        params.put("id", wishcheckId);
+                        Log.e("id", wishcheckId);
+                    } else if (db.getAllLogin().size() == 0) {
+                        params.put("id", wishcheckId);
+                        Log.e("id", wishcheckId);
                     }
-                }) {
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String, String> params = new HashMap<>();
 
 
-                        return params;
-                    }
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.REMOVE_WISHLIST, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> header = new HashMap<String, String>();
-                        header.put("Content-Type", "application/json; charset=utf-8");
-                        return header;
-                    }
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("remove_wishlist", String.valueOf(object));
 
-                };
-                jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                        Constants.MY_SOCKET_TIMEOUT_MS,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                queue.add(jsonObjReq);
 
+                                        String status = object.getString("status");
+                                        if (status.equals("Success")) {
+                                            mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_deselect_fav));
+                                            wishcheckId = "0";
+                                            // wishCheckList.set(category_id, "0");
+                                            if (db.getAllLogin().size() == 1) {
+                                                db.remove_wishlist_cust(db.getAllWishlist_cust().get(category_id));
+                                                Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist_cust()));
+                                            } else if (db.getAllLogin().size() == 0) {
+                                                db.remove_wishlist(db.getAllWishlist().get(category_id));
+                                                Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist()));
+                                            }
+                                            getWishList();
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+                                        }
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                            VolleyLog.d("responseError", "Error: " + volleyError);
+
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
+
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
+                }
 
             }
         });
@@ -541,25 +647,52 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                             file_maps1.put("1", R.drawable.logo);
 
                                         }
+                                        if (cust_onclick == 1) {
+                                            JSONArray product_price = jsonObject.getJSONArray("product_price");
+                                            //list_browse_products.add(id);
 
-                                        mProductName.setText(product_name+ " -"+spinner_quantity);
-                                        mAmount.setText(amount);
-                                        if(other_price_amount.equals("empty"))
-                                        {
-                                            other_price.setVisibility(View.GONE);
-                                        }
-                                        else
-                                        {
-                                            other_price.setVisibility(View.VISIBLE);
-                                            other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                            if (product_price.length() != 0) {
+                                                for (int j = 0; j < product_price.length(); j++) {
+                                                    Log.e("datacountPP", String.valueOf(product_price.length()));
+                                                    JSONObject jsonObject1 = product_price.getJSONObject(j);
+                                                    product_price_id = jsonObject1.getString("id");
+                                                    product_id = jsonObject1.getInt("product_id");
+                                                    String product_price_MarketPrice = jsonObject1.getString("price");
+                                                    String product_price_kesoukPrice = jsonObject1.getString("actual_selling_amount");
+                                                    String product_qty_name = jsonObject1.getString("quantity");
+                                                    String product_qty_name1 = jsonObject1.getString("quantity_name");
+                                                    other_price.setVisibility(View.VISIBLE);
+                                                    other_price.setText("SH " + product_price_MarketPrice);
+                                                    other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                                    mAmount.setText("SH " + product_price_kesoukPrice);
+                                                    mProductName.setText(product_name + " -" + product_qty_name + product_qty_name1);
+                                                }
+                                                browse_category.setProduct_priceId(product_price_id);
+                                                cust_onclick = 0;
 
-                                            other_price.setText(other_price_amount);
 
-                                        }
-                                        if (is_express_delivery .equals("1") ) {
-                                            mExpress.setVisibility(View.VISIBLE);
+                                            } else {
+
+                                            }
+
                                         } else {
-                                            mExpress.setVisibility(View.GONE);
+                                            mProductName.setText(product_name + " -" + spinner_quantity);
+                                            mAmount.setText(amount);
+                                            if (other_price_amount.equals("empty")) {
+                                                other_price.setVisibility(View.GONE);
+                                            } else {
+                                                other_price.setVisibility(View.VISIBLE);
+                                                other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                                                other_price.setText(other_price_amount);
+
+                                            }
+                                            if (is_express_delivery.equals("1")) {
+                                                mExpress.setVisibility(View.VISIBLE);
+                                            } else {
+                                                mExpress.setVisibility(View.GONE);
+
+                                            }
 
                                         }
 
@@ -623,12 +756,6 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
                                             }
                                         });
-
-
-                                        Log.e("product_name", browse_category.getProd_name());
-                                        Log.e("product_image", browse_category.getProduct_image());
-                                        Log.e("product_price", browse_category.getDukanPrice());
-                                        Log.e("id", String.valueOf(id));
 
                                     }
 
@@ -764,7 +891,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             Glide.with(mContext)
                     .load(Constants.SIMILAR_PRODUCTS_IMAGES + browse_category.getProduct_image())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                   .centerCrop()
+                    .centerCrop()
                     .error(R.drawable.logo)
                     .into(holder.itemImage);
 
@@ -888,15 +1015,14 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                         Log.e("similar_products", String.valueOf(list_similar_products));
                                     }
 
-                                     SimilarAdapter similarAdapter = new SimilarAdapter(getActivity(), list_similar_products);
+                                    SimilarAdapter similarAdapter = new SimilarAdapter(getActivity(), list_similar_products);
 
                                     // similarProducts_recylerview.setHasFixedSize(true);
                                     similar_products_recylerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                                     similar_products_recylerview.setAdapter(similarAdapter);
 
 
-                                }else
-                                {
+                                } else {
                                     similar_products.setVisibility(View.GONE);
                                 }
 
@@ -953,4 +1079,106 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
     }
 
+    public void getWishList() {
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        Map<String, String> params = new HashMap<String, String>();
+
+
+        JSONObject object = new JSONObject();
+        try {
+
+            if (db.getAllLogin().size() == 1) {
+                object.put("customer_id", db.getAllLogin().get(0));
+
+            } else if (db.getAllLogin().size() == 0) {
+                object.put("customer_id", "0");
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+
+            if (db.getAllLogin().size() == 1) {
+                object.put("localwish", "null");
+
+            } else if (db.getAllLogin().size() == 0) {
+                object.put("localwish", new JSONArray(db.getAllWishlist()));
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.e("json", object.toString());
+
+        JsonObjectRequest jsonObjReq = null;
+        try {
+            jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    Constants.GETWISHLIST, new JSONObject(object.toString()),
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            try {
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+
+                    Log.e("verify_otp_error", "error" + volleyError);
+                    if (volleyError instanceof TimeoutError) {
+                        Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                    VolleyLog.d("responseError", "Error: " + volleyError);
+
+                }
+            }) {
+
+              /*  @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=UTF-8";
+
+
+                }*/
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<>();
+
+
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> header = new HashMap<String, String>();
+                    header.put("Content-Type", "application/json; charset=utf-8");
+                    return header;
+                }
+
+            };
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                Constants.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonObjReq);
+
+
+    }
 }

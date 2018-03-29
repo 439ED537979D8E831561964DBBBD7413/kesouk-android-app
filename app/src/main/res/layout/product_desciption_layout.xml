@@ -112,7 +112,7 @@
 
                 <Button
                     android:id="@+id/add_to_cart"
-                    android:layout_width="85dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/padding_5"
@@ -126,6 +126,7 @@
                     android:textStyle="normal"
                     android:layout_below="@+id/slider"
                     android:layout_marginBottom="@dimen/padding_5"
+                    android:layout_marginTop="@dimen/padding_2"
 
                     />
 

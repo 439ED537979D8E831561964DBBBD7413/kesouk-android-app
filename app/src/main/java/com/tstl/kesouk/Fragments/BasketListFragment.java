@@ -1,53 +1,23 @@
 package com.tstl.kesouk.Fragments;
 
-import android.content.Context;
-import android.graphics.Paint;
-import android.support.v4.app.Fragment;
-
 /**
- * Created by user on 18-Jan-18.
+ * Created by user on 28-Mar-18.
  */
 
-
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -56,7 +26,6 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -67,55 +36,33 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.tstl.kesouk.Activity.CheckoutScreen1;
 import com.tstl.kesouk.Activity.Login_Activity;
-import com.tstl.kesouk.Activity.Login_Register_Activity;
-import com.tstl.kesouk.Activity.MyAddress_Activity;
-import com.tstl.kesouk.Activity.Navigation_Tab_Activity;
-import com.tstl.kesouk.Activity.Profile_Activity;
 import com.tstl.kesouk.Activity.TabMain_Activity;
 import com.tstl.kesouk.Adapter.ExpandableListAdapter1;
-import com.tstl.kesouk.Adapter.Recipes_Adapter;
-import com.tstl.kesouk.Adapter.SectionListDataAdapter;
 import com.tstl.kesouk.DB.DB;
 import com.tstl.kesouk.Model.Browse_Category;
 import com.tstl.kesouk.Model.Cart;
 import com.tstl.kesouk.Model.Constants;
-import com.tstl.kesouk.Model.Home_Products;
-import com.tstl.kesouk.Model.IOnBackPressed;
 import com.tstl.kesouk.Model.Products;
-import com.tstl.kesouk.Model.Recipe;
-import com.tstl.kesouk.Model.RecyclerItemListener;
 import com.tstl.kesouk.Model.SectionDataModel;
 import com.tstl.kesouk.Model.SingleItemModel;
-import com.tstl.kesouk.Activity.SplashActivity;
 import com.tstl.kesouk.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
 
-public class Basket_Fragment extends Fragment {
+
+public class BasketListFragment extends Fragment {
+
     private Typeface mDynoRegular;
     String name_category, image_url_category, transaction_with, section_name;
     public String caption_letter;
@@ -125,7 +72,7 @@ public class Basket_Fragment extends Fragment {
     ArrayList<Products> listHeader = new ArrayList<>();
     ArrayList<SectionDataModel> section_name_list = new ArrayList<>();
     ArrayList<SingleItemModel> singleItem = null;
-    private TextView mToolbarTitle, item_count,noItemsbasket;
+    private TextView mToolbarTitle, item_count, noItemsbasket;
     RecyclerView my_recycler_view;
     RecyclerView recyler_main;
     int cart_id1, quantity;
@@ -146,24 +93,22 @@ public class Basket_Fragment extends Fragment {
     public static ArrayList<Cart> cartArrayList = null;
     public static ArrayList<Browse_Category> cart_priceList = null;
     String product_name, product_image, product_price_amount, product_selling_price, product_price_id, discount, category, priceKesouk, priceSelling;
-    int price, cart_quantity, category_int, productIdPrice, priceQuantity,discount1;
+    int price, cart_quantity, category_int, productIdPrice, priceQuantity;
     JSONObject jsonObject2;
-    float a = 0; int cartcount;
-    public static int basket_logout_backpress=0,basket_home_signin_backpress=0;
-    public static ArrayList<String> cart_id_arrayList = null;
-    public static ArrayList<String> cart_productName_arrayList = null;
-    String market_price;
-    public static ArrayList<String> cartIdDataList = null;
+    float a = 0;
+    int cartcount;
+    public static int basket_logout_backpress = 0, basket_home_signin_backpress = 0;
 
 
-
-    public static Basket_Fragment newInstance() {
-        Basket_Fragment fragment = new Basket_Fragment();
+    public static BasketListFragment newInstance() {
+        BasketListFragment fragment = new BasketListFragment();
         return fragment;
     }
-    public Basket_Fragment() {
+
+    public BasketListFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -225,8 +170,8 @@ public class Basket_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (db.getAllLogin().size() == 1) {
-                      Intent intent=new Intent(getActivity(), CheckoutScreen1.class);
-                      getActivity().startActivity(intent);
+                    Intent intent = new Intent(getActivity(), CheckoutScreen1.class);
+                    getActivity().startActivity(intent);
                 } else if (db.getAllLogin().size() == 0) {
                     cart_backpress = 1;
                     Intent intent = new Intent(getActivity(), Login_Activity.class);
@@ -315,7 +260,7 @@ public class Basket_Fragment extends Fragment {
                                 String status = object.getString("status");
                                 if (status.equals("Success")) {
                                     JSONObject JObject = new JSONObject(String.valueOf(object));
-                                     cartcount = JObject.getInt("cartcount");
+                                    int cartcount = JObject.getInt("cartcount");
                                     item_count.setText(cartcount + " Items - SH 40");
                                     if (cartcount == 0) {
                                         recyler_main.setVisibility(View.GONE);
@@ -327,31 +272,56 @@ public class Basket_Fragment extends Fragment {
                                     } else {
                                         JSONArray DataArray = JObject.getJSONArray("data");
                                         Log.e("data", "data");
-
+                                        SectionDataModel dm = null;
+                                        ArrayList<SingleItemModel> singleItemList = null;
+                                        SingleItemModel singleItemModel = null;
                                         if (DataArray.length() != 0) {
-                                            cartArrayList = new ArrayList<>();
-                                            cart_id_arrayList = new ArrayList<>();
-                                            cart_productName_arrayList = new ArrayList<>();
-                                            for (int i = 0; i < DataArray.length(); i++) {
+                                            allSampleData = new ArrayList<SectionDataModel>();
+                                            singleItem = new ArrayList<SingleItemModel>();
 
+
+                                            cartArrayList = new ArrayList<>();
+                                            for (int i = 0; i < DataArray.length(); i++) {
+                                                dm = new SectionDataModel();
+                                                singleItemModel = new SingleItemModel();
                                                 Log.e("datacount", String.valueOf(DataArray.length()));
                                                 JSONObject jsonObject = DataArray.getJSONObject(i);
                                                 product_name = jsonObject.getString("product_name");
                                                 product_image = jsonObject.getString("display_image");
-                                                discount1 = jsonObject.getInt("discount");
-                                                String id = jsonObject.getString("id");
+                                                discount = jsonObject.getString("discount");
+                                                int discount1 = jsonObject.getInt("discount");
+                                                category = jsonObject.getString("category");
+                                                // category_int = jsonObject.getInt("category");
+                                                categoryListString.add(category_int);
+                                                categoryListId.add(category_int);
+                                                int id = jsonObject.getInt("id");
+                                                singleItemModel.setId(id);
+                                                singleItemModel.setName(product_name);
+                                                if (jsonObject.has("category")) {
+                                                    String nullcheck = jsonObject.getString("category");
+                                                    if (nullcheck.equals("null")) {
 
-                                                cart_id_arrayList.add(id);
-                                                cart_productName_arrayList.add(product_name);
+                                                    } else {
+                                                        category_int = jsonObject.getInt("category");
+                                                        // browse_category.setCategoryId(category_id);
+                                                    }
+                                                }
+
                                                 cart = new Cart();
                                                 cart.setProduct_name(product_name);
 
                                                 cart.setImage_url(product_image);
                                                 cart.setDiscount(discount1);
+//todo edit
+                                               /* JSONObject product_category = jsonObject.getJSONObject("product_category");
+                                                section_name = product_category.getString("name");
+                                                categoryList.add(section_name);
+*/
+
+                                                dm.setHeaderTitle("Vegetables");
 
 
                                                 JSONArray product_price = jsonObject.getJSONArray("product_price");
-                                                //list_browse_products.add(id);
                                                 if (product_price.length() != 0) {
                                                     for (int j = 0; j < product_price.length(); j++) {
                                                         Log.e("datacount", String.valueOf(product_price.length()));
@@ -359,14 +329,12 @@ public class Basket_Fragment extends Fragment {
                                                         product_price_amount = jsonObject1.getString("price");
                                                         product_selling_price = jsonObject1.getString("actual_selling_amount");
                                                         price = jsonObject1.getInt("actual_selling_amount");
-                                                       // market_price = jsonObject1.getString("market_price");
 
 
                                                     }
                                                     cart.setDukanPrice(product_selling_price);
                                                     cart.setActual_amount(price);
                                                     cart.setMarketPrice(product_price_amount);
-                                                    //cart.setOtherMarketPrice(market_price);
                                                 }
 
 
@@ -374,8 +342,30 @@ public class Basket_Fragment extends Fragment {
                                                 Log.e("product_image", cart.getImage_url());
                                                 Log.e("product_price", cart.getDukanPrice());
                                                 cartArrayList.add(cart);
-                                            }
 
+                                            }
+//todo edit
+/*
+
+                                            Set<String> set = new LinkedHashSet<>(categoryList);
+                                            set.addAll(categoryList);
+                                            categoryList.clear();
+                                            categoryList.addAll(set);
+                                            Log.e("categylist", categoryList.toString());
+
+
+                                            Set<Integer> set1 = new LinkedHashSet<>(categoryListString);
+                                            set1.addAll(categoryListString);
+                                            categoryListString.clear();
+                                            categoryListString.addAll(set1);
+
+
+                                            ArrayList<Integer> arrayList = new ArrayList<Integer>(new LinkedHashSet<Integer>(categoryListString));
+                                            Log.e("arralist", String.valueOf(arrayList));
+
+
+                                            Log.e("categylist", categoryListString.toString());
+*/
 
                                         } else {
                                             Toast.makeText(getActivity(), "No items in your cart", Toast.LENGTH_LONG).show();
@@ -385,7 +375,6 @@ public class Basket_Fragment extends Fragment {
                                         JSONArray CartArray = JObject.getJSONArray("cart");
                                         if (CartArray.length() != 0) {
                                             cart_priceList = new ArrayList<>();
-                                            cartIdDataList = new ArrayList<>();
                                             for (int i = 0; i < CartArray.length(); i++) {
 
                                                 Log.e("datacount", String.valueOf(CartArray.length()));
@@ -393,31 +382,22 @@ public class Basket_Fragment extends Fragment {
                                                 product_price_id = jsonObject.getString("price_id");
                                                 cart_quantity = jsonObject.getInt("quantity");
                                                 int id = jsonObject.getInt("id");
-                                                String id1 = jsonObject.getString("id");
                                                 browse_category = new Browse_Category();
                                                 browse_category.setCart_price_id(product_price_id);
                                                 browse_category.setCart_quantity(cart_quantity);
                                                 browse_category.setData_id(id);
-                                                cartIdDataList.add(id1);
 
 
                                                 Log.e("product_price_cart", browse_category.getCart_price_id());
                                                 Log.e("cart_quantity", String.valueOf(browse_category.getCart_quantity()));
                                                 cart_priceList.add(browse_category);
                                             }
-                                           /* double subTotal = 0;
-                                            for(Browse_Category p : cart_priceList) {
-                                                int quantity = browse_category.getCart_quantity(p);
-                                                subTotal += p.getDukanPrice() * quantity;
-                                            }*/
-
-                                            //grossAmount.setText("Subtotal: $" + subTotal);
-
 
                                         } else {
                                             Toast.makeText(getActivity(), "No items in your cart", Toast.LENGTH_LONG).show();
 
                                         }
+
 
                                     }
 
@@ -428,22 +408,15 @@ public class Basket_Fragment extends Fragment {
 
                                 }
                                 //todo edit
-                               // getCart1();
-
-                               Cart_Adapter adapter = new Cart_Adapter(getActivity(), cartArrayList, cart_priceList);
-
-                                recyler_main.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
-                                recyler_main.setAdapter(adapter);
-
-                              /*  RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData, categoryList);
+                                //   getCart1();
+                                RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData, categoryList);
 
                                 recyler_main.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                                 recyler_main.setNestedScrollingEnabled(false);
                                 recyler_main.setAdapter(adapter);
 
                                 Log.e("list", String.valueOf(allSampleData));
-*/
+
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -465,7 +438,6 @@ public class Basket_Fragment extends Fragment {
 
                 }
             }) {
-
 
 
                 @Override
@@ -636,11 +608,11 @@ public class Basket_Fragment extends Fragment {
                                             Log.e("catlsitid", categoryListString.toString());
 
 
-                                           // for (int k = 0; k < categoryListString.size(); k++) {
+                                            for (int k = 0; k < categoryListString.size(); k++) {
+                                                dm = new SectionDataModel();
+                                                singleItem = new ArrayList<SingleItemModel>();
 
                                                 for (int j = 0; j < DataArray1.length(); j++) {
-                                                    dm = new SectionDataModel();
-                                                    singleItem = new ArrayList<SingleItemModel>();
 
 
                                                     singleItemModel = new SingleItemModel();
@@ -650,27 +622,9 @@ public class Basket_Fragment extends Fragment {
                                                     product_image = jsonObject.getString("display_image");
                                                     discount = jsonObject.getString("discount");
                                                     int discount1 = jsonObject.getInt("discount");
-                                                   // category_int = jsonObject.getInt("category");
-                                                    //category = jsonObject.getString("category");
+                                                    category_int = jsonObject.getInt("category");
+                                                    category = jsonObject.getString("category");
                                                     int id = jsonObject.getInt("id");
-
-
-
-                                                    if(jsonObject.has("category"))
-                                                    {
-                                                        String nullcheck=jsonObject.getString("category");
-                                                        if(nullcheck.equals("null"))
-                                                        {
-
-                                                        }
-                                                        else
-                                                        {
-                                                            category_int = jsonObject.getInt("category");
-                                                            category = jsonObject.getString("category");
-                                                            // browse_category.setCategoryId(category_id);
-                                                        }
-                                                    }
-
 
 
                                                     JSONArray product_price = jsonObject.getJSONArray("product_price");
@@ -693,7 +647,7 @@ public class Basket_Fragment extends Fragment {
                                                     }
 
 
-                                                  //  if (category_int == (categoryListString.get(k))) {
+                                                    if (category_int == (categoryListString.get(k))) {
                                                         product_name = jsonObject.getString("product_name");
                                                         categoryListProductName.add(product_name);
 
@@ -759,16 +713,16 @@ public class Basket_Fragment extends Fragment {
                                                         }
 
                                                         singleItem.add(new SingleItemModel(product_name, product_image, discount1, null, cart_id1, quantity, priceKesouk, priceSelling, cartIdList));
-                                                    dm.setAllItemsInSection(singleItem);
-                                                    allSampleData.add(dm);
 
-                                                  //  }
+                                                    }
                                                 }
 
 
+                                                dm.setAllItemsInSection(singleItem);
+                                                allSampleData.add(dm);
 
 
-                                           // }
+                                            }
 
                                             Log.e("cagyprname", categoryListProductName.toString());
                                             Log.e("cartIdList", cartIdList.toString());
@@ -794,14 +748,14 @@ public class Basket_Fragment extends Fragment {
                                 recycler_view.setAdapter(adapter);*/
 
                                 Log.e("list", String.valueOf(allSampleData));
-                                a=0;
+                                a = 0;
                                 for (int i = 0; i < subTotalList.size(); i++) {
 
                                     a = a + subTotalList.get(i);
 
                                 }
                                 Log.e("subtotal", String.valueOf(a));
-                                item_count.setText(cartcount + " Items - SH "+a);
+                                item_count.setText(cartcount + " Items - SH " + a);
 
 
                                 RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData, categoryList);
@@ -890,12 +844,13 @@ public class Basket_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(final ItemRowHolder itemRowHolder, int i) {
 
-           // final String sectionName = categoryList.get(i);
+
+
+            final String sectionName = categoryList.get(i);
 
             final ArrayList<SingleItemModel> singleSectionItems = dataList.get(i).getAllItemsInSection();
 
-            itemRowHolder.itemTitle.setText("");
-            itemRowHolder.itemTitle.setVisibility(View.GONE);
+            itemRowHolder.itemTitle.setText(sectionName);
 
             SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, "new", singleSectionItems);
 
@@ -971,15 +926,13 @@ public class Basket_Fragment extends Fragment {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.logo)
                     .into(holder.itemImage);
-/*
 
             String dukan_price = singleItem.getKesoukPrice();
             float price = Float.parseFloat(dukan_price);
             float Dukanprice = price * singleItem.getQuantity();
             holder.kesoukPrice.setText("SH " + String.valueOf(Dukanprice));
-*/
 
-           /* String off_price = singleItem.getSellingPrice();
+            String off_price = singleItem.getSellingPrice();
             float price1 = Float.parseFloat(off_price);
             float Offer_price = price1 * singleItem.getQuantity();
             holder.otherMarketprice.setText("SH " + String.valueOf(Offer_price));
@@ -987,7 +940,7 @@ public class Basket_Fragment extends Fragment {
             holder.otherMarketprice.setPaintFlags(holder.otherMarketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.otherMarketprice.setVisibility(View.VISIBLE);
 
-*/
+
             holder.quantity_count.setText(String.valueOf(singleItem.getQuantity()));
 
 
@@ -1058,7 +1011,7 @@ public class Basket_Fragment extends Fragment {
                                             String status = object.getString("status");
                                             if (status.equals("Success")) {
                                                 // getUpdatedCart();
-                                                getUpdatedCart();
+                                                getCart();
                                             } else {
                                                 String reason = object.getString("reason");
                                                 Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
@@ -1156,7 +1109,7 @@ public class Basket_Fragment extends Fragment {
                                             String status = object.getString("status");
                                             if (status.equals("Success")) {
                                                 //getUpdatedCart();
-                                                getUpdatedCart();
+                                                getCart();
                                             } else {
                                                 String reason = object.getString("reason");
                                                 Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
@@ -1288,7 +1241,7 @@ public class Basket_Fragment extends Fragment {
                                             String status = object.getString("status");
                                             if (status.equals("Success")) {
                                                 //getUpdatedCart();
-                                                getUpdatedCart();
+                                                getCart();
                                             } else {
                                                 String reason = object.getString("reason");
                                                 Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
@@ -1388,7 +1341,8 @@ public class Basket_Fragment extends Fragment {
                                             Toast.makeText(mContext, "Item removed successfully !", Toast.LENGTH_LONG).show();
 
                                             //getUpdatedCart();
-                                            getUpdatedCart();
+                                            getCart();
+
                                         } else {
                                             String reason = object.getString("reason");
                                             Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
@@ -1487,864 +1441,6 @@ public class Basket_Fragment extends Fragment {
     }
 
 
-
-
-
-
-    public class Cart_Adapter extends RecyclerView.Adapter<Cart_Adapter.MyViewHolder> {
-
-        private Context mContext;
-        public ArrayList<Cart> cartArrayList;
-        public ArrayList<Browse_Category> cartPriceList;
-        private Typeface mDynoRegular;
-        public int position_product_onclick;
-        public int plus_quantity = 1;
-        public int minus_quantity = 1;
-        public ArrayList<Float> subtotal_list = new ArrayList<>();
-
-
-        public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            protected TextView tvTitle, tag_price, otherMarketprice, kesoukPrice, quantity_count;
-
-            protected ImageView itemImage, mRemove, mPlusImage, mMinusImage;
-            private Typeface mDynoRegular;
-
-            public MyViewHolder(View view) {
-                super(view);
-
-                this.tvTitle = (TextView) view.findViewById(R.id.tv_prodname);
-                this.quantity_count = (TextView) view.findViewById(R.id.count_cart);
-                this.itemImage = (ImageView) view.findViewById(R.id.imageView);
-                this.mPlusImage = (ImageView) view.findViewById(R.id.plusimg);
-                this.mMinusImage = (ImageView) view.findViewById(R.id.minusimg);
-                this.mRemove = (ImageView) view.findViewById(R.id.remove);
-                this.tag_price = (TextView) view.findViewById(R.id.tag_price);
-                this.otherMarketprice = (TextView) view.findViewById(R.id.off_amount);
-                this.kesoukPrice = (TextView) view.findViewById(R.id.price);
-
-                mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
-                tvTitle.setTypeface(mDynoRegular);
-                tag_price.setTypeface(mDynoRegular);
-                otherMarketprice.setTypeface(mDynoRegular);
-                kesoukPrice.setTypeface(mDynoRegular);
-                quantity_count.setTypeface(mDynoRegular);
-
-            }
-
-            @Override
-            public void onClick(View v) {
-
-            }
-        }
-
-
-        // Spinner element
-
-
-        public Cart_Adapter(Context mContext, ArrayList<Cart> cartArrayList, ArrayList<Browse_Category> cartPriceList) {
-            this.mContext = mContext;
-            this.cartArrayList = cartArrayList;
-            this.cartPriceList = cartPriceList;
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.basket_list_item, parent, false);
-
-            return new MyViewHolder(itemView);
-        }
-
-        public void refreshEvents(ArrayList<Cart> carts, ArrayList<Browse_Category> browse_categories) {
-            this.cartArrayList.clear();
-            this.cartArrayList.addAll(carts);
-            this.cartPriceList.clear();
-            this.cartPriceList.addAll(browse_categories);
-            notifyDataSetChanged();
-        }
-
-        public void removeItem(int position) {
-            cartPriceList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartPriceList.size());
-        }
-
-
-        @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position) {
-            Cart cart = cartArrayList.get(position);
-            final Browse_Category browse_category = cart_priceList.get(position);
-
-
-
-            String dukan_price = cart.getDukanPrice();
-            float price = Float.parseFloat(dukan_price);
-            float Dukanprice = price * browse_category.getCart_quantity();
-            holder.kesoukPrice.setText("$ " + String.valueOf(Dukanprice));
-
-            String off_price = cart.getMarketPrice();
-            float price1 = Float.parseFloat(off_price);
-            float Offer_price = price1 * browse_category.getCart_quantity();
-            holder.otherMarketprice.setText("$ " + String.valueOf(Offer_price));
-
-            holder.otherMarketprice.setPaintFlags(holder.otherMarketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-
-            int convertedVal = cart.getDiscount();
-            if (convertedVal > 0)
-            {
-                holder.tag_price.setText("Savings " + cart.getDiscount() + "%");
-            }
-            else
-            {
-                holder.tag_price.setVisibility(View.GONE);
-            }
-
-            /*
-
-            holder.dukan_price.setText("$ " + cart.getDukanPrice());
-            holder.discount_price.setText("$ " + cart.getMarketPrice());
-            holder.discount_price.setPaintFlags(holder.discount_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);*/
-
-            holder.quantity_count.setText(String.valueOf(browse_category.getCart_quantity()));
-
-            holder.tvTitle.setText(cart.getProduct_name());
-
-            // loading album cover using Glide library
-            Glide.with(mContext).load(Constants.PRODUCT_IMAGES + cart.getImage_url()).placeholder(R.drawable.logo).into(holder.itemImage);
-
-
-            final int quantity = browse_category.getCart_quantity();
-            holder.quantity_count.setText(String.valueOf(quantity));
-
-
-            holder.mRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RequestQueue queue = Volley.newRequestQueue(mContext);
-                    Map<String, String> params = new HashMap<String, String>();
-                    Browse_Category browse_category = cart_priceList.get(position);
-                    if (db.getAllLogin().size() == 1) {
-                        params.put("id", String.valueOf(browse_category.getData_id()));
-                        Log.e("id", String.valueOf(browse_category.getData_id()));
-                    } else if (db.getAllLogin().size() == 0) {
-                        params.put("id", String.valueOf(db.getAllData().get(position)));
-                        Log.e("id", String.valueOf(db.getAllData().get(position)));
-                    }
-
-
-                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                            Constants.REMOVE_CART, new JSONObject(params),
-                            new Response.Listener<JSONObject>() {
-
-                                @Override
-                                public void onResponse(JSONObject object) {
-                                    try {
-                                        Log.e("remove_cart", String.valueOf(object));
-
-
-                                        String status = object.getString("status");
-                                        if (status.equals("Success")) {
-
-
-                                            if (db.getAllLogin().size() == 1) {
-
-                                            } else if (db.getAllLogin().size() == 0) {
-                                                db.remove(db.getAllData().get(position));
-                                                Log.e("fetch_removed_data", String.valueOf(db.getAllData()));
-                                            }
-
-                                            Toast.makeText(mContext, "Item removed successfully !", Toast.LENGTH_LONG).show();
-
-                                            getUpdatedCart();
-                                            // getCart();
-                                           /* cartPriceList.remove(position);
-                                            notifyItemRemoved(position);
-                                            notifyItemRangeChanged(position, cartPriceList.size());
-                                            notifyDataSetChanged();*/
-                                        } else {
-                                            String reason = object.getString("reason");
-                                            Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
-
-                                        }
-
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-
-                            Log.e("verify_otp_error", "error" + volleyError);
-                            if (volleyError instanceof TimeoutError) {
-                                Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                            } else
-                                Toast.makeText(mContext.getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                            VolleyLog.d("responseError", "Error: " + volleyError);
-
-                        }
-                    }) {
-
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            HashMap<String, String> params = new HashMap<>();
-
-
-                            return params;
-                        }
-
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> header = new HashMap<String, String>();
-                            header.put("Content-Type", "application/json; charset=utf-8");
-                            return header;
-                        }
-
-                    };
-                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                            Constants.MY_SOCKET_TIMEOUT_MS,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                    queue.add(jsonObjReq);
-
-                }
-            });
-            holder.mPlusImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Cart cart = cartArrayList.get(position);
-                    Browse_Category browse_category = cart_priceList.get(position);
-
-                    float subtotal = 0;
-                    for (Browse_Category category : cart_priceList) {
-
-                        int quantity = category.getCart_quantity();
-                        subtotal += cart.getActual_amount() * quantity;
-
-                    }
-                    // grossAmount.setText(String.valueOf(subtotal));
-
-
-                    int quantity = browse_category.getCart_quantity();
-                    holder.quantity_count.setText(String.valueOf(quantity));
-
-
-                    if (quantity <= 1) {
-                        //  holder.img_minus.setVisibility(View.GONE);
-                        browse_category.setQuantitycart_text(2);
-                        int quan = 2;
-                        holder.quantity_count.setText(String.valueOf(quan));
-
-                        String dukan_price = cart.getDukanPrice();
-                        float price = Float.parseFloat(dukan_price);
-                        float Dukanprice = price * quan;
-                        holder.kesoukPrice.setText("$ " + String.valueOf(Dukanprice));
-                        subtotal_list.add(Dukanprice);
-
-                        String off_price = cart.getMarketPrice();
-                        float price1 = Float.parseFloat(off_price);
-                        float Offer_price = price1 * quan;
-                        holder.otherMarketprice.setText("$ " + String.valueOf(Offer_price));
-
-                        holder.otherMarketprice.setPaintFlags(holder.otherMarketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        browse_category = cartPriceList.set(position, browse_category);
-                        updateList1();
-
-                        RequestQueue queue = Volley.newRequestQueue(mContext);
-                        Map<String, String> params = new HashMap<String, String>();
-
-
-                        params.put("id", String.valueOf(browse_category.getData_id()));
-                        params.put("quantity", String.valueOf(quan));
-                        Log.e("id", String.valueOf(browse_category.getData_id()));
-                        Log.e("quantity", String.valueOf(quan));
-
-                        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                Constants.CART_QUANTITY, new JSONObject(params),
-                                new Response.Listener<JSONObject>() {
-
-                                    @Override
-                                    public void onResponse(JSONObject object) {
-                                        try {
-                                            Log.e("change_cart", String.valueOf(object));
-
-
-                                            String status = object.getString("status");
-                                            if (status.equals("Success")) {
-                                                getUpdatedCart();
-                                                // getCart();
-                                            } else {
-                                                String reason = object.getString("reason");
-                                                Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
-
-                                            }
-
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-
-                                Log.e("verify_otp_error", "error" + volleyError);
-                                if (volleyError instanceof TimeoutError) {
-                                    Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                                } else
-                                    Toast.makeText(mContext.getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                                VolleyLog.d("responseError", "Error: " + volleyError);
-
-                            }
-                        }) {
-
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                HashMap<String, String> params = new HashMap<>();
-
-
-                                return params;
-                            }
-
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> header = new HashMap<String, String>();
-                                header.put("Content-Type", "application/json; charset=utf-8");
-                                return header;
-                            }
-
-                        };
-                        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                                Constants.MY_SOCKET_TIMEOUT_MS,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        queue.add(jsonObjReq);
-
-
-                    } else {
-                        holder.mMinusImage.setVisibility(View.VISIBLE);
-                        int quan = quantity + 1;
-                        browse_category.setQuantitycart_text(quan);
-                        holder.quantity_count.setText(String.valueOf(quan));
-
-                        String dukan_price = cart.getDukanPrice();
-                        float price = Float.parseFloat(dukan_price);
-                        float Dukanprice = price * quan;
-                        holder.kesoukPrice.setText("$ " + String.valueOf(Dukanprice));
-                        subtotal_list.add(Dukanprice);
-
-                        String off_price = cart.getMarketPrice();
-                        float price1 = Float.parseFloat(off_price);
-                        float Offer_price = price1 * quan;
-                        holder.otherMarketprice.setText("$ " + String.valueOf(Offer_price));
-
-                        holder.otherMarketprice.setPaintFlags(holder.otherMarketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                        browse_category = cartPriceList.set(position, browse_category);
-                        updateList1();
-
-                        RequestQueue queue = Volley.newRequestQueue(mContext);
-                        Map<String, String> params = new HashMap<String, String>();
-
-
-                        params.put("id", String.valueOf(browse_category.getData_id()));
-                        params.put("quantity", String.valueOf(quan));
-                        Log.e("id", String.valueOf(browse_category.getData_id()));
-                        Log.e("quantity", String.valueOf(quan));
-
-                        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                Constants.CART_QUANTITY, new JSONObject(params),
-                                new Response.Listener<JSONObject>() {
-
-                                    @Override
-                                    public void onResponse(JSONObject object) {
-                                        try {
-                                            Log.e("change_cart", String.valueOf(object));
-
-
-                                            String status = object.getString("status");
-                                            if (status.equals("Success")) {
-                                                getUpdatedCart();
-                                                // getCart();
-                                            } else {
-                                                String reason = object.getString("reason");
-                                                Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
-
-                                            }
-
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-
-                                Log.e("verify_otp_error", "error" + volleyError);
-                                if (volleyError instanceof TimeoutError) {
-                                    Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                                } else
-                                    Toast.makeText(mContext.getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                                VolleyLog.d("responseError", "Error: " + volleyError);
-
-                            }
-                        }) {
-
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                HashMap<String, String> params = new HashMap<>();
-
-
-                                return params;
-                            }
-
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> header = new HashMap<String, String>();
-                                header.put("Content-Type", "application/json; charset=utf-8");
-                                return header;
-                            }
-
-                        };
-                        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                                Constants.MY_SOCKET_TIMEOUT_MS,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        queue.add(jsonObjReq);
-
-
-                    }
-                    Log.e("plus", "clicked");
-
-
-                }
-            });
-
-
-            holder.mMinusImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (quantity <= 1) {
-
-                    } else {
-
-                        Browse_Category browse_category = cart_priceList.get(position);
-                        Cart cart = cartArrayList.get(position);
-
-                        float subtotal = 0;
-                        for (Browse_Category category : cart_priceList) {
-
-                            int quantity = category.getCart_quantity();
-                            subtotal += cart.getActual_amount() * quantity;
-
-                        }
-                        // grossAmount.setText(String.valueOf(subtotal));
-
-
-                        Log.e("minus", "clicked");
-
-
-                        int quantity = browse_category.getCart_quantity();
-                        holder.quantity_count.setText(String.valueOf(browse_category.getCart_quantity()));
-
-                        if (quantity <= 1) {
-                            //holder.img_minus.setVisibility(View.GONE);
-
-                        } else {
-                            holder.mMinusImage.setVisibility(View.VISIBLE);
-                            int quan = quantity - 1;
-                            browse_category.setQuantitycart_text(quan);
-                            holder.quantity_count.setText(String.valueOf(quan));
-
-                            String dukan_price = cart.getDukanPrice();
-                            float price = Float.parseFloat(dukan_price);
-                            float Dukanprice = price * quan;
-                            holder.kesoukPrice.setText("$ " + String.valueOf(Dukanprice));
-                            subtotal_list.add(Dukanprice);
-
-                            String off_price = cart.getMarketPrice();
-                            float price1 = Float.parseFloat(off_price);
-                            float Offer_price = price1 * quan;
-                            holder.otherMarketprice.setText("$ " + String.valueOf(Offer_price));
-
-                            holder.otherMarketprice.setPaintFlags(holder.otherMarketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        }
-
-
-                        RequestQueue queue = Volley.newRequestQueue(mContext);
-                        Map<String, String> params = new HashMap<String, String>();
-
-
-                        params.put("id", String.valueOf(browse_category.getData_id()));
-                        params.put("quantity", String.valueOf(browse_category.getQuantitycart_text()));
-                        Log.e("id", String.valueOf(browse_category.getData_id()));
-                        Log.e("quantity", String.valueOf(browse_category.getQuantitycart_text()));
-
-                        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                Constants.CART_QUANTITY, new JSONObject(params),
-                                new Response.Listener<JSONObject>() {
-
-                                    @Override
-                                    public void onResponse(JSONObject object) {
-                                        try {
-                                            Log.e("minus_cart", String.valueOf(object));
-
-
-                                            String status = object.getString("status");
-                                            if (status.equals("Success")) {
-                                                getUpdatedCart();
-                                                // getCart();
-                                            } else {
-                                                String reason = object.getString("reason");
-                                                Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
-
-                                            }
-
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-
-                                Log.e("verify_otp_error", "error" + volleyError);
-                                if (volleyError instanceof TimeoutError) {
-                                    Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                                } else
-                                    Toast.makeText(mContext.getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                                VolleyLog.d("responseError", "Error: " + volleyError);
-
-                            }
-                        }) {
-
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                HashMap<String, String> params = new HashMap<>();
-
-
-                                return params;
-                            }
-
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> header = new HashMap<String, String>();
-                                header.put("Content-Type", "application/json; charset=utf-8");
-                                return header;
-                            }
-
-                        };
-                        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                                Constants.MY_SOCKET_TIMEOUT_MS,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        queue.add(jsonObjReq);
-
-                    }
-
-                }
-            });
-
-            setSubTotal();
-        }
-
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getItemCount() {
-            return cartArrayList.size();
-        }
-
-        private void updateList1() {
-            notifyDataSetChanged();
-        }
-    }
-
-    private void setSubTotal() {
-        float subtotal = 0;
-        for (int i = 0; i < cartArrayList.size(); i++) {
-            Browse_Category browse_category = cart_priceList.get(i);
-            Cart cart = cartArrayList.get(i);
-
-            int quantity = browse_category.getCart_quantity();
-            subtotal += Float.valueOf(cart.getDukanPrice()) * quantity;
-        }
-        BigDecimal result = round(subtotal, 2);
-
-        item_count.setText("Items - " + cartcount + " SH " + String.valueOf(result));
-
-    }
-
-    public static BigDecimal round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd;
-    }
-
-
-
-
-    public void getUpdatedCart() {
-
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        Map<String, String> params = new HashMap<String, String>();
-
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("65");
-        list.add("66");
-
-        JSONObject object = new JSONObject();
-        try {
-
-
-            if (db.getAllLogin().size() == 1) {
-                object.put("customer_id", db.getAllLogin().get(0));
-
-            } else if (db.getAllLogin().size() == 0) {
-                object.put("customer_id", "0");
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (db.getAllLogin().size() == 1) {
-                object.put("localcart", "null");
-            } else if (db.getAllLogin().size() == 0) {
-                object.put("localcart", new JSONArray(db.getAllData()));
-
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-
-        Log.e("json", object.toString());
-
-        JsonObjectRequest jsonObjReq = null;
-        try {
-            jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                    Constants.GET_CART, new JSONObject(object.toString()),
-                    new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject object) {
-                            try {
-                                Log.e("addtocart", String.valueOf(object));
-                                Cart cart = null;
-
-                                String status = object.getString("status");
-                                if (status.equals("Success")) {
-                                    JSONObject JObject = new JSONObject(String.valueOf(object));
-                                    int cartcount = JObject.getInt("cartcount");
-                                    if (cartcount == 0) {
-                                        recyler_main.setVisibility(View.GONE);
-                                        mCheckout.setVisibility(View.GONE);
-                                        items_layout.setVisibility(View.GONE);
-                                        noCart.setVisibility(View.VISIBLE);
-                                    } else {
-                                        JSONArray DataArray = JObject.getJSONArray("data");
-                                        Log.e("data", "data");
-
-                                        if (DataArray.length() != 0) {
-                                            cartArrayList = new ArrayList<>();
-                                            for (int i = 0; i < DataArray.length(); i++) {
-
-                                                Log.e("datacount", String.valueOf(DataArray.length()));
-                                                JSONObject jsonObject = DataArray.getJSONObject(i);
-                                                product_name = jsonObject.getString("product_name");
-                                                product_image = jsonObject.getString("display_image");
-                                                discount1 = jsonObject.getInt("discount");
-
-
-                                                cart = new Cart();
-                                                cart.setProduct_name(product_name);
-
-                                                cart.setImage_url(product_image);
-                                                cart.setDiscount(discount1);
-
-
-                                                JSONArray product_price = jsonObject.getJSONArray("product_price");
-                                                //list_browse_products.add(id);
-                                                if (product_price.length() != 0) {
-                                                    for (int j = 0; j < product_price.length(); j++) {
-                                                        Log.e("datacount", String.valueOf(product_price.length()));
-                                                        JSONObject jsonObject1 = product_price.getJSONObject(j);
-                                                        product_price_amount = jsonObject1.getString("price");
-                                                        product_selling_price = jsonObject1.getString("actual_selling_amount");
-                                                        price = jsonObject1.getInt("actual_selling_amount");
-                                                       // market_price = jsonObject1.getString("market_price");
-
-
-                                                    }
-                                                    cart.setDukanPrice(product_selling_price);
-                                                    cart.setActual_amount(price);
-                                                    cart.setMarketPrice(product_price_amount);
-                                                  //  cart.setOtherMarketPrice(market_price);
-                                                }
-
-
-                                                Log.e("product_name", cart.getProduct_name());
-                                                Log.e("product_image", cart.getImage_url());
-                                                Log.e("product_price", cart.getDukanPrice());
-                                                cartArrayList.add(cart);
-                                            }
-
-
-                                        } else {
-                                            Toast.makeText(getActivity(), "No items in your cart", Toast.LENGTH_LONG).show();
-                                        }
-
-                                        Browse_Category browse_category = null;
-                                        JSONArray CartArray = JObject.getJSONArray("cart");
-                                        if (CartArray.length() != 0) {
-                                            cart_priceList = new ArrayList<>();
-                                            for (int i = 0; i < CartArray.length(); i++) {
-
-                                                Log.e("datacount", String.valueOf(CartArray.length()));
-                                                JSONObject jsonObject = CartArray.getJSONObject(i);
-                                                product_price_id = jsonObject.getString("price_id");
-                                                cart_quantity = jsonObject.getInt("quantity");
-                                                int id = jsonObject.getInt("id");
-                                                browse_category = new Browse_Category();
-                                                browse_category.setCart_price_id(product_price_id);
-                                                browse_category.setCart_quantity(cart_quantity);
-                                                browse_category.setData_id(id);
-
-
-                                                Log.e("product_price_cart", browse_category.getCart_price_id());
-                                                Log.e("cart_quantity", String.valueOf(browse_category.getCart_quantity()));
-                                                cart_priceList.add(browse_category);
-                                            }
-                                           /* double subTotal = 0;
-                                            for(Browse_Category p : cart_priceList) {
-                                                int quantity = browse_category.getCart_quantity(p);
-                                                subTotal += p.getDukanPrice() * quantity;
-                                            }*/
-
-                                            //grossAmount.setText("Subtotal: $" + subTotal);
-
-
-                                        } else {
-                                            Toast.makeText(getActivity(), "No items in your cart", Toast.LENGTH_LONG).show();
-
-                                        }
-
-
-                                    }
-
-
-                                } else {
-                                    String reason = object.getString("reason");
-                                    Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
-
-                                }
-                            /*float subtotal=0;
-
-                            grossAmount.setText( String.valueOf(subtotal));*/
-
-
-                              /*  adapter.refreshEvents(cartArrayList,cart_priceList);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        adapter.refreshEvents(cartArrayList,cart_priceList);
-                                    }
-                                });*/
-
-
-                                Cart_Adapter adapter = new Cart_Adapter(getActivity(), cartArrayList, cart_priceList);
-
-                                final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                                //linearLayoutManager.setReverseLayout(true);
-                                linearLayoutManager.setStackFromEnd(true);
-                                recyler_main.setLayoutManager(linearLayoutManager);
-
-                                recyler_main.setAdapter(adapter);
-                                //recycler_view.smoothScrollToPosition(recycler_view.getAdapter().getItemCount());
-
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-
-                    Log.e("verify_otp_error", "error" + volleyError);
-                    if (volleyError instanceof TimeoutError) {
-                        Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                    VolleyLog.d("responseError", "Error: " + volleyError);
-
-                }
-            }) {
-
-              /*  @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=UTF-8";
-
-
-                }*/
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> params = new HashMap<>();
-
-
-                    return params;
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> header = new HashMap<String, String>();
-                    header.put("Content-Type", "application/json; charset=utf-8");
-                    return header;
-                }
-
-            };
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                Constants.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(jsonObjReq);
-
-
-    }
-
 }
+
 

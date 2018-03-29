@@ -724,8 +724,36 @@ public class Favorites_Fragment extends Fragment {
                                             product_quantity_type = jsonObject.getInt("quantity_type");
                                             is_express_delivery = jsonObject.getString("is_express_delivery");
                                             int id = jsonObject.getInt("id");
-                                            int category_id = jsonObject.getInt("category");
-                                            product_selling_price = jsonObject.getString("actual_selling_amount");
+                                            browse_category = new Browse_Category();
+
+                                            if(jsonObject.has("category"))
+                                            {
+                                                String nullcheck=jsonObject.getString("category");
+                                                if(nullcheck.equals("null"))
+                                                {
+
+                                                }
+                                                else
+                                                {
+                                                    int category_id = jsonObject.getInt("category");
+                                                    browse_category.setCategoryId(category_id);
+                                                }
+                                            }
+
+                                            if(jsonObject.has("actual_selling_amount"))
+                                            {
+                                                String nullcheck=jsonObject.getString("actual_selling_amount");
+                                                if(nullcheck.equals("null"))
+                                                {
+
+                                                }
+                                                else {
+                                                    product_selling_price = jsonObject.getString("actual_selling_amount");
+                                                    browse_category.setProduct_selling_price(product_selling_price);
+
+                                                }
+                                            }
+
                                             product_discount = jsonObject.getInt("discount");
                                             float rating = jsonObject.getInt("rating_star");
                                             similar_category = jsonObject.getString("category");
@@ -733,15 +761,13 @@ public class Favorites_Fragment extends Fragment {
                                             similar_id = jsonObject.getString("id");
 
 
-                                            browse_category = new Browse_Category();
                                             browse_category.setProd_name(product_name);
                                             browse_category.setDukanPrice(product_price);
                                             browse_category.setProduct_image(product_image);
                                             browse_category.setProduct_random_id(product_random_id);
                                             browse_category.setProduct_quantity_type(product_quantity_type);
                                             browse_category.setProduct_id(id);
-                                            browse_category.setCategoryId(category_id);
-                                            browse_category.setProduct_selling_price(product_selling_price);
+
                                             browse_category.setProduct_discount(product_discount);
                                             browse_category.setRatingStar(rating);
                                             browse_category.setIs_express_delivery(is_express_delivery);
@@ -953,6 +979,7 @@ public class Favorites_Fragment extends Fragment {
                 mAddtoCArt = (Button) view.findViewById(R.id.add_to_cart);
                 ratingBar = (RatingBar) view.findViewById(R.id.ratingbar_Small);
 
+                mAddtoCArt.setVisibility(View.GONE);
                 marketprice.setPaintFlags(marketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 db = new DB(mContext);
                 title.setTypeface(mDynoRegular);

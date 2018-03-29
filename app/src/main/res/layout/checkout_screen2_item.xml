@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/order_value_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="dsfd"
+            android:background="@drawable/rectangle_borde"
+            android:textSize="@dimen/padding_15"
+            android:paddingTop="@dimen/padding_5"
+            android:paddingBottom="@dimen/padding_5"/>
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="dsfd"
+            android:background="@drawable/rectangle_borde"
+            android:textSize="@dimen/padding_15"
+            android:paddingTop="@dimen/padding_5"
+            android:paddingBottom="@dimen/padding_5"/>
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="dsfd"
+            android:background="@drawable/rectangle_borde"
+            android:textSize="@dimen/padding_15"
+            android:paddingTop="@dimen/padding_5"
+            android:paddingBottom="@dimen/padding_5"/>
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="dsfd"
+            android:background="@drawable/rectangle_borde"
+            android:textSize="@dimen/padding_15"
+            android:paddingTop="@dimen/padding_5"
+            android:paddingBottom="@dimen/padding_5"/>
+    </LinearLayout>
+</RelativeLayout>

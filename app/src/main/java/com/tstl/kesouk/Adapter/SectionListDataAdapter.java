@@ -47,33 +47,32 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         SingleItemModel singleItem = itemsList.get(i);
 
         holder.tvTitle.setText(singleItem.getName());
-        Glide.with(mContext)
+     /*   Glide.with(mContext)
+                .load(Constants.CATEGORY_IMAGES + singleItem.getUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .error(R.drawable.logo)
+                .into(holder.itemImage);
+*/
+        if(transaction.equals("category"))
+        {
+          Glide.with(mContext)
                 .load(Constants.CATEGORY_IMAGES + singleItem.getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .error(R.drawable.logo)
                 .into(holder.itemImage);
 
-
-       /* if(transaction.equals("category"))
-        {
-           Glide.with(mContext)
-                    .load(Constants.CATEGORY_IMAGES + singleItem.getUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .centerCrop()
-                    .error(R.drawable.logo)
-                    .into(holder.itemImage);
-
         }else if(transaction.equals("product")) {
            Glide.with(mContext)
-                    .load(Constants.CATEGORY_IMAGES + singleItem.getUrl())
+                    .load(Constants.PRODUCT_IMAGES + singleItem.getUrl())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .error(R.drawable.logo)
                     .into(holder.itemImage);
 
         }
-*/
+
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -539,7 +539,7 @@ public class Add_Address_Activity extends AppCompatActivity {
                                         if(areaArray.length()!=0)
                                         {
                                             areaArrayList=new ArrayList<>();
-                                            for(int j=0;j<DataArray.length();j++) {
+                                            for(int j=0;j<areaArray.length();j++) {
                                                 JSONObject jsonObject1 = areaArray.getJSONObject(j);
                                                 String area_name =jsonObject1.getString("area_name");
                                                 areaArrayList.add(area_name);
@@ -667,7 +667,7 @@ public class Add_Address_Activity extends AppCompatActivity {
                                             if(areaArray.length()!=0)
                                             {
                                                 areaArrayList=new ArrayList<>();
-                                                for(int j=0;j<DataArray.length();j++) {
+                                                for(int j=0;j<areaArray.length();j++) {
                                                     JSONObject jsonObject1 = areaArray.getJSONObject(j);
                                                     String area_name =jsonObject1.getString("area_name");
                                                     areaArrayList.add(area_name);

@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tstl.kesouk.Activity.CheckoutScreen1.CheckoutAddress;
+
 
 /**
  * Created by user on 30-Nov-17.
@@ -553,6 +555,7 @@ public class MyAddress_Activity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             edit_img_click = 1;
+                            CheckoutAddress=0;
                             Intent intent = new Intent(MyAddress_Activity.this, Add_Update_Address_Activity.class);
                             Bundle mBundle = new Bundle();
                             mBundle.putString("one", login_credentials.getNickName());

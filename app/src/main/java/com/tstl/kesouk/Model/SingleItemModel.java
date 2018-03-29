@@ -94,6 +94,98 @@ public class SingleItemModel {
 
     private String kesoukPrice;
     private String sellingPrice;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductActualamount() {
+        return productActualamount;
+    }
+
+    public void setProductActualamount(String productActualamount) {
+        this.productActualamount = productActualamount;
+    }
+
+    public String getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(String productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public String getProductQtyName() {
+        return productQtyName;
+    }
+
+    public void setProductQtyName(String productQtyName) {
+        this.productQtyName = productQtyName;
+    }
+
+    public int getDisPrice() {
+        return disPrice;
+    }
+
+    public void setDisPrice(int disPrice) {
+        this.disPrice = disPrice;
+    }
+
+    private String productId;
+    private String productPrice;
+    private String productActualamount;
+    private String productQuantity;
+    private String productQtyName;
+
+    public String getProductRandomId() {
+        return productRandomId;
+    }
+
+    public void setProductRandomId(String productRandomId) {
+        this.productRandomId = productRandomId;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public String getProductSubcategory() {
+        return productSubcategory;
+    }
+
+    public void setProductSubcategory(String productSubcategory) {
+        this.productSubcategory = productSubcategory;
+    }
+
+    private String productRandomId;
+    private String productCategory;
+    private String productSubcategory;
+
+    public String getProduct_random_id() {
+        return product_random_id;
+    }
+
+    public void setProduct_random_id(String product_random_id) {
+        this.product_random_id = product_random_id;
+    }
+
+    private String product_random_id;
     private int disPrice;
 
     public static SingleItemModel getInstance() {
@@ -104,12 +196,13 @@ public class SingleItemModel {
     public SingleItemModel() {
     }
 
-    public SingleItemModel(String name, String url,int id,String product_price_id,int CatgOrProd) {
+    public SingleItemModel(String name, String url,int id,String product_price_id,int CatgOrProd,String product_random_id) {
         this.name = name;
         this.url = url;
         this.id=id;
         this.CatgOrProd=CatgOrProd;
         this.product_price_id=product_price_id;
+        this.product_random_id=product_random_id;
     }
     public SingleItemModel(String name, String url, int id, String product_price_id, int CatgOrProd,int quantity, String kesoukPrice,String sellingPrice,ArrayList<Integer> arrayList) {
         this.name = name;

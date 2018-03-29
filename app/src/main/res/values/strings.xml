@@ -65,6 +65,7 @@
     arrive in a separate delivery as per the time slot chosen by you.</string>
     <string name="note">Note :</string>
     <string name="expressdel">Express Delivery</string>
+    <string name="stnddel">Standard Delivery</string>
     <string name="getexprr">Get Express Delivery</string>
     <string name="expressdelnote">Get 10 out of 11 items within two hours for a charge of kshs 12</string>
 

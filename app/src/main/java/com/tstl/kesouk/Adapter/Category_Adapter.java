@@ -192,6 +192,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.MyVi
             holder.spinner.setSelection(selectedItem.get(position));
         }
 
+
         holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> arg0, View arg1, int i, long arg3) {

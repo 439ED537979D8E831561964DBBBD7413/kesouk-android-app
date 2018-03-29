@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/category_list_toolbar" />
+    android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,6 +92,7 @@
         android:layout_below="@+id/number_layout"
         android:layout_marginLeft="@dimen/padding_5"
         android:layout_marginRight="@dimen/padding_5"
+        android:id="@+id/express_layout"
         >
         <TextView
             android:layout_width="match_parent"
@@ -117,7 +116,7 @@
 
             />
         <Button
-            android:id="@+id/checkout"
+            android:id="@+id/getexprssdel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -135,19 +134,126 @@
 
             />
     </RelativeLayout>
-    <Button
-        android:id="@+id/continue_btn"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/padding_10"
-        android:text="@string/continue_text"
-        android:textSize="@dimen/padding_15"
-        android:textColor="@color/white"
-        android:background="@drawable/green_solid"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/padding_10"
-        android:layout_alignParentBottom="true"
+        android:text="@string/stnddel"
+        android:layout_marginLeft="@dimen/padding_5"
+        android:textStyle="bold"
+        android:id="@+id/standarddel_title"
+        android:layout_marginTop="@dimen/padding_5"
+        android:layout_below="@+id/express_layout"
+        android:textSize="@dimen/padding_15"/>
+    <LinearLayout
+        android:id="@+id/control_btns_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_10"
+        android:layout_marginRight="@dimen/padding_10"
+        android:layout_marginTop="@dimen/padding_5"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_5"
+        android:paddingTop="@dimen/padding_5"
+        android:layout_below="@+id/standarddel_title"
+        android:weightSum="3">
 
-        />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/previous"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="Previous"
+            android:textSize="@dimen/padding_15" />
+
+        <TextView
+            android:id="@+id/calender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="Calendar"
+            android:background="@color/gray"
+            android:textSize="@dimen/padding_15" />
+
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="Next"
+            android:textSize="@dimen/padding_15" />
+
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/day_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_5"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingTop="@dimen/padding_5"
+            android:layout_below="@+id/control_btns_layout"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/mrng"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/rectangle_border_solid"
+                android:text="Morning"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"
+                android:textSize="@dimen/padding_15" />
+
+            <TextView
+                android:id="@+id/tomm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="Tomorrow"
+                android:background="@drawable/rectangle_border_solid"
+                android:textSize="@dimen/padding_15"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"/>
+
+            <TextView
+                android:id="@+id/sat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="Saturday"
+                android:background="@drawable/rectangle_border_solid"
+                android:textSize="@dimen/padding_15"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"/>
+
+            <TextView
+                android:id="@+id/sun"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/rectangle_border_solid"
+                android:textColor="@color/white"
+                android:text="Sunday"
+                android:textSize="@dimen/padding_15"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>

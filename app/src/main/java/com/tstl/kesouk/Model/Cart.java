@@ -84,7 +84,15 @@ public class Cart implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    public String getOtherMarketPrice() {
+        return otherMarketPrice;
+    }
 
+    public void setOtherMarketPrice(String otherMarketPrice) {
+        this.otherMarketPrice = otherMarketPrice;
+    }
+
+    String otherMarketPrice;
     String product_name;
     String image_url;
     String marketPrice;
@@ -101,15 +109,15 @@ public class Cart implements Serializable {
 
     int quantity_type;
 
-    public String getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 
-    String discount;
+    int discount;
 
     public String getEmailId() {
         return emailId;

@@ -107,7 +107,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private RelativeLayout fragmentLayout;
    // EditText search;
-    String name_category, image_url_category, transaction_with, section_name, product_price_id;
+    String name_category, image_url_category, transaction_with, section_name, product_price_id,category,sub_category,product_price_MarketPrice;
     public static int listview_onclick, cust_home_frag = 0;
     public String caption_letter;
     ExpandableListAdapter1 mMenuAdapter;
@@ -118,13 +118,14 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
     ArrayList<SectionDataModel> section_name_list = new ArrayList<>();
     Dialog dialog;
     TextView mShare, mCancel, mFacebook, mTwitter, mInstagram, mSnapchat, mFoodrecipes_sections;
+    public static int cust_onclick=0;
 
 
     public static ArrayList<Products> listChild;
     LinkedHashMap<String, List<Products>> listDataChild = new LinkedHashMap<String, List<Products>>();
     Products products = Products.getInstance();
     int sub_category_id, status, product_quantity_type;
-    String name, image_url, icon_url, product_name, product_image, product_price;
+    String name, image_url, icon_url, product_name, product_image, product_discount,product_random_id,product_price_kesoukPrice;
     private SliderLayout imageSlider;
     View.OnClickListener myOnClickListener;
     private List<Products> horizontal_category_list;
@@ -144,6 +145,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
     int ad_status = 0, id;
     DB db;
     public static int logout_backpress=0;
+    String product_qty,product_qty_name,productRandomId="";
 
 
   //  private TextView mToolbarTitle,toolbar_title;
@@ -783,7 +785,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                                 singleItemModel.setName(name_category);
                                                 Log.e("name_category", name_category);
                                                 Log.e("image_url_category", image_url_category);
-                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1));
+                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1,productRandomId));
                                                 deals_list.add(singleItemModel);
 
                                                 Log.e("sections", "sectoims");
@@ -794,19 +796,94 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                             dm.setAllItemsInSection(singleItem);
 
                                         }
+                                        allSampleData.add(dm);
 
+                                        Log.e("list", String.valueOf(allSampleData));
+                                        if (categoryOrproduct == 1) {
+                                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData);
+
+                                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                                            my_recycler_view.setNestedScrollingEnabled(false);
+                                            my_recycler_view.setAdapter(adapter);
+                                        }
                                     }
-                                    allSampleData.add(dm);
-                                }
-                                Log.e("list", String.valueOf(allSampleData));
-                                if (categoryOrproduct == 1) {
-                                    RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData);
 
-                                    my_recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                                    my_recycler_view.setNestedScrollingEnabled(false);
-                                    my_recycler_view.setAdapter(adapter);
-                                }
 
+                                    if (jsonObject.has("products")) {
+                                        categoryOrproduct = 2;
+
+                                        JSONArray product_subcategory = jsonObject.getJSONArray("products");
+                                        if (product_subcategory.length() != 0) {
+                                            Log.e("product_subcategory", String.valueOf(product_subcategory.length()));
+                                            for (int j = 0; j < product_subcategory.length(); j++) {
+                                                singleItemModel = new SingleItemModel();
+                                                JSONObject jsonObject1 = product_subcategory.getJSONObject(j);
+                                                name_category = jsonObject1.getString("product_name");
+                                                image_url_category = jsonObject1.getString("display_image");
+                                                int discount_price = jsonObject1.getInt("discount");
+                                                product_discount = jsonObject1.getString("actual_selling_amount");
+
+
+                                                product_random_id = jsonObject1.getString("product_random_id");
+                                                category = jsonObject1.getString("category");
+                                                sub_category = jsonObject1.getString("sub_category");
+
+
+
+
+                                                int id = jsonObject1.getInt("id");
+                                                // int category = jsonObject1.getInt("category");
+                                                singleItemModel.setId(id);
+                                                singleItemModel.setDiscount_price(discount_price);
+                                                singleItemModel.setProductRandomId(product_random_id);
+                                                singleItemModel.setProductCategory(category);
+                                                singleItemModel.setProductSubcategory(sub_category);
+
+
+                                                JSONArray product_price = jsonObject1.getJSONArray("product_price");
+                                                //list_browse_products.add(id);
+                                                if (product_price.length() != 0) {
+                                                    for (int k = 0; k < product_price.length(); k++) {
+                                                        Log.e("datacount", String.valueOf(product_price.length()));
+                                                        JSONObject jsonObject2 = product_price.getJSONObject(k);
+                                                        product_price_id = jsonObject2.getString("id");
+                                                        Log.e("product_price_id", product_price_id);
+
+                                                        product_price_id = jsonObject2.getString("id");
+                                                        product_price_MarketPrice = jsonObject2.getString("price");
+                                                        product_price_kesoukPrice = jsonObject2.getString("actual_selling_amount");
+                                                        product_qty = jsonObject2.getString("quantity");
+                                                        product_qty_name = jsonObject2.getString("quantity_name");
+
+                                                    }
+                                                    singleItemModel.setProductId(product_price_id);
+                                                    singleItemModel.setProductPrice(product_price_MarketPrice);
+                                                    singleItemModel.setProductActualamount(product_price_kesoukPrice);
+                                                    singleItemModel.setProductQuantity(product_qty);
+                                                    singleItemModel.setProductQtyName(product_qty_name);
+
+                                                }
+
+                                                SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2,product_random_id);
+                                                //singleItem.setCategory(category);
+                                                singleItemList.add(singleItem);
+
+
+                                                Log.e("sections", "sectoims");
+                                                dm.setAllItemsInSection(singleItemList);
+                                            }
+                                            allSampleData.add(dm);
+
+                                        }
+                                        if (categoryOrproduct == 2) {
+                                            RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData);
+
+                                            my_recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                                            my_recycler_view.setAdapter(adapter);
+                                        }
+                                    }
+                            }
                             }
                             getRecipeTypeCategory();
                         } catch (Exception e) {
@@ -1124,64 +1201,60 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
             itemRowHolder.recycler_view_list.addOnItemTouchListener(new RecyclerItemListener(mContext, itemRowHolder.recycler_view_list,
                     new RecyclerItemListener.RecyclerTouchListener() {
                         public void onClickItem(View v, int position) {
-                            Log.i("Message", transaction);
-                            Customer_Fragment.cust_home_frag = 2;
-                            Customer_Fragment.cust_category_selected_name = singleSectionItems.get(position).getName();
-                            String name = singleSectionItems.get(position).getName();
-                            Category_Fragment newFragment = new Category_Fragment();
-                            Bundle args = new Bundle();
-                            args.putInt("position", position);
-                            args.putString("name", name);
-                            newFragment.setArguments(args);
 
-                            FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.rldContainer, newFragment);
-                            transaction.addToBackStack("Some String");
-                            transaction.commit();
 
 
                             if (transaction.equals("category")) {
+                                Log.i("Message", transaction);
                                 Customer_Fragment.cust_home_frag = 2;
-                                //  Customer_SignIn_Fragment.home_frag=2;
                                 Customer_Fragment.cust_category_selected_name = singleSectionItems.get(position).getName();
-                                // Customer_SignIn_Fragment.category_selected_name= singleSectionItems.get(position).getName();
+                                String name = singleSectionItems.get(position).getName();
+                                Category_Fragment newFragment = new Category_Fragment();
+                                Bundle args = new Bundle();
+                                args.putInt("position", position);
+                                args.putString("name", name);
+                                newFragment.setArguments(args);
 
-
-
-/*
-
-                            Browse_Category_Fragment newFragment = new Browse_Category_Fragment();
-                            Bundle args = new Bundle();
-                            args.putInt("position", position);
-                            newFragment.setArguments(args);
-
-                            FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container_fragment,newFragment);
-                            transaction.addToBackStack(null);
-                            transaction.commit();*/
-
+                                FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.rldContainer, newFragment);
+                                transaction.addToBackStack("Some String");
+                                transaction.commit();
                             } else if (transaction.equals("product")) {
+                                cust_onclick=1;
+                                Product_Description_Fragment newFragment = new Product_Description_Fragment();
+                                Bundle args = new Bundle();
+                                /*args.putInt("position", position);
+                                args.putString("product_random_id", singleSectionItems.get(position).getProductRandomId());
+                                args.putString("category", singleSectionItems.get(position).getProductCategory());
+                                args.putString("subcategory", singleSectionItems.get(position).getProductSubcategory());
+                                args.putString("id", singleSectionItems.get(position).getProductId());
+                                args.putString("qty_name", dataList.get(position).getAllItemsInSection().get(position).getProductQtyName());
+                                args.putString("price", singleSectionItems.get(position).getProductActualamount());
+                                args.putString("qty", singleSectionItems.get(position).getProductQuantity());*/
+                                args.putString("search_word",singleSectionItems.get(position).getProduct_random_id());
+                               // args.putString("amount","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
+                               // args.putString("search_word","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
+                               /* args.putString("product_price_id", singleSectionItems.get(position).getProductId());
+                                args.putInt("product_id", singleSectionItems.get(position).getId());
+                                args.putString("price_product_id", singleSectionItems.get(position).getProductId());
 
-                         /*   Intent intent = new Intent(mContext, Product_Details_Activity.class);
-                            Home_Fragment.home_home_frag = 1;
-                            Customer_SignIn_Fragment.home_frag = 1;
-                            Bundle bundle = new Bundle();
-                            bundle.putString("name", singleSectionItems.get(position).getName());
-                            bundle.putInt("id", singleSectionItems.get(position).getId());
-                            bundle.putInt("category", singleSectionItems.get(position).getCategory());
-                            bundle.putInt("product_id", singleSectionItems.get(position).getId());
-                            bundle.putString("product_price_id", singleSectionItems.get(position).getProduct_price_id());
-                            bundle.putInt("discount_price", singleSectionItems.get(position).getDiscount_price());
-                            bundle.putInt("position_onclick", position);
+                                int prod = singleSectionItems.get(position).getDiscount_price();
+                                if (prod > 0) {
+                                    args.putString("other_price", singleSectionItems.get(position).getProductPrice());
 
+                                } else {
+                                    args.putString("other_price", "empty");
 
-                            Log.e("name",singleSectionItems.get(position).getName());
-                            Log.e("id", String.valueOf(singleSectionItems.get(position).getId()));
-                            Log.e("category", String.valueOf(singleSectionItems.get(position).getCategory()));
-                            Log.e("product_id", String.valueOf(singleSectionItems.get(position).getId()));
-                            Log.e("getDiscount_price", String.valueOf(singleSectionItems.get(position).getDiscount_price()));
-                            intent.putExtras(bundle);
-                            mContext.startActivity(intent);*/
+                                }*/
+                                newFragment.setArguments(args);
+
+                                Log.e("args",args.toString());
+
+                                FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.rldContainer, newFragment);
+                                transaction.addToBackStack("Some String");
+                                transaction.commit();
+
                             }
                         }
 

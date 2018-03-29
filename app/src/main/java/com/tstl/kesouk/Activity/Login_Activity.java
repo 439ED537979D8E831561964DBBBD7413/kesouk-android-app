@@ -617,7 +617,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                             String status = object.getString("status");
                             if (status.equals("Success")) {
-                                db.insertlogin(48);
+                              //  db.insertlogin(48);
                                 progressDialog.cancel();
 
 

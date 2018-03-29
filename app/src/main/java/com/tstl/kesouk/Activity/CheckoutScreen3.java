@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tstl.kesouk.R;
@@ -20,6 +21,7 @@ public class CheckoutScreen3 extends AppCompatActivity{
     private Typeface mDynoRegular;
     private Toolbar mToolbar;
     private TextView toolbarTitle;
+    ImageView img;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +30,19 @@ public class CheckoutScreen3 extends AppCompatActivity{
         mToolbar = (Toolbar) findViewById(R.id.logintoolbar);
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText("Order Summary");
+        img = (ImageView) findViewById(R.id.img);
         setSupportActionBar(mToolbar);
         setFont();
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            }
+        });
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
 
             }
         });

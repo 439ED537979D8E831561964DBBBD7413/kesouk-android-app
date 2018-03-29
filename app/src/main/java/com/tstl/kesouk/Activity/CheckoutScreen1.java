@@ -74,7 +74,6 @@ public class CheckoutScreen1 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db=new DB(this);
-        CheckoutAddress=0;
         setContentView(R.layout.my_address_activity);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
@@ -340,7 +339,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
                         mBundle.putString("eight", def_area);
                         mBundle.putString("nine", def_street);
                         mBundle.putString("ten", def_land);
-                        mBundle.putInt("default", def_checkbox);
+                        mBundle.putInt("default", 1);
                         mBundle.putString("id", def_id);
                         intent.putExtras(mBundle);
                         startActivity(intent);
