@@ -140,6 +140,9 @@ public class Register_Activity  extends AppCompatActivity {
         mTermsCond.setMovementMethod(LinkMovementMethod.getInstance());
         mAddressLayout = (RelativeLayout) findViewById(R.id.address_layout);
         mAddAddress = (Button) findViewById(R.id.add_new_addr);
+        mAddAddress.setText("ADD ADDRESS");
+        temp_addr_edit=0;
+        strMobile="";
         setFont();
         mTermsCond.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -67,7 +67,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
     public ArrayList<Login_Credentials> login_credentials = null;
     public static int CheckoutAddress=0;
     String def_id;
-    int def_checkbox;
+    int def_checkbox=0;
     String defaultaddressTextView,defaultNameTextView,def_nickname,def_fNmae,def_LName,def_mob,def_city,def_house,def_resident,def_area,def_street,def_land;
 
     @Override
@@ -322,6 +322,12 @@ public class CheckoutScreen1 extends AppCompatActivity {
                 HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
                 headerHolder.defaultName.setText(defaultNameTextView);
                 headerHolder.defaultAddress.setText(defaultaddressTextView);
+
+                if(def_checkbox==0)
+                {
+                    headerHolder.defaultaddressTxt.setVisibility(View.GONE);
+                    headerHolder.relativeLayout.setVisibility(View.GONE);
+                }
                 headerHolder.defaultEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -465,6 +471,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
             TextView defaultName,defaultAddress;
             Button defaultEdit;
             TextView defaultaddressTxt,otherAddressText;
+            RelativeLayout relativeLayout;
 
             public HeaderViewHolder(View view) {
                 super(view);
@@ -473,6 +480,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
                 defaultEdit = (Button) view.findViewById(R.id.edit_def);
                 defaultaddressTxt = (TextView) view.findViewById(R.id.defaultaddr);
                 otherAddressText = (TextView) view.findViewById(R.id.otheraddr);
+                relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_item);
 
 
                 defaultName.setTypeface(mDynoRegular);

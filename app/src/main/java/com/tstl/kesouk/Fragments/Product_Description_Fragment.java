@@ -62,10 +62,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.tstl.kesouk.Activity.Navigation_Tab_Activity.bottomNavigationView;
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
 import static com.tstl.kesouk.Fragments.Category_Fragment.wishCheckList;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_onclick;
+import static com.tstl.kesouk.Fragments.Home_Fragment.home_onclick;
 
 /**
  * Created by user on 01-Feb-18.
@@ -85,14 +87,15 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
     ToggleButton mFav;
     SliderLayout slider;
     RatingBar ratingBar;
+    int wishStatus;
     RecyclerView similar_products_recylerview;
     String product_random_id, is_express_delivery = "";
     int category_id;
     private ArrayList<String> imageslidinglist = new ArrayList<>();
     String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory, qty_name, search_word, amount, spinner_quantity, other_price_amount = "";
     TextSliderView textSliderView;
-    String product_price_id = "", price_product_id = "", addtocart, wishcheckId = "";
-    int product_id = 1, favorite;
+    String product_price_id = "", price_product_id = "", addtocart, wishcheckId,wishListDAtaId;
+    int product_id = 1, favorite,tempWishCheck;
 
 
     public ArrayList<Browse_Category> list_browse_products, list_similar_products;
@@ -156,6 +159,12 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 product_random_id = bundle1.getString("search_word");
 
             }
+        }else if (home_onclick == 1) {
+            Bundle bundle1 = this.getArguments();
+            if (bundle1 != null) {
+                product_random_id = bundle1.getString("search_word");
+
+            }
         } else {
             Bundle bundle1 = this.getArguments();
             if (bundle1 != null) {
@@ -175,6 +184,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 product_price_id = bundle1.getString("product_price_id");
                 price_product_id = bundle1.getString("price_product_id");
                 addtocart = bundle1.getString("addtocart");
+                wishListDAtaId = bundle1.getString("wishcheckId");
                 favorite = bundle1.getInt("favorite");
                 mAddtoCart.setText(addtocart);
 
@@ -234,12 +244,14 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             public void onClick(View v) {
 
                 if (mAddtoCart.getText().toString().equals("GO TO CART")) {
+                   // bottomNavigationView.getMenu().getItem(1).setChecked(true);
                     Fragment selectedFragment = Basket_Fragment.newInstance();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.rldContainer, selectedFragment);
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     transaction.addToBackStack("Some String");
                     transaction.commit();
+
                 } else {
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
                     Map<String, String> params = new HashMap<String, String>();
@@ -256,9 +268,9 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
                     }
 
-                    params.put("product_id", String.valueOf((product_price_id)));
+                    params.put("product_id", String.valueOf((product_id)));
                     params.put("quantity", "1");
-                    params.put("price_id", String.valueOf(product_id));
+                    params.put("price_id", String.valueOf(product_price_id));
                     Log.e("json",params.toString());
 
 
@@ -286,6 +298,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                             }
 
 
+
                                             AlertDialog.Builder builder =
                                                     new AlertDialog.Builder(getActivity());
                                             builder.setTitle("Message");
@@ -297,6 +310,8 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which) {
                                                             dialog.dismiss();
+                                                            mAddtoCart.setText("GO TO CART");
+                                                            getCart();
                                                         }
                                                     });
 
@@ -416,6 +431,9 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                             Log.e("data_id", data_id);
                                             mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_select_fav));
                                             wishcheckId = data_id;
+                                            tempWishCheck = 1;
+                                            favorite=1;
+                                            wishStatus = 1;
                                             if (db.getAllLogin().size() == 1) {
                                                 db.insert_wishlist_cust(data_id);
 
@@ -475,16 +493,34 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                     queue.add(jsonObjReq);
 
 
-                } else {
+                }
+                else if(tempWishCheck==1){
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
                     Map<String, String> params = new HashMap<String, String>();
 
-                    if (db.getAllLogin().size() == 1) {
-                        params.put("id", wishcheckId);
-                        Log.e("id", wishcheckId);
-                    } else if (db.getAllLogin().size() == 0) {
-                        params.put("id", wishcheckId);
-                        Log.e("id", wishcheckId);
+
+
+                    if(wishStatus==1)
+                    {
+                        if (db.getAllLogin().size() == 1) {
+                            params.put("id", wishcheckId);
+                            Log.e("id", wishcheckId);
+                        } else if (db.getAllLogin().size() == 0) {
+                            params.put("id", wishcheckId);
+                            Log.e("id", wishcheckId);
+                        }
+
+                    }
+                    else
+                    {
+                        if (db.getAllLogin().size() == 1) {
+                            params.put("id", wishListDAtaId);
+                            Log.e("id", wishListDAtaId);
+                        } else if (db.getAllLogin().size() == 0) {
+                            params.put("id", wishListDAtaId);
+                            Log.e("id", wishListDAtaId);
+                        }
+
                     }
 
 
@@ -502,6 +538,8 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                         if (status.equals("Success")) {
                                             mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_deselect_fav));
                                             wishcheckId = "0";
+                                            tempWishCheck=0;
+                                            wishStatus = 0;
                                             // wishCheckList.set(category_id, "0");
                                             if (db.getAllLogin().size() == 1) {
                                                 db.remove_wishlist_cust(db.getAllWishlist_cust().get(category_id));
@@ -511,6 +549,113 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                 Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist()));
                                             }
                                             getWishList();
+                                            getProductList(product_name);
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+                                        }
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                            VolleyLog.d("responseError", "Error: " + volleyError);
+
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
+
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
+                }
+
+                else {
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
+
+
+
+                    if(wishStatus==1)
+                    {
+                        if (db.getAllLogin().size() == 1) {
+                            params.put("id", wishcheckId);
+                            Log.e("id", wishcheckId);
+                        } else if (db.getAllLogin().size() == 0) {
+                            params.put("id", wishcheckId);
+                            Log.e("id", wishcheckId);
+                        }
+
+                    }
+                    else
+                    {
+                        if (db.getAllLogin().size() == 1) {
+                            params.put("id", wishListDAtaId);
+                            Log.e("id", wishListDAtaId);
+                        } else if (db.getAllLogin().size() == 0) {
+                            params.put("id", wishListDAtaId);
+                            Log.e("id", wishListDAtaId);
+                        }
+
+                    }
+
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.REMOVE_WISHLIST, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("remove_wishlist", String.valueOf(object));
+
+
+                                        String status = object.getString("status");
+                                        if (status.equals("Success")) {
+                                            mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_deselect_fav));
+                                            wishcheckId = "0";
+                                            wishStatus = 0;
+                                            // wishCheckList.set(category_id, "0");
+                                            if (db.getAllLogin().size() == 1) {
+                                                db.remove_wishlist_cust(db.getAllWishlist_cust().get(category_id));
+                                                Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist_cust()));
+                                            } else if (db.getAllLogin().size() == 0) {
+                                                db.remove_wishlist(db.getAllWishlist().get(category_id));
+                                                Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist()));
+                                            }
+                                            getWishList();
+                                           // getProductList(product_name);
                                         } else {
                                             String reason = object.getString("reason");
                                             Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
@@ -669,6 +814,34 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                 }
                                                 browse_category.setProduct_priceId(product_price_id);
                                                 cust_onclick = 0;
+
+
+                                            } else {
+
+                                            }
+
+                                        }else  if (home_onclick == 1) {
+                                            JSONArray product_price = jsonObject.getJSONArray("product_price");
+                                            //list_browse_products.add(id);
+
+                                            if (product_price.length() != 0) {
+                                                for (int j = 0; j < product_price.length(); j++) {
+                                                    Log.e("datacountPP", String.valueOf(product_price.length()));
+                                                    JSONObject jsonObject1 = product_price.getJSONObject(j);
+                                                    product_price_id = jsonObject1.getString("id");
+                                                    product_id = jsonObject1.getInt("product_id");
+                                                    String product_price_MarketPrice = jsonObject1.getString("price");
+                                                    String product_price_kesoukPrice = jsonObject1.getString("actual_selling_amount");
+                                                    String product_qty_name = jsonObject1.getString("quantity");
+                                                    String product_qty_name1 = jsonObject1.getString("quantity_name");
+                                                    other_price.setVisibility(View.VISIBLE);
+                                                    other_price.setText("SH " + product_price_MarketPrice);
+                                                    other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                                    mAmount.setText("SH " + product_price_kesoukPrice);
+                                                    mProductName.setText(product_name + " -" + product_qty_name + product_qty_name1);
+                                                }
+                                                browse_category.setProduct_priceId(product_price_id);
+                                                home_onclick = 0;
 
 
                                             } else {
@@ -1181,4 +1354,293 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
 
     }
+
+
+    public void getCart() {
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        Map<String, String> params = new HashMap<String, String>();
+
+
+        JSONObject object = new JSONObject();
+        try {
+
+
+            if (db.getAllLogin().size() == 1) {
+                object.put("customer_id", db.getAllLogin().get(0));
+
+            } else if (db.getAllLogin().size() == 0) {
+                object.put("customer_id", "0");
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (db.getAllLogin().size() == 1) {
+                object.put("localcart", "null");
+            } else if (db.getAllLogin().size() == 0) {
+                object.put("localcart", new JSONArray(db.getAllData()));
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.e("json", object.toString());
+
+        JsonObjectRequest jsonObjReq = null;
+        try {
+            jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    Constants.GET_CART, new JSONObject(object.toString()),
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            try {
+                                Log.e("getcart", String.valueOf(object));
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+
+                    Log.e("verify_otp_error", "error" + volleyError);
+                    if (volleyError instanceof TimeoutError) {
+                        Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                    VolleyLog.d("responseError", "Error: " + volleyError);
+
+                }
+            }) {
+
+
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<>();
+
+
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> header = new HashMap<String, String>();
+                    header.put("Content-Type", "application/json; charset=utf-8");
+                    return header;
+                }
+
+            };
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                Constants.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonObjReq);
+
+
+    }
+
+
+
+    private void getProductList(String product_search_name) {
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        Map<String, String> params = new HashMap<String, String>();
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put("search_keyword", product_search_name);
+            object.put("per_page", "12");
+            object.put("page", "1");//curentpage
+
+            if (db.getAllLogin().size() == 1) {
+                object.put("customer_id", db.getAllLogin().get(0));
+
+            } else if (db.getAllLogin().size() == 0) {
+                object.put("customer_id", "0");
+
+            }
+
+
+            if (db.getAllData().size() != 0 || db.getAllAddtocart_cust().size() != 0) {
+                if (db.getAllLogin().size() == 0) {
+                    object.put("cartcheck", "2");
+                } else {
+                    object.put("cartcheck", "1");
+                }
+                //  cartcheck = 0;
+                try {
+                    if (db.getAllLogin().size() == 1) {
+                        object.put("localcart", "null");
+                    } else if (db.getAllLogin().size() == 0) {
+                        object.put("localcart", (new JSONArray(db.getAllData())));
+
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                object.put("cartcheck", "0");
+            }
+
+            if (db.getAllWishlist().size() != 0 || db.getAllWishlist_cust().size() != 0) {
+                if (db.getAllLogin().size() == 0) {
+                    object.put("wishcheck", "2");
+                } else {
+                    object.put("wishcheck", "1");
+                }
+
+                try {
+                    if (db.getAllLogin().size() == 1) {
+                        object.put("localwish", "null");
+                    } else if (db.getAllLogin().size() == 0) {
+                        object.put("localwish", new JSONArray(db.getAllWishlist()));
+
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //  wishcheck = 0;
+            } else {
+                object.put("wishcheck", "0");
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("json", object.toString());
+        JsonObjectRequest jsonObjReq = null;
+        try {
+            jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    Constants.GET_PRODUCT_LIST, new JSONObject(object.toString()),
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            try {
+                                Log.e("product_list", String.valueOf(object));
+
+
+                                String status = object.getString("status");
+                                if (status.equals("Success")) {
+
+                                    JSONObject JObject = new JSONObject(String.valueOf(object));
+                                    JSONObject JObject1 = JObject.getJSONObject("data");
+
+                                    JSONArray DataArray = JObject1.getJSONArray("data");
+                                    Log.e("data", "data");
+                                    Browse_Category browse_category = null;
+                                    Recipe recipe = null;
+
+                                    if (DataArray.length() != 0) {
+
+                                        for (int i = 0; i < DataArray.length(); i++) {
+                                            Log.e("datacount", String.valueOf(DataArray.length()));
+                                            JSONObject jsonObject = DataArray.getJSONObject(i);
+
+
+                                            if (jsonObject.has("wishlistid")) {
+                                                wishcheckId = jsonObject.getString("wishlistid");
+                                                wishCheckList.add(wishcheckId);
+                                                mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_select_fav));
+
+                                            } else {
+                                                wishCheckList.add("0");
+                                            }
+
+
+                                           /* if (jsonObject.has("cartid")) {
+                                                cartId = jsonObject.getString("cartid");
+                                                cartCheckList.add(cartId);
+                                                cartQuanity = jsonObject.getInt("cartquantity");
+                                                cartQuantityCheckList.add(cartQuanity);
+                                            } else {
+                                                cartCheckList.add("0");
+                                                cartQuantityCheckList.add(0);
+                                            }*/
+
+
+                                        }
+
+                                    } else {
+                                        String reason = object.getString("reason");
+                                        Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                    // setAdapter();
+
+
+                                }
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                                // Log.e("catch", e.getLocalizedMessage());
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+
+                    Log.e("verify_otp_error", "error" + volleyError);
+                    if (volleyError instanceof TimeoutError) {
+                        Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                    VolleyLog.d("responseError", "Error: " + volleyError);
+
+                }
+            }) {
+
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<>();
+
+
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> header = new HashMap<String, String>();
+                    header.put("Content-Type", "application/json; charset=utf-8");
+                    return header;
+                }
+
+            };
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                Constants.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonObjReq);
+
+    }
+
+
 }

@@ -90,6 +90,7 @@ import java.util.TimerTask;
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
 import static com.tstl.kesouk.Fragments.Home_Fragment.home_category_selected_name;
+import static com.tstl.kesouk.Fragments.Home_Fragment.home_onclick;
 
 
 public class Favorites_Fragment extends Fragment {
@@ -130,7 +131,7 @@ public class Favorites_Fragment extends Fragment {
     ArrayList<Browse_Category> browse_category_list = new ArrayList<>();
     int search_option = 0, horizontal_category_option = 0;
     public static int sort_Option = 0;
-    String product_price_amount, product_selling_price, product_qty_name, product_random_id = "",is_express_delivery="";
+    String product_price_amount, product_selling_price, product_qty_name, product_random_id = "", is_express_delivery = "";
     int currentpage = 1, lastpage = 0;
     int product_discount;
     String search_word = "";
@@ -726,28 +727,21 @@ public class Favorites_Fragment extends Fragment {
                                             int id = jsonObject.getInt("id");
                                             browse_category = new Browse_Category();
 
-                                            if(jsonObject.has("category"))
-                                            {
-                                                String nullcheck=jsonObject.getString("category");
-                                                if(nullcheck.equals("null"))
-                                                {
+                                            if (jsonObject.has("category")) {
+                                                String nullcheck = jsonObject.getString("category");
+                                                if (nullcheck.equals("null")) {
 
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     int category_id = jsonObject.getInt("category");
                                                     browse_category.setCategoryId(category_id);
                                                 }
                                             }
 
-                                            if(jsonObject.has("actual_selling_amount"))
-                                            {
-                                                String nullcheck=jsonObject.getString("actual_selling_amount");
-                                                if(nullcheck.equals("null"))
-                                                {
+                                            if (jsonObject.has("actual_selling_amount")) {
+                                                String nullcheck = jsonObject.getString("actual_selling_amount");
+                                                if (nullcheck.equals("null")) {
 
-                                                }
-                                                else {
+                                                } else {
                                                     product_selling_price = jsonObject.getString("actual_selling_amount");
                                                     browse_category.setProduct_selling_price(product_selling_price);
 
@@ -930,7 +924,7 @@ public class Favorites_Fragment extends Fragment {
         mDynoRegular = Typeface.createFromAsset(getActivity().getAssets(),
                 "font/Roboto_Regular.ttf");
 
-       // mToolbarTitle.setTypeface(mDynoRegular);
+        // mToolbarTitle.setTypeface(mDynoRegular);
         item_count.setTypeface(mDynoRegular);
         mExplore.setTypeface(mDynoRegular);
         no_wishlist.setTypeface(mDynoRegular);
@@ -1060,7 +1054,7 @@ public class Favorites_Fragment extends Fragment {
                             holder.mExpress.setVisibility(View.GONE);
                         }*/
                         String express = browse_category.getIs_express_delivery();
-                        if (express.equals("1") ) {
+                        if (express.equals("1")) {
                             holder.mExpress.setVisibility(View.VISIBLE);
                         } else {
                             holder.mExpress.setVisibility(View.GONE);
@@ -1097,7 +1091,8 @@ public class Favorites_Fragment extends Fragment {
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-        /*            Product_Description_Fragment newFragment = new Product_Description_Fragment();
+                    home_onclick = 2;
+                    Product_Description_Fragment newFragment = new Product_Description_Fragment();
                     Bundle args = new Bundle();
                     args.putInt("position", position);
                     args.putString("product_random_id", browse_category.getProduct_random_id());
@@ -1110,15 +1105,37 @@ public class Favorites_Fragment extends Fragment {
                     args.putString("search_word", search_word);
                     args.putString("product_price_id", recipe.getProduct_priceId());
                     args.putInt("product_id", browse_category.getProduct_id());
+                    args.putString("price_product_id", browse_category.getProduct_priceId());
+                    int prod = browse_category.getProduct_discount();
+                    if (prod > 0) {
+                        args.putString("other_price", holder.marketprice.getText().toString());
+
+                    } else {
+                        args.putString("other_price", "empty");
+
+                    }
+                    args.putString("addtocart", "Add");
+                    args.putInt("favorite", 1);
+
+                    Browse_Category browse_category = cartPricelist.get(position);
+                    if (db.getAllLogin().size() == 1) {
+                        args.putString("wishcheckId", String.valueOf(browse_category.getData_id()));
+
+                    } else if (db.getAllLogin().size() == 0) {
+                        args.putString("wishcheckId", String.valueOf(db.getAllWishlist().get(position)));
+                    } else if (db.getAllLogin().size() == 2) {
+                        args.putString("wishcheckId", String.valueOf(db.getAllWishlist().get(position)));
+
+                    }
 
 
                     newFragment.setArguments(args);
-
+                    Log.e("args", args.toString());
                     FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container_fragment,newFragment);
+                    transaction.replace(R.id.rldContainer, newFragment);
                     transaction.addToBackStack("Some String");
                     transaction.commit();
-*/
+
 
                 }
             });

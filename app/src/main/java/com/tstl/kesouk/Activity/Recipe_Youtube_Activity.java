@@ -1,10 +1,13 @@
 package com.tstl.kesouk.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,6 +50,7 @@ import com.tstl.kesouk.Model.Recipe;
 import com.tstl.kesouk.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -73,6 +77,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
     String video_id;
     View tab1,tab2,tab3;
     DB db;
+    String title;
 
 
   /*  public static com.tstl.kesouk.Fragments.Recipe_Fragment newInstance() {
@@ -114,6 +119,12 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
         mAddtoBasket = (Button) findViewById(R.id.add_to_basket);
         settings.setVisibility(View.GONE);
         search.setVisibility(View.GONE);
+        mAddtoBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddRecipeToCart();
+            }
+        });
        /* Bundle bundle1 = this.getArguments();
         if (bundle1 != null) {
 
@@ -127,7 +138,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
 //Extract the data…
             recipe_id = bundle1.getInt("position");
             category_id = bundle1.getInt("category_id");
-            String title = bundle1.getString("title");
+            title = bundle1.getString("title");
             mToolbarTitle.setText(title);
         }
         getRecipeDetails();
@@ -704,6 +715,126 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
         return youTubeView;
     }
 
+
+    private void AddRecipeToCart() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        Map<String, String> params = new HashMap<String, String>();
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait ...");
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        TextView tv1 = (TextView) progressDialog.findViewById(android.R.id.message);
+        tv1.setTextSize(20);
+        tv1.setTypeface(mDynoRegular);
+        tv1.setText("Please wait ...");
+        params.put("recipe_id", String.valueOf(recipe_id));
+        if(db.getAllLogin().size()==1)
+        {
+            params.put("customer_id", db.getAllLogin().get(0));
+        }
+        else
+        {
+            params.put("customer_id","0");
+        }
+
+        Log.e("json",params.toString());
+
+        JsonObjectRequest jsonObjReq = null;
+        try {
+            jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    Constants.ADD_RECEIPETOCART, new JSONObject(params),
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            try {
+                                Log.e("add_ingr_tocart", String.valueOf(object));
+                                progressDialog.dismiss();
+
+                                AlertDialog.Builder builder =
+                                        new AlertDialog.Builder(Recipe_Youtube_Activity.this);
+                                builder.setTitle("Message");
+                                builder.setMessage(title.toUpperCase()+" ingredients has been added to Cart !");
+
+                                String positiveText = "Ok";
+                                builder.setPositiveButton(positiveText,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                String negativeText = getString(android.R.string.cancel);
+                                builder.setNegativeButton(negativeText,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // negative button logic
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                AlertDialog dialog = builder.create();
+                                // display dialog
+                                dialog.show();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    progressDialog.cancel();
+                    Log.e("verify_otp_error", "error" + volleyError);
+                    if (volleyError instanceof TimeoutError) {
+                        Toast.makeText(Recipe_Youtube_Activity.this, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                    Log.e("responseError", "Error: " + volleyError);
+
+                }
+            }) {
+
+              /*  @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=UTF-8";
+
+
+                }*/
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<>();
+
+
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> header = new HashMap<String, String>();
+                    header.put("Content-Type", "application/json; charset=utf-8");
+                    return header;
+                }
+
+            };
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                Constants.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonObjReq);
+
+
+
+}
 
 }
 

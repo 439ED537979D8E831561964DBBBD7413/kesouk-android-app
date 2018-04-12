@@ -121,6 +121,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     LoginManager loginManager;
     String G_fname, G_lname, G_email, G_access_token, G_imageurl, F_name, F_token, F_email;
     boolean isChecked = false;
+    public static String PfirstName = "", PlastName = "", PEmail = "", PDob = "", PMob = "", PLandline = "", PPromotions = "";
 
 
     @Override
@@ -490,13 +491,28 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     String status = JObject.getString("status");
 
                     if (status.equals("Success")) {
-
                         progressDialog.dismiss();
                         String role = JObject.getString("role");
                         String reason = JObject.getString("reason");
 
                         JSONObject jsonObject = JObject.getJSONObject("userdetails");
                         String cust_id = jsonObject.getString("id");
+                        db.removeFname();
+                        db.removeLname();
+                        db.removeEmail();
+                        db.removeDob();
+                        db.removeMob();
+                        db.removeLandline();
+                        db.removePromotions();
+
+                        db.insert_profile_fname(jsonObject.getString("first_name"));
+                        db.insert_profile_lname(jsonObject.getString("last_name"));
+                        db.insert_profile_email(jsonObject.getString("email"));
+                        db.insert_profile_dob(jsonObject.getString("dob"));
+                        db.insert_profile_mob(jsonObject.getString("mobilenumber"));
+                        db.insert_profile_landline(jsonObject.getString("landline"));
+                        db.insert_promotions(jsonObject.getString("promotions_and_offers_mail"));
+
 
                         int id = jsonObject.getInt("id");
                         db.insertlogin(id);
@@ -614,18 +630,55 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         try {
                             Log.e("fb_login", String.valueOf(object));
 
+                            JSONObject JObject = new JSONObject(String.valueOf(object));
 
-                            String status = object.getString("status");
+                            String status = JObject.getString("status");
+
                             if (status.equals("Success")) {
-                              //  db.insertlogin(48);
-                                progressDialog.cancel();
+                                progressDialog.dismiss();
+                                String role = JObject.getString("role");
+                                String reason = JObject.getString("reason");
+
+                                JSONObject jsonObject = JObject.getJSONObject("userdetails");
+                                String cust_id = jsonObject.getString("id");
+
+                                db.removeFname();
+                                db.removeLname();
+                                db.removeEmail();
+                                db.removeDob();
+                                db.removeMob();
+                                db.removeLandline();
+                                db.removePromotions();
+                                db.insert_profile_fname(jsonObject.getString("first_name"));
+                                db.insert_profile_lname(jsonObject.getString("last_name"));
+                                db.insert_profile_email(jsonObject.getString("email"));
+                                db.insert_profile_dob(jsonObject.getString("dob"));
+                                db.insert_profile_mob(jsonObject.getString("mobilenumber"));
+                                db.insert_profile_landline(jsonObject.getString("landline"));
+                                db.insert_promotions(jsonObject.getString("promotions_and_offers_mail"));
 
 
-                                Intent intent = new Intent(Login_Activity.this, TabMain_Activity.class);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                int id = jsonObject.getInt("id");
+                                db.insertlogin(id);
+                                getCarttoCustomer();
+
+                                if (!TextUtils.isEmpty(role)) {
+
+                                    if (role.equals("Customer") || role.equals("customer")) {
+
+                                        Intent intent2 = new Intent(Login_Activity.this, TabMain_Activity.class);
+                                        intent2.addCategory(Intent.CATEGORY_HOME);
+                                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent2);
+                                        finish();
+                                    } /*else {
+                                Intent intent = new Intent(Login_Activity.this, Sign_In_Home_activity.class);
                                 startActivity(intent);
                                 finish();
+                            }*/
+
+                                }
+
 
                             } else {
                                 String reason = object.getString("reason");
@@ -714,20 +767,58 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     @Override
                     public void onResponse(JSONObject object) {
                         try {
-                            Log.e("google_login", String.valueOf(object));
+                            Log.e("fb_login", String.valueOf(object));
 
+                            JSONObject JObject = new JSONObject(String.valueOf(object));
 
-                            String status = object.getString("status");
+                            String status = JObject.getString("status");
+
                             if (status.equals("Success")) {
-                                db.insertlogin(48);
-                                //  db.insertRole(role);
-                                progressDialog.cancel();
+                                progressDialog.dismiss();
+                                String role = JObject.getString("role");
+                                String reason = JObject.getString("reason");
 
-                                Intent intent = new Intent(Login_Activity.this, TabMain_Activity.class);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                JSONObject jsonObject = JObject.getJSONObject("userdetails");
+                                String cust_id = jsonObject.getString("id");
+
+                                db.removeFname();
+                                db.removeLname();
+                                db.removeEmail();
+                                db.removeDob();
+                                db.removeMob();
+                                db.removeLandline();
+                                db.removePromotions();
+
+                                db.insert_profile_fname(jsonObject.getString("first_name"));
+                                db.insert_profile_lname(jsonObject.getString("last_name"));
+                                db.insert_profile_email(jsonObject.getString("email"));
+                                db.insert_profile_dob(jsonObject.getString("dob"));
+                                db.insert_profile_mob(jsonObject.getString("mobilenumber"));
+                                db.insert_profile_landline(jsonObject.getString("landline"));
+                                db.insert_promotions(jsonObject.getString("promotions_and_offers_mail"));
+
+
+                                int id = jsonObject.getInt("id");
+                                db.insertlogin(id);
+                                getCarttoCustomer();
+
+                                if (!TextUtils.isEmpty(role)) {
+
+                                    if (role.equals("Customer") || role.equals("customer")) {
+
+                                        Intent intent2 = new Intent(Login_Activity.this, TabMain_Activity.class);
+                                        intent2.addCategory(Intent.CATEGORY_HOME);
+                                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent2);
+                                        finish();
+                                    } /*else {
+                                Intent intent = new Intent(Login_Activity.this, Sign_In_Home_activity.class);
                                 startActivity(intent);
                                 finish();
+                            }*/
+
+                                }
+
 
                             } else {
                                 String reason = object.getString("reason");
@@ -1172,40 +1263,35 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             startActivity(intent2);
             finish();
 
-        }
-        else if (fav_logout_backpress == 1) {
+        } else if (fav_logout_backpress == 1) {
             Intent intent2 = new Intent(Login_Activity.this, Login_Register_Activity.class);
             intent2.addCategory(Intent.CATEGORY_HOME);
             intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent2);
             finish();
 
-        }
-        else if (fav_home_signin_backpress == 1) {
+        } else if (fav_home_signin_backpress == 1) {
             Intent intent2 = new Intent(Login_Activity.this, Login_Register_Activity.class);
             intent2.addCategory(Intent.CATEGORY_HOME);
             intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent2);
             finish();
 
-        }
-        else if (basket_logout_backpress == 1) {
+        } else if (basket_logout_backpress == 1) {
             Intent intent2 = new Intent(Login_Activity.this, Login_Register_Activity.class);
             intent2.addCategory(Intent.CATEGORY_HOME);
             intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent2);
             finish();
 
-        }
-        else if (basket_home_signin_backpress == 1) {
+        } else if (basket_home_signin_backpress == 1) {
             Intent intent2 = new Intent(Login_Activity.this, Login_Register_Activity.class);
             intent2.addCategory(Intent.CATEGORY_HOME);
             intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent2);
             finish();
 
-        }
-        else if (cart_backpress == 1) {
+        } else if (cart_backpress == 1) {
             Intent intent2 = new Intent(Login_Activity.this, Login_Register_Activity.class);
             intent2.addCategory(Intent.CATEGORY_HOME);
             intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

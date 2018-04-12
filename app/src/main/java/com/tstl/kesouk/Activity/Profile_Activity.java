@@ -45,6 +45,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.tstl.kesouk.Activity.Login_Activity.PDob;
+import static com.tstl.kesouk.Activity.Login_Activity.PEmail;
+import static com.tstl.kesouk.Activity.Login_Activity.PLandline;
+import static com.tstl.kesouk.Activity.Login_Activity.PMob;
+import static com.tstl.kesouk.Activity.Login_Activity.PPromotions;
+import static com.tstl.kesouk.Activity.Login_Activity.PfirstName;
+import static com.tstl.kesouk.Activity.Login_Activity.PlastName;
 import static com.tstl.kesouk.Activity.SplashActivity.isNetworkAvailable;
 
 /**
@@ -66,7 +73,7 @@ public class Profile_Activity extends AppCompatActivity {
     int month,day;
     public static int checkbox_value_email_promotions=0;
     String finalDate="";
-
+    String str;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +131,51 @@ public class Profile_Activity extends AppCompatActivity {
 
         mSave = (Button) findViewById(R.id.save);
         setFont();
+        mFirstName.setText(db.getFname().get(0));
+        mLastName.setText(db.getLname().get(0));
+        mEmail.setText(db.getProfileEmail().get(0));
+        if(db.getDob().get(0).equals("null"))
+        {
+            mDOB.setText("");
+        }
+        else
+        {
+            str=db.getDob().get(0);
+             str = str.replace('-','/');
+            mDOB.setText(str);
+        }
+
+        if(db.getMobile().get(0).equals("null"))
+        {
+            mMobile.setText("");
+        }
+        else
+        {
+            mMobile.setText(db.getMobile().get(0));
+        }
+        if(db.getLandline().get(0).equals("null"))
+        {
+            mLandline.setText("");
+        }
+        else
+        {
+            mLandline.setText(db.getLandline().get(0));
+        }
+
+
+        if(db.getPromotions().get(0).equals("0"))
+        {
+            checkBox.setChecked(false);
+        }
+        else
+        {
+            checkBox.setChecked(true);
+        }
+
+
+
+
+
         calender_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,7 +324,21 @@ public class Profile_Activity extends AppCompatActivity {
         params.put("first_name", mFirstName.getText().toString());
         params.put("last_name", mLastName.getText().toString());
         params.put("email", mEmail.getText().toString());
-        params.put("dob", finalDate);
+        if(finalDate.equals(""))
+        {
+
+            str=db.getDob().get(0);
+            str = str.replace('/','-');
+            params.put("dob", str);
+        }
+        else
+        {
+            params.put("dob", finalDate);
+        }
+
+
+
+
         params.put("mobilenumber", mMobile.getText().toString());
         params.put("landline", mLandline.getText().toString());
         params.put("promotions_and_offers_mail", String.valueOf(checkbox_value_email_promotions));
@@ -291,12 +357,29 @@ public class Profile_Activity extends AppCompatActivity {
 
 
                             String status=object.getString("status");
-                            if(status.equals("Success")||status.equals("success"))
-                            {
+                            if(status.equals("Success")||status.equals("success")) {
                                 progressDialog.cancel();
 
-                                String reason=object.getString("message");
-                                Toast.makeText(Profile_Activity.this, reason ,Toast.LENGTH_LONG).show();
+                                db.removeFname();
+                                db.removeLname();
+                                db.removeEmail();
+                                db.removeDob();
+                                db.removeMob();
+                                db.removeLandline();
+                                db.removePromotions();
+
+
+                                db.insert_profile_fname(mFirstName.getText().toString());
+                                db.insert_profile_lname(mLastName.getText().toString());
+                                db.insert_profile_email(mEmail.getText().toString());
+                                db.insert_profile_dob(mDOB.getText().toString());
+                                db.insert_profile_mob(mMobile.getText().toString());
+                                db.insert_profile_landline(mLandline.getText().toString());
+                                db.insert_promotions(String.valueOf(checkbox_value_email_promotions));
+
+
+                                String reason = object.getString("message");
+                                Toast.makeText(Profile_Activity.this, reason, Toast.LENGTH_LONG).show();
                                 finish();
 
                             }

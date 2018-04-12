@@ -21,7 +21,7 @@ public class DB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "kesouk";
@@ -38,6 +38,14 @@ public class DB extends SQLiteOpenHelper {
     private static final String REMEMBER_EMAIL = "rememail";
     private static final String REMEMBER_PASSWD = "rempasswd";
 
+    private static final String PROFILE_FNAME = "firstnametbl";
+    private static final String PROFILE_LNAME = "lastnametbl";
+    private static final String PROFILE_EMAIL = "profileemailtbl";
+    private static final String PROFILE_DOB = "dobtbl";
+    private static final String PROFILE_MOB = "mobiletbl";
+    private static final String PROFILE_LAND = "landlinetbl";
+    private static final String PROFILE_PROMOTIONS = "promotionstbl";
+
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_DATA_ADDTOCART = "addtocart";
@@ -50,6 +58,15 @@ public class DB extends SQLiteOpenHelper {
     private static final String KEY_DATA_TOKEN = "token";
     private static final String KEY_DATA_REM_EMAIL = "email";
     private static final String KEY_DATA_REM_PASSWD = "passwd";
+
+    private static final String KEY_DATA_FNAME = "firstname";
+    private static final String KEY_DATA_LNAME = "lastname";
+    private static final String KEY_DATA_EMAIL = "profileemail";
+    private static final String KEY_DATA_DOB = "dob";
+    private static final String KEY_DATA_MOB = "mobile";
+    private static final String KEY_DATA_LAND = "landline";
+    private static final String KEY_DATA_PROFMOTIONS = "promotions";
+
     private SQLiteDatabase db;
 
     public DB(Context context) {
@@ -102,6 +119,38 @@ public class DB extends SQLiteOpenHelper {
                 + KEY_DATA_REM_PASSWD + " INTEGER"
                 +  ")";
         db.execSQL(CREATE_REMEMBER_PASSWD);
+
+
+
+        String CREATE_FNAME = "CREATE TABLE" +" "+ PROFILE_FNAME  + "("
+                + KEY_DATA_FNAME + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_FNAME);
+        String CREATE_LNAME = "CREATE TABLE" +" "+ PROFILE_LNAME  + "("
+                + KEY_DATA_LNAME + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_LNAME);
+        String CREATE_UPDATEEMAIL= "CREATE TABLE" +" "+ PROFILE_EMAIL  + "("
+                + KEY_DATA_EMAIL + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_UPDATEEMAIL);
+        String CREATE_DOB = "CREATE TABLE" +" "+ PROFILE_DOB  + "("
+                + KEY_DATA_DOB + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_DOB);
+        String CREATE_MOBILE = "CREATE TABLE" +" "+ PROFILE_MOB  + "("
+                + KEY_DATA_MOB + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_MOBILE);
+        String CREATE_LANDLINE = "CREATE TABLE" +" "+ PROFILE_LAND  + "("
+                + KEY_DATA_LAND + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_LANDLINE);
+        String CREATE_PROMOTIONS = "CREATE TABLE" +" "+ PROFILE_PROMOTIONS  + "("
+                + KEY_DATA_PROFMOTIONS + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_PROMOTIONS);
+
     }
 
     // Upgrading database
@@ -118,6 +167,15 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DEVICE_TOKEN);
         db.execSQL("DROP TABLE IF EXISTS " + REMEMBER_EMAIL);
         db.execSQL("DROP TABLE IF EXISTS " + REMEMBER_PASSWD);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_FNAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_LNAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_EMAIL);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_DOB);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_MOB);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_LAND);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILE_PROMOTIONS);
+
 
         // Create tables again
         onCreate(db);
@@ -207,6 +265,63 @@ public class DB extends SQLiteOpenHelper {
         return id;
 
     }
+    public String insert_profile_fname(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_FNAME, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_FNAME,null,initialValues);
+        return id;
+    }
+
+    public String insert_profile_lname(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_LNAME, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_LNAME,null,initialValues);
+        return id;
+    }
+    public String insert_profile_email(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_EMAIL, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_EMAIL,null,initialValues);
+        return id;
+    }
+    public String insert_profile_dob(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_DOB, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_DOB,null,initialValues);
+        return id;
+    }
+    public String insert_profile_mob(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_MOB, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_MOB,null,initialValues);
+        return id;
+    }
+    public String insert_profile_landline(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_LAND, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_LAND,null,initialValues);
+        return id;
+    }
+    public String insert_promotions(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_PROFMOTIONS, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(PROFILE_PROMOTIONS,null,initialValues);
+        return id;
+    }
     public String insert_token(String id) {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         ContentValues initialValues = new ContentValues();
@@ -215,6 +330,7 @@ public class DB extends SQLiteOpenHelper {
         sqLiteDatabase.insert(DEVICE_TOKEN,null,initialValues);
         return id;
     }
+
     public String remove(String id) {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
        /* ContentValues initialValues = new ContentValues();
@@ -307,9 +423,66 @@ public class DB extends SQLiteOpenHelper {
         sqLiteDatabase.delete(TABLE_WISHLISTZ_CUST," wishlistcust = '"+id+"'",null);
         return id;
 
+    }
 
+
+    public void removeFname() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_FNAME,null,null);
 
     }
+    public void removeLname() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_LNAME,null,null);
+
+    }
+    public void removeEmail() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_EMAIL,null,null);
+
+    }
+    public void removeDob() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_DOB,null,null);
+
+    }
+    public void removeMob() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_MOB,null,null);
+
+    }
+    public void removeLandline() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_LAND,null,null);
+
+    }
+    public void removePromotions() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(PROFILE_PROMOTIONS,null,null);
+
+    }
+
 
 
     public ArrayList<String> getAllData() {
@@ -498,4 +671,124 @@ public class DB extends SQLiteOpenHelper {
         return dataList;
     }
 
+
+    public ArrayList<String> getFname() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_FNAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+    public ArrayList<String> getLname() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_LNAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+    public ArrayList<String> getProfileEmail() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_EMAIL;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+    public ArrayList<String> getDob() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_DOB;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+    public ArrayList<String> getMobile() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_MOB;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+    public ArrayList<String> getLandline() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_LAND;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+    public ArrayList<String> getPromotions() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + PROFILE_PROMOTIONS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
 }

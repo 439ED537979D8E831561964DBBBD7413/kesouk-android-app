@@ -267,6 +267,7 @@ public class Basket_Fragment extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         Map<String, String> params = new HashMap<String, String>();
+        Log.e("fetchdata",db.getAllData().toString());
 
 
         JSONObject object = new JSONObject();
@@ -325,6 +326,7 @@ public class Basket_Fragment extends Fragment {
                                         noItemsbasket.setVisibility(View.VISIBLE);
 
                                     } else {
+                                        mCheckout.setVisibility(View.VISIBLE);
                                         JSONArray DataArray = JObject.getJSONArray("data");
                                         Log.e("data", "data");
 
@@ -496,375 +498,6 @@ public class Basket_Fragment extends Fragment {
 
     }
 
-
-    public void getCart1() {
-
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        Map<String, String> params = new HashMap<String, String>();
-
-
-        JSONObject object = new JSONObject();
-        try {
-
-
-            if (db.getAllLogin().size() == 1) {
-                object.put("customer_id", db.getAllLogin().get(0));
-
-            } else if (db.getAllLogin().size() == 0) {
-                object.put("customer_id", "0");
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (db.getAllLogin().size() == 1) {
-                object.put("localcart", "null");
-            } else if (db.getAllLogin().size() == 0) {
-                object.put("localcart", new JSONArray(db.getAllData()));
-
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Log.e("json", object.toString());
-
-        JsonObjectRequest jsonObjReq = null;
-        try {
-            jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                    Constants.GET_CART, new JSONObject(object.toString()),
-                    new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject object) {
-                            try {
-                                Log.e("addtocart", String.valueOf(object));
-                                Cart cart = null;
-
-                                String status = object.getString("status");
-                                if (status.equals("Success")) {
-                                    JSONObject JObject = new JSONObject(String.valueOf(object));
-                                    cartcount = JObject.getInt("cartcount");
-
-                                    if (cartcount == 0) {
-                                        recyler_main.setVisibility(View.GONE);
-                                        mCheckout.setVisibility(View.GONE);
-                                        items_layout.setVisibility(View.GONE);
-                                        noCart.setVisibility(View.VISIBLE);
-                                    } else {
-                                        mCheckout.setVisibility(View.VISIBLE);
-                                        JSONArray DataArray = JObject.getJSONArray("data");
-                                        Log.e("data", "data");
-                                        SectionDataModel dm = null;
-                                        ArrayList<SingleItemModel> singleItemList = null;
-                                        SingleItemModel singleItemModel = null;
-                                        if (DataArray.length() != 0) {
-                                            allSampleData = new ArrayList<SectionDataModel>();
-                                            singleItem = new ArrayList<SingleItemModel>();
-
-
-                                            cartArrayList = new ArrayList<>();
-                                            cartIdList = new ArrayList<>();
-                                            subTotalList = new ArrayList<>();
-                                         /*   for (int i = 0; i < 2; i++) {
-                                                dm = new SectionDataModel();
-                                                singleItemModel = new SingleItemModel();
-                                                Log.e("datacount", String.valueOf(DataArray.length()));
-                                                JSONObject jsonObject = DataArray.getJSONObject(i);
-                                                product_name = jsonObject.getString("product_name");
-                                                product_image = jsonObject.getString("display_image");
-                                                discount = jsonObject.getString("discount");
-                                                int discount1 = jsonObject.getInt("discount");
-                                                category = jsonObject.getString("category");
-                                                int id = jsonObject.getInt("id");
-                                                singleItemModel.setId(id);
-                                                singleItemModel.setName(product_name);*/
-
-/*
-
-
-                                                cart = new Cart();
-                                                cart.setProduct_name(product_name);
-
-                                                cart.setImage_url(product_image);
-                                                cart.setDiscount(discount);
-
-                                                JSONObject product_category=jsonObject.getJSONObject("product_category");
-                                                section_name = product_category.getString("name");
-                                                categoryList.add(section_name);
-
-
-                                                dm.setHeaderTitle(section_name);
-
-
-
-                                                JSONArray product_price = jsonObject.getJSONArray("product_price");
-                                                //list_browse_products.add(id);
-                                                if (product_price.length() != 0)
-                                                {
-                                                    for(int j=0;j<product_price.length();j++)
-                                                    {
-                                                        Log.e("datacount", String.valueOf(product_price.length()));
-                                                        JSONObject jsonObject1 = product_price.getJSONObject(j);
-                                                        product_price_amount = jsonObject1.getString("price");
-                                                        product_selling_price = jsonObject1.getString("actual_selling_amount");
-                                                        price = jsonObject1.getInt("actual_selling_amount");
-
-
-                                                    }
-                                                    cart.setDukanPrice(product_selling_price);
-                                                    cart.setActual_amount(price);
-                                                    cart.setMarketPrice(product_price_amount);
-                                                }
-
-
-
-                                                Log.e("product_name", cart.getProduct_name());
-                                                Log.e("product_image", cart.getImage_url());
-                                                Log.e("product_price", cart.getDukanPrice());
-                                                cartArrayList.add(cart);
-*/
-                                            //   }
-
-
-                                            JSONArray DataArray1 = JObject.getJSONArray("data");
-                                            Log.e("catlsitid", categoryListString.toString());
-
-
-                                           // for (int k = 0; k < categoryListString.size(); k++) {
-
-                                                for (int j = 0; j < DataArray1.length(); j++) {
-                                                    dm = new SectionDataModel();
-                                                    singleItem = new ArrayList<SingleItemModel>();
-
-
-                                                    singleItemModel = new SingleItemModel();
-                                                    JSONObject jsonObject = DataArray.getJSONObject(j);
-                                                    category = jsonObject.getString("category");
-                                                    product_name = jsonObject.getString("product_name");
-                                                    product_image = jsonObject.getString("display_image");
-                                                    discount = jsonObject.getString("discount");
-                                                    int discount1 = jsonObject.getInt("discount");
-                                                   // category_int = jsonObject.getInt("category");
-                                                    //category = jsonObject.getString("category");
-                                                    int id = jsonObject.getInt("id");
-
-
-
-                                                    if(jsonObject.has("category"))
-                                                    {
-                                                        String nullcheck=jsonObject.getString("category");
-                                                        if(nullcheck.equals("null"))
-                                                        {
-
-                                                        }
-                                                        else
-                                                        {
-                                                            category_int = jsonObject.getInt("category");
-                                                            category = jsonObject.getString("category");
-                                                            // browse_category.setCategoryId(category_id);
-                                                        }
-                                                    }
-
-
-
-                                                    JSONArray product_price = jsonObject.getJSONArray("product_price");
-                                                    //list_browse_products.add(id);
-                                                    if (product_price.length() != 0) {
-                                                        for (int p = 0; p < product_price.length(); p++) {
-                                                            Log.e("datacount", String.valueOf(product_price.length()));
-                                                            jsonObject2 = product_price.getJSONObject(p);
-                                                            product_price_amount = jsonObject2.getString("price");
-                                                            product_selling_price = jsonObject2.getString("actual_selling_amount");
-                                                            price = jsonObject2.getInt("actual_selling_amount");
-                                                            productIdPrice = jsonObject2.getInt("product_id");
-                                                            priceQuantity = jsonObject2.getInt("quantity");
-
-
-                                                        }
-                                                        // cart.setDukanPrice(product_selling_price);
-                                                        // cart.setActual_amount(price);
-                                                        // cart.setMarketPrice(product_price_amount);
-                                                    }
-
-
-                                                  //  if (category_int == (categoryListString.get(k))) {
-                                                        product_name = jsonObject.getString("product_name");
-                                                        categoryListProductName.add(product_name);
-
-
-                                                        Browse_Category browse_category = null;
-                                                        JSONArray CartArray = JObject.getJSONArray("cart");
-                                                        if (CartArray.length() != 0) {
-                                                            cart_priceList = new ArrayList<>();
-                                                            for (int i = 0; i < CartArray.length(); i++) {
-
-                                                                Log.e("datacount", String.valueOf(CartArray.length()));
-                                                                JSONObject jsonObject1 = CartArray.getJSONObject(i);
-                                                                product_price_id = jsonObject1.getString("price_id");
-                                                                cart_quantity = jsonObject1.getInt("quantity");
-                                                                int product_id = jsonObject1.getInt("product_id");
-                                                                int cart_id = jsonObject1.getInt("id");
-                                                                browse_category = new Browse_Category();
-                                                                browse_category.setCart_price_id(product_price_id);
-                                                                browse_category.setCart_quantity(cart_quantity);
-                                                                browse_category.setData_id(cart_id);
-
-                                                                if (id == product_id) {
-                                                                    cart_id1 = jsonObject1.getInt("id");
-                                                                    quantity = jsonObject1.getInt("quantity");
-                                                                    cartIdList.add(cart_id1);
-                                                                    Log.e("cartIdList", cartIdList.toString());
-
-                                                                    if (product_id == productIdPrice && priceQuantity == 1) {
-                                                                        priceKesouk = jsonObject2.getString("actual_selling_amount");
-                                                                        priceSelling = jsonObject2.getString("price");
-                                                                        Log.e("product_price_cart", priceKesouk);
-                                                                        Log.e("priceSelling", priceSelling);
-
-
-                                                                        String dukan_price = priceKesouk;
-                                                                        float price = Float.parseFloat(dukan_price);
-                                                                        float Dukanprice = price * quantity;
-                                                                        Log.e("subtotal", String.valueOf(Dukanprice));
-                                                                        subTotalList.add(Dukanprice);
-
-                                                                        Log.e("subtotal", subTotalList.toString());
-
-
-                                                                    }
-                                                                }
-
-
-                                                                Log.e("cart_quantity", String.valueOf(browse_category.getCart_quantity()));
-                                                                cart_priceList.add(browse_category);
-                                                            }
-                                           /* double subTotal = 0;
-                                            for(Browse_Category p : cart_priceList) {
-                                                int quantity = browse_category.getCart_quantity(p);
-                                                subTotal += p.getDukanPrice() * quantity;
-                                            }*/
-
-                                                            //grossAmount.setText("Subtotal: $" + subTotal);
-
-
-                                                        } else {
-                                                            Toast.makeText(getActivity(), "No items in your cart", Toast.LENGTH_LONG).show();
-
-                                                        }
-
-                                                        singleItem.add(new SingleItemModel(product_name, product_image, discount1, null, cart_id1, quantity, priceKesouk, priceSelling, cartIdList));
-                                                    dm.setAllItemsInSection(singleItem);
-                                                    allSampleData.add(dm);
-
-                                                  //  }
-                                                }
-
-
-
-
-                                           // }
-
-                                            Log.e("cagyprname", categoryListProductName.toString());
-                                            Log.e("cartIdList", cartIdList.toString());
-
-                                        } else {
-                                            Toast.makeText(getActivity(), "No items in your cart", Toast.LENGTH_LONG).show();
-                                        }
-
-
-                                    }
-
-
-                                } else {
-                                    String reason = object.getString("reason");
-                                    Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
-
-                                }
-
-                               /* Cart_Adapter adapter = new Cart_Adapter(getActivity(), cartArrayList,cart_priceList);
-
-                                recycler_view.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
-                                recycler_view.setAdapter(adapter);*/
-
-                                Log.e("list", String.valueOf(allSampleData));
-                                a=0;
-                                for (int i = 0; i < subTotalList.size(); i++) {
-
-                                    a = a + subTotalList.get(i);
-
-                                }
-                                Log.e("subtotal", String.valueOf(a));
-                                item_count.setText(cartcount + " Items - SH "+a);
-
-
-                                RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getActivity(), allSampleData, categoryList);
-
-                                recyler_main.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                                recyler_main.setNestedScrollingEnabled(false);
-                                recyler_main.setAdapter(adapter);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-
-                    Log.e("verify_otp_error", "error" + volleyError);
-                    if (volleyError instanceof TimeoutError) {
-                        Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
-
-                    VolleyLog.d("responseError", "Error: " + volleyError);
-
-                }
-            }) {
-
-              /*  @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=UTF-8";
-
-
-                }*/
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> params = new HashMap<>();
-
-
-                    return params;
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> header = new HashMap<String, String>();
-                    header.put("Content-Type", "application/json; charset=utf-8");
-                    return header;
-                }
-
-            };
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                Constants.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(jsonObjReq);
-
-
-    }
 
 
     public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemRowHolder> {
@@ -1621,6 +1254,8 @@ public class Basket_Fragment extends Fragment {
             holder.mRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    Log.e("fetchdata",db.getAllData().toString());
                     RequestQueue queue = Volley.newRequestQueue(mContext);
                     Map<String, String> params = new HashMap<String, String>();
                     Browse_Category browse_category = cart_priceList.get(position);
@@ -2162,13 +1797,15 @@ public class Basket_Fragment extends Fragment {
                                 String status = object.getString("status");
                                 if (status.equals("Success")) {
                                     JSONObject JObject = new JSONObject(String.valueOf(object));
-                                    int cartcount = JObject.getInt("cartcount");
+                                     cartcount = JObject.getInt("cartcount");
+                                    item_count.setText(cartcount + " Items - SH 40");
                                     if (cartcount == 0) {
                                         recyler_main.setVisibility(View.GONE);
                                         mCheckout.setVisibility(View.GONE);
                                         items_layout.setVisibility(View.GONE);
                                         noCart.setVisibility(View.VISIBLE);
                                     } else {
+                                        mCheckout.setVisibility(View.VISIBLE);
                                         JSONArray DataArray = JObject.getJSONArray("data");
                                         Log.e("data", "data");
 

@@ -32,7 +32,7 @@ import java.lang.reflect.Field;
  * Created by user on 17-Jan-18.
  */
 public class Navigation_Tab_Activity extends AppCompatActivity {
-    public BottomNavigationView bottomNavigationView;
+    public static  BottomNavigationView bottomNavigationView;
     DB db;
     String notification = "";
 

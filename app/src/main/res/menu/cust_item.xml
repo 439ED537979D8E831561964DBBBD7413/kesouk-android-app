@@ -21,7 +21,7 @@
                 android:id="@+id/my_acc"
                 android:title="@string/my_acc"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_my_account"
+                android:icon="@drawable/menu_accounts"
 
                 />
 
@@ -30,60 +30,54 @@
                 android:id="@+id/my_orders"
                 android:title="@string/my_orders"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_my_orders"
+                android:icon="@drawable/menu_myorders"
 
 
                 >
             </item>
 
             <item
-                android:id="@+id/my_addr"
-                android:title="@string/my_address"
+                android:id="@+id/my_wallet"
+                android:title="@string/my_wallet"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_resize"
+                android:icon="@drawable/menu_wallet"
 
                 />
             <item
                 android:id="@+id/faq"
                 android:title="@string/faq"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_faq"
+                android:icon="@drawable/menu_faq"
 
                 />
             <item
                 android:id="@+id/contact"
                 android:title="@string/contact"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_contact_us"
+                android:icon="@drawable/menu_contact_us"
 
                 />
             <item
                 android:id="@+id/about"
                 android:title="@string/about"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_about_us"
+                android:icon="@drawable/menu_about_us"
 
                 />
             <item
                 android:id="@+id/terms"
                 android:title="@string/termscond"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_terms"
+                android:icon="@drawable/menu_termsandconditions"
 
                 />
-            <item
-                android:id="@+id/change_pass"
-                android:title="@string/changepass"
-                app:showAsAction="never"
-                android:icon="@drawable/settings_resize"
 
-                />
 
             <item
                 android:id="@+id/signin"
                 android:title="@string/logout"
                 app:showAsAction="never"
-                android:icon="@drawable/settings_logout"
+                android:icon="@drawable/menu_logout"
 
 
                 />

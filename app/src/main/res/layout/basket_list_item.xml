@@ -99,8 +99,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name_layout"
                 android:layout_toRightOf="@+id/image_layout"
-                android:layout_marginTop="@dimen/padding_5"
-                android:layout_marginBottom="@dimen/padding_5"
 
                 >
 
@@ -123,8 +121,8 @@
 
                 <ImageView
                     android:id="@+id/remove"
-                    android:layout_width="@dimen/padding_35"
-                    android:layout_height="@dimen/padding_30"
+                    android:layout_width="@dimen/padding_20"
+                    android:layout_height="@dimen/padding_20"
                     android:layout_marginRight="@dimen/padding_5"
                     android:src="@drawable/delete_icon"
                     android:layout_alignParentRight="true"
@@ -167,8 +165,6 @@
                     android:layout_marginBottom="@dimen/padding_5"
                     android:layout_marginRight="@dimen/padding_5"
                     android:background="@drawable/button_red"
-                    android:paddingTop="@dimen/padding_5"
-                    android:paddingBottom="@dimen/padding_5"
                     android:paddingLeft="@dimen/padding_5"
                     android:paddingRight="@dimen/padding_5"
 
@@ -177,10 +173,10 @@
 
                     <ImageView
                         android:id="@+id/minusimg"
-                        android:layout_width="@dimen/padding_20"
-                        android:layout_height="@dimen/padding_20"
+                        android:layout_width="@dimen/padding_15"
+                        android:layout_height="@dimen/padding_15"
                         android:src="@drawable/minus_icon"
-                        android:layout_marginTop="@dimen/padding_5"
+                        android:layout_marginTop="@dimen/padding_10"
                         />
 
                     <TextView
@@ -197,11 +193,11 @@
 
                     <ImageView
                         android:id="@+id/plusimg"
-                        android:layout_width="@dimen/padding_20"
-                        android:layout_height="@dimen/padding_20"
+                        android:layout_width="@dimen/padding_15"
+                        android:layout_height="@dimen/padding_15"
                         android:layout_toRightOf="@+id/count_cart"
                         android:src="@drawable/plus_icon"
-                        android:layout_marginTop="@dimen/padding_5"
+                        android:layout_marginTop="@dimen/padding_10"
 
 
                         />

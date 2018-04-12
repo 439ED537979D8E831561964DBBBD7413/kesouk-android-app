@@ -153,7 +153,6 @@ public class MyAddress_Activity extends AppCompatActivity {
                                     {
                                         Log.e("postion", String.valueOf(i));
                                         address_position=1;
-
                                         location_text = jsonObject1.getString("location");
                                         country = jsonObject1.getString("country");
                                         city = jsonObject1.getString("city");
@@ -245,6 +244,11 @@ public class MyAddress_Activity extends AppCompatActivity {
                                 recycler_view.setLayoutManager(new LinearLayoutManager(MyAddress_Activity.this, LinearLayoutManager.VERTICAL, false));
                                 recycler_view.setAdapter(adapter);
                             }
+                            else
+                            {
+                                Toast.makeText(MyAddress_Activity.this,"No Address Available",Toast.LENGTH_LONG).show();
+
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -333,6 +337,7 @@ public class MyAddress_Activity extends AppCompatActivity {
 
                     }
                 });
+
 
             } else if (holder instanceof RecyclerViewAdapter.FooterViewHolder) {
                 FooterViewHolder footerHolder = (FooterViewHolder) holder;
@@ -619,6 +624,8 @@ public class MyAddress_Activity extends AppCompatActivity {
         private class HeaderViewHolder extends RecyclerView.ViewHolder {
             LinearLayout address_layout;
             TextView myAddr;
+            TextView defaultaddressTxt;
+            RelativeLayout relativeLayout;
 
             public HeaderViewHolder(View view) {
                 super(view);

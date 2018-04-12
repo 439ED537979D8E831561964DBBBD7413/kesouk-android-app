@@ -1173,6 +1173,39 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
             }
 
+            if (transaction.equals("category")) {
+                itemRowHolder.viewall.setVisibility(View.VISIBLE);
+                itemRowHolder.viewall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Home_Fragment.home_home_frag = 2;
+                        Customer_Fragment.cust_home_frag=1;
+                        Customer_Fragment.cust_category_selected_name = singleSectionItems.get(0).getName();
+
+
+                        Category_Fragment newFragment = new Category_Fragment();
+
+                        Bundle args = new Bundle();
+                        args.putInt("position", 0);
+
+                        newFragment.setArguments(args);
+
+
+                        FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.rldContainer, newFragment);
+                        transaction.addToBackStack("Some String");
+                        transaction.commit();
+
+
+                    }
+                });
+
+
+            }else
+            {
+                itemRowHolder.viewall.setVisibility(View.GONE);
+            }
 
 
 
@@ -1272,7 +1305,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
         public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-            protected TextView itemTitle, itemCaption;
+            protected TextView itemTitle, viewall;
 
             protected RecyclerView recycler_view_list;
             protected ImageView slider;
@@ -1282,12 +1315,12 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                 super(view);
 
                 this.itemTitle = (TextView) view.findViewById(R.id.deals);
-                this.itemCaption = (TextView) view.findViewById(R.id.caption);
+                this.viewall = (TextView) view.findViewById(R.id.viewall);
                 this.slider = (ImageView) view.findViewById(R.id.slider);
                 this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
                 mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
                 itemTitle.setTypeface(mDynoRegular);
-                itemCaption.setTypeface(mDynoRegular);
+                viewall.setTypeface(mDynoRegular);
 
 
             }

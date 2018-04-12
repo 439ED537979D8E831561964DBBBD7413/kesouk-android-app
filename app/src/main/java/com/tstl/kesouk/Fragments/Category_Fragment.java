@@ -84,6 +84,7 @@ import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_category_selected_name;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_search_home;
 import static com.tstl.kesouk.Fragments.Home_Fragment.home_category_selected_name;
+import static com.tstl.kesouk.Fragments.Home_Fragment.home_home_frag;
 import static com.tstl.kesouk.Fragments.Home_Fragment.search_home;
 
 
@@ -652,7 +653,41 @@ public class Category_Fragment extends Fragment {
                 }
             }
 */
-        return view;
+
+        if (db.getAllLogin().size() == 1) {
+            if (Customer_Fragment.cust_home_frag == 2) {
+
+
+                Bundle bundle = this.getArguments();
+                if (bundle != null) {
+                    // int myInt = bundle.getInt("position",defaultvale);
+
+                    mPosition = bundle.getInt("position");
+                    Log.i("position", String.valueOf(mPosition));
+                    //spinner.setSelection(mPosition + 1);
+                }
+
+
+            }
+
+
+        }else {
+            if (home_home_frag == 2) {
+
+
+                Bundle bundle = this.getArguments();
+                if (bundle != null) {
+                    // int myInt = bundle.getInt("position",defaultvale);
+
+                    mPosition = bundle.getInt("position");
+                    Log.i("position", String.valueOf(mPosition));
+                    //spinner.setSelection(mPosition + 1);
+                }
+
+
+            }
+        }
+            return view;
     }
 
 
@@ -1265,6 +1300,7 @@ public class Category_Fragment extends Fragment {
                                                     Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist()));
                                                 }
                                                 getWishList();
+                                                getProductList(search_word1);
                                             } else {
                                                 String reason = object.getString("reason");
                                                 Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();
@@ -1369,7 +1405,7 @@ public class Category_Fragment extends Fragment {
                                                     Log.e("fetch", String.valueOf(db.getAllWishlist()));
                                                 }
                                                 //getWishList();
-                                                 //getProductList(search_word1);
+                                                 getProductList(search_word1);
 
 
 
@@ -1695,6 +1731,14 @@ public class Category_Fragment extends Fragment {
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!wishCheckList.get(position).equals("0"))
+                    {
+                        togglebtnStatus = 1;
+                    }else
+                    {
+                        togglebtnStatus = 0;
+                    }
+
                     Product_Description_Fragment newFragment = new Product_Description_Fragment();
                     Bundle args = new Bundle();
                     args.putInt("position", position);
@@ -1711,6 +1755,7 @@ public class Category_Fragment extends Fragment {
                     args.putString("price_product_id", browse_category.getProduct_priceId());
                     args.putString("addtocart", holder.mAddtoCArt.getText().toString());
                     args.putInt("favorite", togglebtnStatus);
+                    args.putString("wishcheckId", wishCheckList.get(position));
                    // args.putString("favorite", String.valueOf(wishCheckList.get(position)));
 
                     Log.e("args",args.toString());

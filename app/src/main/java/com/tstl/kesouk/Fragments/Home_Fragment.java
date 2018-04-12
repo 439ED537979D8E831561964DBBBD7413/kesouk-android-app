@@ -106,7 +106,6 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private RelativeLayout fragmentLayout;
     //EditText search;
-    String name_category, image_url_category, transaction_with, section_name, product_price_id;
     public static int listview_onclick, home_home_frag = 0;
     public String caption_letter;
     ExpandableListAdapter1 mMenuAdapter;
@@ -117,16 +116,16 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     ArrayList<SectionDataModel> section_name_list = new ArrayList<>();
     Dialog dialog;
     TextView mShare, mCancel, mFacebook, mTwitter, mInstagram, mSnapchat, mFoodrecipes_sections;
-
+    public static int home_onclick=0;
 
     public static ArrayList<Products> listChild;
     LinkedHashMap<String, List<Products>> listDataChild = new LinkedHashMap<String, List<Products>>();
     Products products = Products.getInstance();
     int sub_category_id, status, product_quantity_type;
-    String name, image_url, icon_url, product_name, product_random_id, product_discount;
-    private SliderLayout imageSlider;
+    String name, image_url, icon_url, product_name, product_image, product_discount,product_random_id,product_price_kesoukPrice;    private SliderLayout imageSlider;
     View.OnClickListener myOnClickListener;
     private List<Products> horizontal_category_list;
+    String product_qty,product_qty_name,productRandomId="";
     //Category_Adapter horizontal_category_adapter;
     public static List<String> home_categories_list = new ArrayList<String>();
     public static List<String> home_categories_image_list = new ArrayList<String>();
@@ -142,6 +141,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     boolean doubleBackToExitPressedOnce = false;
     int ad_status = 0, id;
     public static int home_signin_backpress = 0;
+  String name_category, image_url_category, transaction_with, section_name, product_price_id,category,sub_category,product_price_MarketPrice;
 
 
    // private TextView mToolbarTitle;
@@ -743,8 +743,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 singleItemModel.setName(name_category);
                                                 Log.e("name_category", name_category);
                                                 Log.e("image_url_category", image_url_category);
-                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1,product_random_id));
-                                                deals_list.add(singleItemModel);
+                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1,productRandomId));                                                deals_list.add(singleItemModel);
 
                                                 Log.e("sections", "sectoims");
 
@@ -781,6 +780,12 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 int discount_price = jsonObject1.getInt("discount");
                                                 product_discount = jsonObject1.getString("actual_selling_amount");
 
+                                                product_random_id = jsonObject1.getString("product_random_id");
+                                                category = jsonObject1.getString("category");
+                                                sub_category = jsonObject1.getString("sub_category");
+
+
+                                                singleItemModel.setProductRandomId(product_random_id);
                                                 int id = jsonObject1.getInt("id");
                                                // int category = jsonObject1.getInt("category");
                                                 singleItemModel.setId(id);
@@ -1117,9 +1122,38 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
             }
 
+            if (transaction.equals("category")) {
+                itemRowHolder.viewall.setVisibility(View.VISIBLE);
+                itemRowHolder.viewall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Home_Fragment.home_home_frag = 2;
+                        Home_Fragment.home_category_selected_name = singleSectionItems.get(0).getName();
 
 
+                        Category_Fragment newFragment = new Category_Fragment();
 
+                        Bundle args = new Bundle();
+                        args.putInt("position", 0);
+
+                        newFragment.setArguments(args);
+
+
+                        FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.rldContainer, newFragment);
+                        transaction.addToBackStack("Some String");
+                        transaction.commit();
+
+
+                    }
+                });
+
+
+            }else
+            {
+                itemRowHolder.viewall.setVisibility(View.GONE);
+            }
 
 /*
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
@@ -1165,33 +1199,40 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
                             } else if (transaction.equals("product")) {
 
+                                home_onclick=1;
+                                Product_Description_Fragment newFragment = new Product_Description_Fragment();
+                                Bundle args = new Bundle();
+                                /*args.putInt("position", position);
+                                args.putString("product_random_id", singleSectionItems.get(position).getProductRandomId());
+                                args.putString("category", singleSectionItems.get(position).getProductCategory());
+                                args.putString("subcategory", singleSectionItems.get(position).getProductSubcategory());
+                                args.putString("id", singleSectionItems.get(position).getProductId());
+                                args.putString("qty_name", dataList.get(position).getAllItemsInSection().get(position).getProductQtyName());
+                                args.putString("price", singleSectionItems.get(position).getProductActualamount());
+                                args.putString("qty", singleSectionItems.get(position).getProductQuantity());*/
+                                args.putString("search_word",singleSectionItems.get(position).getProduct_random_id());
+                                // args.putString("amount","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
+                                // args.putString("search_word","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
+                               /* args.putString("product_price_id", singleSectionItems.get(position).getProductId());
+                                args.putInt("product_id", singleSectionItems.get(position).getId());
+                                args.putString("price_product_id", singleSectionItems.get(position).getProductId());
 
-                         /*       Home_Fragment.home_home_frag = 1;
-                                Customer_Fragment.home_frag = 1;
+                                int prod = singleSectionItems.get(position).getDiscount_price();
+                                if (prod > 0) {
+                                    args.putString("other_price", singleSectionItems.get(position).getProductPrice());
 
-                                Product_Details_Activity newFragment = new Product_Details_Activity();
+                                } else {
+                                    args.putString("other_price", "empty");
 
-                                Bundle bundle = new Bundle();
-                                bundle.putString("name", singleSectionItems.get(position).getName());
-                                bundle.putInt("id", singleSectionItems.get(position).getId());
-                                bundle.putInt("category", singleSectionItems.get(position).getCategory());
-                                bundle.putInt("product_id", singleSectionItems.get(position).getId());
-                                bundle.putString("product_price_id", singleSectionItems.get(position).getProduct_price_id());
-                                bundle.putInt("discount_price", singleSectionItems.get(position).getDiscount_price());
-                                bundle.putInt("position_onclick", position);
+                                }*/
+                                newFragment.setArguments(args);
 
-
-                                Log.e("name",singleSectionItems.get(position).getName());
-                                Log.e("id", String.valueOf(singleSectionItems.get(position).getId()));
-                                Log.e("category", String.valueOf(singleSectionItems.get(position).getCategory()));
-                                Log.e("product_id", String.valueOf(singleSectionItems.get(position).getId()));
-                                Log.e("getDiscount_price", String.valueOf(singleSectionItems.get(position).getDiscount_price()));
-                                newFragment.setArguments(bundle);
+                                Log.e("args",args.toString());
 
                                 FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.container_fragment, newFragment);
+                                transaction.replace(R.id.rldContainer, newFragment);
                                 transaction.addToBackStack("Some String");
-                                transaction.commit();*/
+                                transaction.commit();
 
                             }
                         }
@@ -1210,7 +1251,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
         public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-            protected TextView itemTitle, itemCaption;
+            protected TextView itemTitle, viewall;
 
             protected RecyclerView recycler_view_list;
             protected ImageView slider;
@@ -1220,12 +1261,12 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                 super(view);
 
                 this.itemTitle = (TextView) view.findViewById(R.id.deals);
-                this.itemCaption = (TextView) view.findViewById(R.id.caption);
+                this.viewall = (TextView) view.findViewById(R.id.viewall);
                 this.slider = (ImageView) view.findViewById(R.id.slider);
                 this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
                 mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
                 itemTitle.setTypeface(mDynoRegular);
-                itemCaption.setTypeface(mDynoRegular);
+                viewall.setTypeface(mDynoRegular);
 
 
             }

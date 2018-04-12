@@ -52,7 +52,7 @@
             android:text="@string/view_all"
             android:textSize="@dimen/padding_15"
             android:textStyle="bold"
-            android:id="@+id/caption"
+            android:id="@+id/viewall"
             android:textColor="@color/facebook"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/padding_10"

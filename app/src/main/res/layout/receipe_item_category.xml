@@ -75,6 +75,7 @@
                     android:textSize="@dimen/padding_10"
                     android:textStyle="normal"
                     android:layout_below="@+id/name_layout"
+                    android:visibility="gone"
 
 
                     />

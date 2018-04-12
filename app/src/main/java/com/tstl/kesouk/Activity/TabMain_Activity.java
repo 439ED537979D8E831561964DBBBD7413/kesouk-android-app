@@ -411,8 +411,8 @@ public class TabMain_Activity extends AppCompatActivity implements  NavigationVi
                 }
 
                 break;
-            case R.id.my_addr:
-                if(db.getAllLogin().size()==0)
+            case R.id.my_orders:
+              /*  if(db.getAllLogin().size()==0)
                 {
                     home_signin_backpress = 1;
                     Intent intent2 = new Intent(TabMain_Activity.this, Login_Activity.class);
@@ -423,7 +423,10 @@ public class TabMain_Activity extends AppCompatActivity implements  NavigationVi
                 {
                      Intent my_addr = new Intent(TabMain_Activity.this, MyAddress_Activity.class);
                 startActivity(my_addr);
-                }
+                }*/
+
+                break;
+            case R.id.my_wallet:
 
                 break;
             case R.id.contact:
@@ -435,8 +438,7 @@ public class TabMain_Activity extends AppCompatActivity implements  NavigationVi
             case R.id.terms:
 
                 break;
-            case R.id.change_pass:
-
+            case R.id.faq:
 
                 break;
             case R.id.signin:
@@ -459,6 +461,14 @@ public class TabMain_Activity extends AppCompatActivity implements  NavigationVi
                                 @Override
                                 public void onClick(DialogInterface arg0, int arg1) {
                                     db.removeLogin();
+                                 /* db.removeFname();
+                                    db.removeLname();
+                                    db.removeEmail();
+                                    db.removeDob();
+                                    db.removeMob();
+                                    db.removeLandline();
+                                    db.removePromotions();*/
+
                                     logout_backpress=1;
                                     Intent intent2 = new Intent(TabMain_Activity.this, Login_Activity.class);
                                     intent2.addCategory(Intent.CATEGORY_HOME);
