@@ -109,6 +109,16 @@ public class Recipe implements Serializable {
 
     String title;
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    int categoryId;
+
     public String getSimilar_title() {
         return similar_title;
     }

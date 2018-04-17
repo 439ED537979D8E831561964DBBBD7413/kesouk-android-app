@@ -4,6 +4,8 @@
     <string name="email_addr">E-Mail Address</string>
     <string name="passwordd">Password</string>
     <string name="login">Login</string>
+    <string name="remItem">Proceed to selecting slot for remaining items</string>
+    <string name="stdItem">Go back to choosing a Standard Delivery slot for all items</string>
     <string name="remember_me">Remember Me</string>
     <string name="register">Register</string>
     <string name="first_time_shopping">First Time Shopping with Us?</string>

@@ -146,6 +146,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
     DB db;
     public static int logout_backpress=0;
     String product_qty,product_qty_name,productRandomId="";
+    public  List<String> banner_typename = new ArrayList<String>();
 
 
   //  private TextView mToolbarTitle,toolbar_title;
@@ -821,7 +822,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                                 name_category = jsonObject1.getString("product_name");
                                                 image_url_category = jsonObject1.getString("display_image");
                                                 int discount_price = jsonObject1.getInt("discount");
-                                                product_discount = jsonObject1.getString("actual_selling_amount");
+
 
 
                                                 product_random_id = jsonObject1.getString("product_random_id");
@@ -966,14 +967,13 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
                                 }
                             } else {
-                                Toast.makeText(getActivity(), "No Recipes Sections ! ", Toast.LENGTH_LONG).show();
-
+                                Toast.makeText(getActivity(), "No Recipes Found ! ", Toast.LENGTH_LONG).show();
                             }
 
 
                             Recipes_Adapter adapter = new Recipes_Adapter(getActivity(), recipeArrayList);
 
-                            foodrecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                            foodrecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             foodrecyclerView.setNestedScrollingEnabled(false);
                             foodrecyclerView.setAdapter(adapter);
 
@@ -1041,10 +1041,11 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                     Log.e("datacount", String.valueOf(DataArray.length()));
                                     JSONObject jsonObject = DataArray.getJSONObject(i);
                                     image_url = jsonObject.getString("image_url");
+                                    String typename = jsonObject.getString("typename");
                                     banner_image_list.add(Constants.BANNER_IMAGES + image_url);
                                     Log.e("image_url", Constants.BANNER_IMAGES + image_url);
                                     Log.e("image_list", String.valueOf(banner_image_list));
-
+                                    banner_typename.add(typename);
                                     home_products = new Home_Products();
 
                                     home_products.setImage_Banner(Constants.BANNER_IMAGES + image_url);
@@ -1066,6 +1067,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
                                     for (String name : file_maps.keySet()) {
                                         TextSliderView textSliderView = new TextSliderView(getActivity());
+
                                         // initialize a SliderLayout
                                         textSliderView
                                                 .image(file_maps.get(name))
@@ -1076,6 +1078,33 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                         textSliderView.bundle(new Bundle());
                                         textSliderView.getBundle()
                                                 .putString("extra", name);
+
+
+                                        final String temp=banner_typename.get(i);
+
+                                        textSliderView.image(file_maps.get(name)).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                            @Override
+                                            public void onSliderClick(BaseSliderView slider) {
+                                                cust_search_home=1;
+
+                                                Category_Fragment newFragment = new Category_Fragment();
+                                                Bundle args = new Bundle();
+                                                args.putString("search", temp);
+                                                newFragment.setArguments(args);
+                                                Log.e("searchword",temp);
+
+
+                                                FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
+                                                transaction.replace(R.id.rldContainer, newFragment);
+                                                transaction.addToBackStack("Some String");
+                                                transaction.commit();
+
+                                            }
+                                        });
+
+
+
+
 
                                         imageSlider.addSlider(textSliderView);
                                         imageSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);

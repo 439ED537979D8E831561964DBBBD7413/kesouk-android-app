@@ -187,10 +187,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="Within two hours"
+            android:maxLines="3"
+            android:text="Within two hours "
             android:textSize="@dimen/padding_15"
+
 
             />
 
@@ -225,8 +225,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:maxLines="1"
-            android:singleLine="true"
+            android:maxLines="3"
             android:text="kshs 50.00 (Express Delivery)"
             android:textSize="@dimen/padding_15"
 

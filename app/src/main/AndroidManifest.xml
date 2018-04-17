@@ -87,6 +87,10 @@
             android:name=".Activity.CheckoutScreen3"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.CheckoutScreen4"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".Activity.Add_Address_Activity"

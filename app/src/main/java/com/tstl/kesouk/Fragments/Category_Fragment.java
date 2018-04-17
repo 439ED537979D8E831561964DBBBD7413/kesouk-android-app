@@ -1567,9 +1567,10 @@ public class Category_Fragment extends Fragment {
                                                         Log.e("fetch", String.valueOf(db.getAllData()));
                                                     }
                                                     //getProductList(search_word1);
+
                                                     getCart();
-
-
+                                                    holder.mAddtoCArt.setText("GO TO CART");
+/*
                                                     AlertDialog.Builder builder =
                                                             new AlertDialog.Builder(mContext);
                                                     builder.setTitle("Message");
@@ -1581,7 +1582,7 @@ public class Category_Fragment extends Fragment {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                     dialog.dismiss();
-                                                                    holder.mAddtoCArt.setText("GO TO CART");
+
                                                                 }
                                                             });
 
@@ -1596,7 +1597,7 @@ public class Category_Fragment extends Fragment {
                                                             });
                                                     AlertDialog dialog = builder.create();
                                                     // display dialog
-                                                    dialog.show();
+                                                    dialog.show();*/
                                                 } else {
                                                     String reason = object.getString("reason");
                                                     Toast.makeText(mContext, reason, Toast.LENGTH_LONG).show();

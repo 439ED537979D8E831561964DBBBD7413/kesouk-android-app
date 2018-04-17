@@ -49,6 +49,8 @@ public class Constants {
     public static final String ADD_NEW_ADDRESS = DOMAIN+"/addaddress";
     public static final String GET_USER_ADDRESS = DOMAIN+"/getuseraddress?customer_id=";
     public static final String ADD_RECEIPETOCART = DOMAIN+"/addrecipetocart";
+    public static final String TIMESLOTS = DOMAIN+"/getneededtimeslots?date=";
+    public static final String PLACE_ORDER = DOMAIN+"/placeorder";
 
 
     public static final String BANNER_IMAGES = END_DOMAIN+"/assets/homepage/banner";

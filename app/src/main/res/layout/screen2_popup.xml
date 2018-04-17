@@ -60,20 +60,55 @@
 
 
         />
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="@string/submit"
-        android:textSize="@dimen/padding30"
-        android:textColor="@color/white"
-        android:background="@color/app_bg"
-        android:layout_marginTop="@dimen/padding_50"
-        android:layout_alignParentBottom="true"
 
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/note_text"
+        android:gravity="center"
+        android:id="@+id/layout"
+
+        >
+        <Button
+            android:id="@+id/firstBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/remItem"
+            android:textSize="@dimen/padding_15"
+            android:textColor="@color/white"
+            android:background="@drawable/round_button_brown"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textStyle="bold"
+
+
+            />
+        <Button
+            android:id="@+id/last_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_5"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/stdItem"
+            android:textSize="@dimen/padding_15"
+            android:textColor="@color/white"
+            android:background="@drawable/round_button_brown"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/login_btn"
+            android:textStyle="bold"
+
+            />
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

@@ -78,6 +78,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
     View tab1,tab2,tab3;
     DB db;
     String title;
+    int simlartitle=0;
 
 
   /*  public static com.tstl.kesouk.Fragments.Recipe_Fragment newInstance() {
@@ -139,11 +140,21 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
             recipe_id = bundle1.getInt("position");
             category_id = bundle1.getInt("category_id");
             title = bundle1.getString("title");
-            mToolbarTitle.setText(title);
+            getRecipeDetails(recipe_id);
+            getSimilarProducts(recipe_id,category_id);
         }
-        getRecipeDetails();
-        getSimilarProducts();
-        mToolbarTitle.setVisibility(View.VISIBLE);
+
+
+        if(simlartitle==1)
+        {
+
+        }
+        else
+        {
+            mToolbarTitle.setVisibility(View.VISIBLE);
+            mToolbarTitle.setText(title);
+
+        }
 
 
         setFont();
@@ -178,11 +189,10 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
         quick_info.setTypeface(mDynoRegular);
         cooking_steps.setTypeface(mDynoRegular);
         textview.setTypeface(mDynoRegular);
-        mToolbarTitle.setTypeface(mDynoRegular);
         textview1.setTypeface(mDynoRegular);
 
     }
-    private void getSimilarProducts() {
+    private void getSimilarProducts(int recipe_id,int category_id) {
         RequestQueue queue = Volley.newRequestQueue(Recipe_Youtube_Activity.this);
 
 
@@ -209,12 +219,14 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
                                     String food_name = jsonObject.getString("recipe_name");
                                     String food_url = jsonObject.getString("recipe_image");
                                     int id = jsonObject.getInt("id");
+                                    int cat_id = jsonObject.getInt("recipe_category");
 
                                     recipe = new Recipe();
 
                                     recipe.setSimilar_title(food_name);
                                     recipe.setSimilar_image(food_url);
                                     recipe.setRecipeTypeId(id);
+                                    recipe.setCategoryId(cat_id);
                                     similarProductsArrayList.add(recipe);
 
 
@@ -311,35 +323,10 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
                 @Override
                 public void onClick(View v) {
 
-                 /*   Recipe_category_list_Fragment newFragment = new Recipe_category_list_Fragment();
-                    Bundle args = new Bundle();
-                    args.putInt("position", recipe.getRecipeTypeId());
-                    newFragment.setArguments(args);
-
-                    FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container_fragment,newFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();*/
-
-
-
-              /*  SingleItemModel singleItemModel = itemsList.get(i);
-                singleItemModel.getName();
-
-                Intent intent = new Intent(mContext.getApplicationContext(),Browse_Category_Activity.class);
-
-
-
-//Create the bundle
-                Bundle bundle = new Bundle();
-//Add your data from getFactualResults method to bundle
-                bundle.putInt("category_selected_name", groupPosition);
-//Add the bundle to the intent
-                intent.putExtras(bundle);
-
-                mContext.startActivity(intent);
-*/
-
+                    simlartitle=1;
+                    getRecipeDetails(recipe.getRecipeTypeId());
+                    getSimilarProducts(recipe.getRecipeTypeId(),recipe.getCategoryId());
+                    mToolbarTitle.setText(recipe.getSimilar_title());
                 }
             });
         }
@@ -373,7 +360,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
         }
     }
 
-    private void getRecipeDetails() {
+    private void getRecipeDetails(int recipe_id) {
         RequestQueue queue = Volley.newRequestQueue(Recipe_Youtube_Activity.this);
 
 

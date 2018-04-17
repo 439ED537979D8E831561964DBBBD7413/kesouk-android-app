@@ -297,9 +297,10 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                 Log.e("fetch", String.valueOf(db.getAllData()));
                                             }
 
+                                            mAddtoCart.setText("GO TO CART");
+                                            getCart();
 
-
-                                            AlertDialog.Builder builder =
+                                           /* AlertDialog.Builder builder =
                                                     new AlertDialog.Builder(getActivity());
                                             builder.setTitle("Message");
                                             builder.setMessage(product_name.toUpperCase() + " has been added to Basket !");
@@ -310,8 +311,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which) {
                                                             dialog.dismiss();
-                                                            mAddtoCart.setText("GO TO CART");
-                                                            getCart();
+
                                                         }
                                                     });
 
@@ -326,7 +326,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                     });
                                             AlertDialog dialog = builder.create();
                                             // display dialog
-                                            dialog.show();
+                                            dialog.show();*/
                                         } else {
                                             String reason = object.getString("reason");
                                             Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();

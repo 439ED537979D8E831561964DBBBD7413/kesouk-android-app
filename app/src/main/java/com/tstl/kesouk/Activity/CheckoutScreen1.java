@@ -66,7 +66,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
     int status_code,default_address,address_position;
     public ArrayList<Login_Credentials> login_credentials = null;
     public static int CheckoutAddress=0;
-    String def_id;
+   public static String def_id;
     int def_checkbox=0;
     String defaultaddressTextView,defaultNameTextView,def_nickname,def_fNmae,def_LName,def_mob,def_city,def_house,def_resident,def_area,def_street,def_land;
 
@@ -146,6 +146,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
                                         address_position=1;
                                         def_checkbox=1;
 
+                                        db.removeDefaultaddr();
                                         location_text = jsonObject1.getString("location");
                                         country = jsonObject1.getString("country");
                                         def_city = jsonObject1.getString("city");
@@ -166,6 +167,8 @@ public class CheckoutScreen1 extends AppCompatActivity {
                                         def_area = jsonObject1.getString("area");
                                         defaultaddressTextView=def_house+ "\n"+def_city+"\n"+def_area;
                                         defaultNameTextView=def_fNmae;
+                                        db.insert_default_addr(def_house+", "+def_city+", "+def_area);
+
 /*
                     itemViewHolder.address_field.setText(login_credentials.getFirstname() + " " + login_credentials.getLastname() + "\n" + login_credentials.getHouse() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getArea());
 
@@ -236,7 +239,6 @@ public class CheckoutScreen1 extends AppCompatActivity {
 
                                 }
 
-                                Log.e("addid", id_add);
                                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(CheckoutScreen1.this, login_credentials);
                                 recycler_view.setLayoutManager(new LinearLayoutManager(CheckoutScreen1.this, LinearLayoutManager.VERTICAL, false));
                                 recycler_view.setAdapter(adapter);
@@ -321,6 +323,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
             if (holder instanceof HeaderViewHolder) {
                 HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
                 headerHolder.defaultName.setText(defaultNameTextView);
+                headerHolder.defaultEdit.setVisibility(View.GONE);
                 headerHolder.defaultAddress.setText(defaultaddressTextView);
 
                 if(def_checkbox==0)
@@ -401,6 +404,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
 
                     final Login_Credentials login_credentials = login_credentialsArrayList.get(position - 1);
                     itemViewHolder.name.setText(login_credentials.getFirstname());
+                    itemViewHolder.mEdit.setVisibility(View.GONE);
                     itemViewHolder.address_field.setText( login_credentials.getHouse() + "\n" + login_credentials.getCity() + "\n" + login_credentials.getArea());
                     itemViewHolder.mEdit.setOnClickListener(new View.OnClickListener() {
                         @Override

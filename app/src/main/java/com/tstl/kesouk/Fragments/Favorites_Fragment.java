@@ -1038,6 +1038,12 @@ public class Favorites_Fragment extends Fragment {
                     Log.e("and", state);
                     kgs = recipe.getQuantityListPojo().get(i);
 
+                    String express = browse_category.getIs_express_delivery();
+                    if (express.equals("1")) {
+                        holder.mExpress.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.mExpress.setVisibility(View.GONE);
+                    }
 
                     quanity_with_name = arg0.getItemAtPosition(i).toString() + browse_category.getProduct_qty_name();
 
@@ -1053,12 +1059,6 @@ public class Favorites_Fragment extends Fragment {
                         {
                             holder.mExpress.setVisibility(View.GONE);
                         }*/
-                        String express = browse_category.getIs_express_delivery();
-                        if (express.equals("1")) {
-                            holder.mExpress.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.mExpress.setVisibility(View.GONE);
-                        }
 
 
                     } else {

@@ -146,14 +146,16 @@ public class Basket_Fragment extends Fragment {
     public static ArrayList<Cart> cartArrayList = null;
     public static ArrayList<Browse_Category> cart_priceList = null;
     String product_name, product_image, product_price_amount, product_selling_price, product_price_id, discount, category, priceKesouk, priceSelling;
-    int price, cart_quantity, category_int, productIdPrice, priceQuantity,discount1;
+    int price, cart_quantity, category_int, productIdPrice, priceQuantity,discount1,quantity_type,getCartValue=0;
     JSONObject jsonObject2;
-    float a = 0; int cartcount;
+    float a = 0; public static int cartcount=0;
     public static int basket_logout_backpress=0,basket_home_signin_backpress=0;
     public static ArrayList<String> cart_id_arrayList = null;
     public static ArrayList<String> cart_productName_arrayList = null;
-    String market_price;
+    String  is_express_delivery = "",cart_productid;
     public static ArrayList<String> cartIdDataList = null;
+    public static int expressCount=0;
+    public static BigDecimal result;
 
 
 
@@ -180,7 +182,9 @@ public class Basket_Fragment extends Fragment {
         //  search = (ImageView) view.findViewById(R.id.search);
         items_layout = (RelativeLayout) view.findViewById(R.id.filter_layout);
         noCart = (Button) view.findViewById(R.id.no_cart);
-
+        expressCount=0;
+        getCartValue=0;
+        cartcount=0;
         recyler_main = (RecyclerView) view.findViewById(R.id.recycler_main);
         mCheckout = (Button) view.findViewById(R.id.checkout);
         // settings.setVisibility(View.VISIBLE);
@@ -227,6 +231,7 @@ public class Basket_Fragment extends Fragment {
                 if (db.getAllLogin().size() == 1) {
                       Intent intent=new Intent(getActivity(), CheckoutScreen1.class);
                       getActivity().startActivity(intent);
+
                 } else if (db.getAllLogin().size() == 0) {
                     cart_backpress = 1;
                     Intent intent = new Intent(getActivity(), Login_Activity.class);
@@ -315,6 +320,7 @@ public class Basket_Fragment extends Fragment {
 
                                 String status = object.getString("status");
                                 if (status.equals("Success")) {
+                                    getCartValue=1;
                                     JSONObject JObject = new JSONObject(String.valueOf(object));
                                      cartcount = JObject.getInt("cartcount");
                                     item_count.setText(cartcount + " Items - SH 40");
@@ -341,15 +347,18 @@ public class Basket_Fragment extends Fragment {
                                                 product_name = jsonObject.getString("product_name");
                                                 product_image = jsonObject.getString("display_image");
                                                 discount1 = jsonObject.getInt("discount");
+                                                quantity_type = jsonObject.getInt("quantity_type");
                                                 String id = jsonObject.getString("id");
-
+                                                is_express_delivery = jsonObject.getString("is_express_delivery");
                                                 cart_id_arrayList.add(id);
                                                 cart_productName_arrayList.add(product_name);
                                                 cart = new Cart();
                                                 cart.setProduct_name(product_name);
+                                                cart.setQuantity_type(quantity_type);
 
                                                 cart.setImage_url(product_image);
                                                 cart.setDiscount(discount1);
+                                                cart.setExpressDelivery(is_express_delivery);
 
 
                                                 JSONArray product_price = jsonObject.getJSONArray("product_price");
@@ -394,12 +403,14 @@ public class Basket_Fragment extends Fragment {
                                                 JSONObject jsonObject = CartArray.getJSONObject(i);
                                                 product_price_id = jsonObject.getString("price_id");
                                                 cart_quantity = jsonObject.getInt("quantity");
+                                                cart_productid = jsonObject.getString("product_id");
                                                 int id = jsonObject.getInt("id");
                                                 String id1 = jsonObject.getString("id");
                                                 browse_category = new Browse_Category();
                                                 browse_category.setCart_price_id(product_price_id);
                                                 browse_category.setCart_quantity(cart_quantity);
                                                 browse_category.setData_id(id);
+                                                browse_category.setCart_productId(cart_productid);
                                                 cartIdDataList.add(id1);
 
 
@@ -1139,7 +1150,7 @@ public class Basket_Fragment extends Fragment {
         public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             protected TextView tvTitle, tag_price, otherMarketprice, kesoukPrice, quantity_count;
 
-            protected ImageView itemImage, mRemove, mPlusImage, mMinusImage;
+            protected ImageView itemImage, mRemove, mPlusImage, mMinusImage,mExpress;
             private Typeface mDynoRegular;
 
             public MyViewHolder(View view) {
@@ -1154,7 +1165,7 @@ public class Basket_Fragment extends Fragment {
                 this.tag_price = (TextView) view.findViewById(R.id.tag_price);
                 this.otherMarketprice = (TextView) view.findViewById(R.id.off_amount);
                 this.kesoukPrice = (TextView) view.findViewById(R.id.price);
-
+                mExpress = (ImageView) view.findViewById(R.id.bike);
                 mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
                 tvTitle.setTypeface(mDynoRegular);
                 tag_price.setTypeface(mDynoRegular);
@@ -1209,7 +1220,6 @@ public class Basket_Fragment extends Fragment {
             final Browse_Category browse_category = cart_priceList.get(position);
 
 
-
             String dukan_price = cart.getDukanPrice();
             float price = Float.parseFloat(dukan_price);
             float Dukanprice = price * browse_category.getCart_quantity();
@@ -1222,6 +1232,26 @@ public class Basket_Fragment extends Fragment {
 
             holder.otherMarketprice.setPaintFlags(holder.otherMarketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+            if (getCartValue == 1) {
+                String express = cart.getExpressDelivery();
+                if (express.equals("1")) {
+                    holder.mExpress.setVisibility(View.VISIBLE);
+                    expressCount = expressCount + 1;
+                    Log.e("expressCount", String.valueOf(expressCount));
+                } else {
+                    holder.mExpress.setVisibility(View.GONE);
+                }
+
+            } else{
+
+                String express = cart.getExpressDelivery();
+                if (express.equals("1")) {
+                    holder.mExpress.setVisibility(View.VISIBLE);
+
+                } else {
+                    holder.mExpress.setVisibility(View.GONE);
+                }
+            }
 
             int convertedVal = cart.getDiscount();
             if (convertedVal > 0)
@@ -1357,6 +1387,7 @@ public class Basket_Fragment extends Fragment {
                     Browse_Category browse_category = cart_priceList.get(position);
 
                     float subtotal = 0;
+                    getCartValue=0;
                     for (Browse_Category category : cart_priceList) {
 
                         int quantity = category.getCart_quantity();
@@ -1572,7 +1603,7 @@ public class Basket_Fragment extends Fragment {
             holder.mMinusImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    getCartValue=0;
                     if (quantity <= 1) {
 
                     } else {
@@ -1726,7 +1757,7 @@ public class Basket_Fragment extends Fragment {
             int quantity = browse_category.getCart_quantity();
             subtotal += Float.valueOf(cart.getDukanPrice()) * quantity;
         }
-        BigDecimal result = round(subtotal, 2);
+         result = round(subtotal, 2);
 
         item_count.setText("Items - " + cartcount + " SH " + String.valueOf(result));
 
@@ -1796,6 +1827,7 @@ public class Basket_Fragment extends Fragment {
 
                                 String status = object.getString("status");
                                 if (status.equals("Success")) {
+                                    getCartValue=0;
                                     JSONObject JObject = new JSONObject(String.valueOf(object));
                                      cartcount = JObject.getInt("cartcount");
                                     item_count.setText(cartcount + " Items - SH 40");
@@ -1818,11 +1850,12 @@ public class Basket_Fragment extends Fragment {
                                                 product_name = jsonObject.getString("product_name");
                                                 product_image = jsonObject.getString("display_image");
                                                 discount1 = jsonObject.getInt("discount");
+                                                is_express_delivery = jsonObject.getString("is_express_delivery");
 
 
                                                 cart = new Cart();
                                                 cart.setProduct_name(product_name);
-
+                                                cart.setExpressDelivery(is_express_delivery);
                                                 cart.setImage_url(product_image);
                                                 cart.setDiscount(discount1);
 
@@ -1843,6 +1876,7 @@ public class Basket_Fragment extends Fragment {
                                                     cart.setDukanPrice(product_selling_price);
                                                     cart.setActual_amount(price);
                                                     cart.setMarketPrice(product_price_amount);
+
                                                   //  cart.setOtherMarketPrice(market_price);
                                                 }
 

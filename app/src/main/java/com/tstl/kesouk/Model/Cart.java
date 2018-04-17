@@ -37,6 +37,16 @@ public class Cart implements Serializable {
     }
 
     int actual_amount;
+
+    public String getExpressDelivery() {
+        return ExpressDelivery;
+    }
+
+    public void setExpressDelivery(String expressDelivery) {
+        ExpressDelivery = expressDelivery;
+    }
+
+    String ExpressDelivery;
     public String getProduct_name() {
         return product_name;
     }

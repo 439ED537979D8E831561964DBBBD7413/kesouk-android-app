@@ -21,7 +21,7 @@ public class DB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database Name
     private static final String DATABASE_NAME = "kesouk";
@@ -38,6 +38,7 @@ public class DB extends SQLiteOpenHelper {
     private static final String REMEMBER_EMAIL = "rememail";
     private static final String REMEMBER_PASSWD = "rempasswd";
 
+
     private static final String PROFILE_FNAME = "firstnametbl";
     private static final String PROFILE_LNAME = "lastnametbl";
     private static final String PROFILE_EMAIL = "profileemailtbl";
@@ -45,7 +46,7 @@ public class DB extends SQLiteOpenHelper {
     private static final String PROFILE_MOB = "mobiletbl";
     private static final String PROFILE_LAND = "landlinetbl";
     private static final String PROFILE_PROMOTIONS = "promotionstbl";
-
+    private static final String DEFAULT_ADDRESS = "default_addrtbl";
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_DATA_ADDTOCART = "addtocart";
@@ -66,6 +67,7 @@ public class DB extends SQLiteOpenHelper {
     private static final String KEY_DATA_MOB = "mobile";
     private static final String KEY_DATA_LAND = "landline";
     private static final String KEY_DATA_PROFMOTIONS = "promotions";
+    private static final String KEY_DATA_DEFAULTADDR = "defaddr";
 
     private SQLiteDatabase db;
 
@@ -150,6 +152,10 @@ public class DB extends SQLiteOpenHelper {
                 + KEY_DATA_PROFMOTIONS + " INTEGER"
                 +  ")";
         db.execSQL(CREATE_PROMOTIONS);
+        String CREATE_DEFAULTADDR = "CREATE TABLE" +" "+ DEFAULT_ADDRESS  + "("
+                + KEY_DATA_DEFAULTADDR + " INTEGER"
+                +  ")";
+        db.execSQL(CREATE_DEFAULTADDR);
 
     }
 
@@ -175,6 +181,7 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PROFILE_MOB);
         db.execSQL("DROP TABLE IF EXISTS " + PROFILE_LAND);
         db.execSQL("DROP TABLE IF EXISTS " + PROFILE_PROMOTIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + DEFAULT_ADDRESS);
 
 
         // Create tables again
@@ -322,6 +329,17 @@ public class DB extends SQLiteOpenHelper {
         sqLiteDatabase.insert(PROFILE_PROMOTIONS,null,initialValues);
         return id;
     }
+
+    public String insert_default_addr(String id) {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA_DEFAULTADDR, id);
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.insert(DEFAULT_ADDRESS,null,initialValues);
+        return id;
+    }
+
+
     public String insert_token(String id) {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         ContentValues initialValues = new ContentValues();
@@ -480,6 +498,15 @@ public class DB extends SQLiteOpenHelper {
         initialValues.put(KEY_DATA, id);*/
         //db.insert(TABLE_ADDTOCART, null, initialValues);
         sqLiteDatabase.delete(PROFILE_PROMOTIONS,null,null);
+
+    }
+
+    public void removeDefaultaddr() {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+       /* ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATA, id);*/
+        //db.insert(TABLE_ADDTOCART, null, initialValues);
+        sqLiteDatabase.delete(DEFAULT_ADDRESS,null,null);
 
     }
 
@@ -778,6 +805,24 @@ public class DB extends SQLiteOpenHelper {
         ArrayList<String> dataList = new ArrayList<String>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + PROFILE_PROMOTIONS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                dataList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+
+        return dataList;
+    }
+
+    public ArrayList<String> getDefaultAddr() {
+        ArrayList<String> dataList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DEFAULT_ADDRESS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

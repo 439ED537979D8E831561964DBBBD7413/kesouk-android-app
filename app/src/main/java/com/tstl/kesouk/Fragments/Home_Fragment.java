@@ -141,6 +141,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     boolean doubleBackToExitPressedOnce = false;
     int ad_status = 0, id;
     public static int home_signin_backpress = 0;
+    public  List<String> banner_typename = new ArrayList<String>();
   String name_category, image_url_category, transaction_with, section_name, product_price_id,category,sub_category,product_price_MarketPrice;
 
 
@@ -778,7 +779,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 name_category = jsonObject1.getString("product_name");
                                                 image_url_category = jsonObject1.getString("display_image");
                                                 int discount_price = jsonObject1.getInt("discount");
-                                                product_discount = jsonObject1.getString("actual_selling_amount");
+                                              //  product_discount = jsonObject1.getString("actual_selling_amount");
 
                                                 product_random_id = jsonObject1.getString("product_random_id");
                                                 category = jsonObject1.getString("category");
@@ -801,15 +802,25 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                         product_price_id = jsonObject2.getString("id");
                                                         Log.e("product_price_id", product_price_id);
 
+                                                        product_price_id = jsonObject2.getString("id");
+                                                        product_price_MarketPrice = jsonObject2.getString("price");
+                                                        product_price_kesoukPrice = jsonObject2.getString("actual_selling_amount");
+                                                        product_qty = jsonObject2.getString("quantity");
+                                                        product_qty_name = jsonObject2.getString("quantity_name");
 
                                                     }
-                                                    singleItemModel.setProduct_price_id(product_price_id);
-                                                    Log.e("setProduct_priceId", String.valueOf(singleItemModel.getProduct_price_id()));
+                                                    singleItemModel.setProductId(product_price_id);
+                                                    singleItemModel.setProductPrice(product_price_MarketPrice);
+                                                    singleItemModel.setProductActualamount(product_price_kesoukPrice);
+                                                    singleItemModel.setProductQuantity(product_qty);
+                                                    singleItemModel.setProductQtyName(product_qty_name);
+
                                                 }
 
                                                 SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2,product_random_id);
                                                 //singleItem.setCategory(category);
                                                 singleItemList.add(singleItem);
+
 
 
                                                 Log.e("sections", "sectoims");
@@ -915,14 +926,14 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
                                 }
                             } else {
-                                Toast.makeText(getActivity(), "No Recipes Sections ! ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "No Recipes Found ! ", Toast.LENGTH_LONG).show();
 
                             }
 
 
                             Recipes_Adapter adapter = new Recipes_Adapter(getActivity(), recipeArrayList);
 
-                            foodrecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                            foodrecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             foodrecyclerView.setNestedScrollingEnabled(false);
                             foodrecyclerView.setAdapter(adapter);
 
@@ -990,10 +1001,11 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                     Log.e("datacount", String.valueOf(DataArray.length()));
                                     JSONObject jsonObject = DataArray.getJSONObject(i);
                                     image_url = jsonObject.getString("image_url");
+                                    String typename = jsonObject.getString("typename");
                                     banner_image_list.add(Constants.BANNER_IMAGES + image_url);
                                     Log.e("image_url", Constants.BANNER_IMAGES + image_url);
                                     Log.e("image_list", String.valueOf(banner_image_list));
-
+                                    banner_typename.add(typename);
                                     home_products = new Home_Products();
 
                                     home_products.setImage_Banner(Constants.BANNER_IMAGES + image_url);
@@ -1016,10 +1028,34 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                     for (String name : file_maps.keySet()) {
                                         TextSliderView textSliderView = new TextSliderView(getActivity());
                                         // initialize a SliderLayout
+
                                         textSliderView
                                                 .image(file_maps.get(name))
                                                 .setScaleType(BaseSliderView.ScaleType.Fit)
                                                 .setOnSliderClickListener(Home_Fragment.this);
+
+
+                                        final String temp=banner_typename.get(i);
+
+                                        textSliderView.image(file_maps.get(name)).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                            @Override
+                                            public void onSliderClick(BaseSliderView slider) {
+                                                search_home=1;
+
+                                                Category_Fragment newFragment = new Category_Fragment();
+                                                Bundle args = new Bundle();
+                                                args.putString("search", temp);
+                                                newFragment.setArguments(args);
+                                                Log.e("searchword",temp);
+
+
+                                                FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
+                                                transaction.replace(R.id.rldContainer, newFragment);
+                                                transaction.addToBackStack("Some String");
+                                                transaction.commit();
+
+                                            }
+                                        });
 
                                         //add your extra information
                                         textSliderView.bundle(new Bundle());
