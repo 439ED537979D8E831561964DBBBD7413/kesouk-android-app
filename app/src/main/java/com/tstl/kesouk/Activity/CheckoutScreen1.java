@@ -68,13 +68,14 @@ public class CheckoutScreen1 extends AppCompatActivity {
     public static int CheckoutAddress=0;
    public static String def_id;
     int def_checkbox=0;
+    Button continueMain;
     String defaultaddressTextView,defaultNameTextView,def_nickname,def_fNmae,def_LName,def_mob,def_city,def_house,def_resident,def_area,def_street,def_land;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db=new DB(this);
-        setContentView(R.layout.my_address_activity);
+        setContentView(R.layout.checkout_main);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
         // recycler_view.setNestedScrollingEnabled(false);
@@ -87,7 +88,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
         mToolbarTitle.setText("ORDER SUMMARY");
         mToolbarTitle.setVisibility(View.VISIBLE);
         backBtn = (ImageView) findViewById(R.id.img);
-
+        continueMain = (Button) findViewById(R.id.continue_btn);
 
         settings = (ImageView) findViewById(R.id.settings);
         search = (ImageView) findViewById(R.id.search);
@@ -108,6 +109,13 @@ public class CheckoutScreen1 extends AppCompatActivity {
             status_code = bundle.getInt("status");
         }
         getUserAddress();
+        continueMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CheckoutScreen1.this, CheckoutScreen2.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -359,7 +367,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
 
             } else if (holder instanceof RecyclerViewAdapter.FooterViewHolder) {
                 FooterViewHolder footerHolder = (FooterViewHolder) holder;
-                footerHolder.mContinue.setOnClickListener(new View.OnClickListener() {
+              /*  footerHolder.mContinue.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
@@ -367,7 +375,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
                         startActivity(intent);
                     }
 
-                });
+                });*/
 
                 footerHolder.mAddaddress.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -496,13 +504,13 @@ public class CheckoutScreen1 extends AppCompatActivity {
         }
 
         private class FooterViewHolder extends RecyclerView.ViewHolder {
-            Button mContinue,mAddaddress;
+            Button mAddaddress;
 
             public FooterViewHolder(View view) {
                 super(view);
-                mContinue = (Button) view.findViewById(R.id.continue_btn);
+              //  mContinue = (Button) view.findViewById(R.id.continue_btn);
                 mAddaddress = (Button) view.findViewById(R.id.add_addr);
-                mContinue.setTypeface(mDynoRegular);
+               // mContinue.setTypeface(mDynoRegular);
                 mAddaddress.setTypeface(mDynoRegular);
             }
         }
@@ -539,6 +547,7 @@ public class CheckoutScreen1 extends AppCompatActivity {
     private void setFont() {
         mDynoRegular = Typeface.createFromAsset(getAssets(), "font/Roboto_Regular.ttf");
         mToolbarTitle.setTypeface(mDynoRegular);
+        continueMain.setTypeface(mDynoRegular);
 
     }
 }

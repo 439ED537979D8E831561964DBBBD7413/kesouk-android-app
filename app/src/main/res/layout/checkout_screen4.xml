@@ -16,6 +16,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_below="@+id/app_bar"
+        android:id="@+id/number_layout"
         >
 
         <LinearLayout
@@ -90,12 +91,45 @@
         </LinearLayout>
     </LinearLayout>
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_layout"
+        android:layout_below="@+id/number_layout"
+
+
+        >
+
+        <CheckBox
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/next_order"
+            android:checked="true"
+            android:background="@drawable/button_style"
+            android:button="@drawable/radio_button_address"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/padding_20"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:id="@+id/today"
+            android:text="Cash on Delivery"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@+id/next_order"/>
+
+
+    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/padding_5"
         android:textStyle="bold"
-        android:id="@+id/defaultaddr"
+        android:id="@+id/cod"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
 

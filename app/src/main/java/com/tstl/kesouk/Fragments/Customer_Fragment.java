@@ -96,18 +96,19 @@ import java.util.Map;
 
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
+import static com.tstl.kesouk.Fragments.Category_Tab_Fragment.searchCategory;
 
 public class Customer_Fragment extends Fragment implements IOnBackPressed, SearchView.OnQueryTextListener, BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
-    private Typeface mDynoRegular;
-   // private Toolbar mToolbar;
-    private TextView menu1, menu2;
+    private Typeface mDynoRegular,mDynoBold;
+    // private Toolbar mToolbar;
+    private TextView viewAll, menu2;
     // SearchView searchView;
     public static NavigationView navigationView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private RelativeLayout fragmentLayout;
-   // EditText search;
-    String name_category, image_url_category, transaction_with, section_name, product_price_id,category,sub_category,product_price_MarketPrice;
+    // EditText search;
+    String name_category, image_url_category, transaction_with, section_name, product_price_id, category, sub_category, product_price_MarketPrice;
     public static int listview_onclick, cust_home_frag = 0;
     public String caption_letter;
     ExpandableListAdapter1 mMenuAdapter;
@@ -118,14 +119,14 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
     ArrayList<SectionDataModel> section_name_list = new ArrayList<>();
     Dialog dialog;
     TextView mShare, mCancel, mFacebook, mTwitter, mInstagram, mSnapchat, mFoodrecipes_sections;
-    public static int cust_onclick=0;
+    public static int cust_onclick = 0;
 
 
     public static ArrayList<Products> listChild;
     LinkedHashMap<String, List<Products>> listDataChild = new LinkedHashMap<String, List<Products>>();
     Products products = Products.getInstance();
     int sub_category_id, status, product_quantity_type;
-    String name, image_url, icon_url, product_name, product_image, product_discount,product_random_id,product_price_kesoukPrice;
+    String name, image_url, icon_url, product_name, product_image, product_discount, product_random_id, product_price_kesoukPrice;
     private SliderLayout imageSlider;
     View.OnClickListener myOnClickListener;
     private List<Products> horizontal_category_list;
@@ -144,16 +145,16 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
     boolean doubleBackToExitPressedOnce = false;
     int ad_status = 0, id;
     DB db;
-    public static int logout_backpress=0;
-    String product_qty,product_qty_name,productRandomId="";
-    public  List<String> banner_typename = new ArrayList<String>();
+    public static int logout_backpress = 0;
+    String product_qty, product_qty_name, productRandomId = "";
+    public List<String> banner_typename = new ArrayList<String>();
 
 
-  //  private TextView mToolbarTitle,toolbar_title;
+    //  private TextView mToolbarTitle,toolbar_title;
     RecyclerView my_recycler_view;
     ArrayList<String> imageList = new ArrayList<>();
     RecyclerView foodrecyclerView;
-    public static int cust_search_home=0;
+    public static int cust_search_home = 0;
 
     Integer[] Bcatid = {
             R.drawable.prod4,
@@ -178,15 +179,17 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
         Customer_Fragment fragment = new Customer_Fragment();
         return fragment;
     }
+
     public Customer_Fragment() {
         // Required empty public constructor
     }
-   /* @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-*/
+
+    /* @Override
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setHasOptionsMenu(true);
+     }
+ */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -195,13 +198,14 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
         imageSlider = (SliderLayout) view.findViewById(R.id.slider);
         foodrecyclerView = (RecyclerView) view.findViewById(R.id.receipe_list);
         mFoodrecipes_sections = (TextView) view.findViewById(R.id.food_recipes);
+        viewAll = (TextView) view.findViewById(R.id.viewall);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.Deals_layout);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         foodrecyclerView.setHasFixedSize(true);
         relativeLayout.setVisibility(View.GONE);
-        db=new DB(getActivity());
-        cust_search_home=0;
+        db = new DB(getActivity());
+        cust_search_home = 0;
 
 
         getBannerImage();
@@ -210,33 +214,40 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
 
         //  enableExpandableList();
-      //  search = (EditText) view.findViewById(R.id.search_new);
+        //  search = (EditText) view.findViewById(R.id.search_new);
         my_recycler_view = (RecyclerView) view.findViewById(R.id.deals_list);
 
-       // mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
+        // mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
         //toolbar_title = (TextView)view. findViewById(R.id.toolbar_title);
         //toolbar_title.setText("ferdfdd");
-      //  mToolbar.setBackgroundColor(getResources().getColor(R.color.dark_green));
+        //  mToolbar.setBackgroundColor(getResources().getColor(R.color.dark_green));
 
         search.setVisibility(View.VISIBLE);
         toolbar_title.setVisibility(View.GONE);
-       // ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        // ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
 
+        viewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Coming soon!",Toast.LENGTH_LONG).show();
+
+            }
+        });
         setFont();
 
 
-       // drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
+        // drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
 
-      //  mActionBarDrawerToggle = new ActionBarDrawerToggle(
-       //         getActivity(), drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //  mActionBarDrawerToggle = new ActionBarDrawerToggle(
+        //         getActivity(), drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-      //  drawer.setDrawerListener(mActionBarDrawerToggle);
+        //  drawer.setDrawerListener(mActionBarDrawerToggle);
 
-      //  mActionBarDrawerToggle.syncState();
+        //  mActionBarDrawerToggle.syncState();
 
-       // navigationView = (NavigationView) view.findViewById(R.id.nav_view);
-       // navigationView.setNavigationItemSelectedListener(this);
+        // navigationView = (NavigationView) view.findViewById(R.id.nav_view);
+        // navigationView.setNavigationItemSelectedListener(this);
 
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -249,9 +260,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                     inputManager.hideSoftInputFromWindow(
                             getActivity().getCurrentFocus().getWindowToken(),
                             InputMethodManager.HIDE_NOT_ALWAYS);
-                    cust_search_home = 1;
-                  //  home_category_flag = 5;
-                  //  home_home_frag = 5;
+                    searchCategory = 1;
 
 
                     Category_Fragment newFragment = new Category_Fragment();
@@ -259,6 +268,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                     Bundle args = new Bundle();
                     args.putString("search", search.getText().toString());
                     newFragment.setArguments(args);
+                    Log.e("search", "search");
 
 
                     FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
@@ -308,7 +318,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
     private void enableExpandableList() {
 
-    //    expandableList = (ExpandableListView) view.findViewById(R.id.left_drawer);
+        //    expandableList = (ExpandableListView) view.findViewById(R.id.left_drawer);
 
 
 
@@ -444,7 +454,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                     }
                                 }
                             }
-                          //  setAdapter();
+                            //  setAdapter();
                             //   }
                             //getQuantityType();
                         } catch (Exception e) {
@@ -485,22 +495,25 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
         queue.add(jsObjRequest);
     }
 
-   /* public void setAdapter() {
-        mMenuAdapter = new ExpandableListAdapter1(getActivity(), listHeader, listDataChild);
-        expandableList.setAdapter(mMenuAdapter);
-        mMenuAdapter.notifyDataSetChanged();
-        for (int i = 0; i < listChild.size(); i++) {
-            Log.e("child list", String.valueOf(listChild.get(i).getSubcategoryName()));
-        }
+    /* public void setAdapter() {
+         mMenuAdapter = new ExpandableListAdapter1(getActivity(), listHeader, listDataChild);
+         expandableList.setAdapter(mMenuAdapter);
+         mMenuAdapter.notifyDataSetChanged();
+         for (int i = 0; i < listChild.size(); i++) {
+             Log.e("child list", String.valueOf(listChild.get(i).getSubcategoryName()));
+         }
 
-    }
-*/
+     }
+ */
     private void setFont() {
 
         mDynoRegular = Typeface.createFromAsset(getActivity().getAssets(),
                 "font/Roboto_Regular.ttf");
-       // search.setTypeface(mDynoRegular);
-        mFoodrecipes_sections.setTypeface(mDynoRegular);
+        mDynoBold = Typeface.createFromAsset(getActivity().getAssets(),
+                "font/Roboto_Bold.ttf");
+        // search.setTypeface(mDynoRegular);
+        mFoodrecipes_sections.setTypeface(mDynoBold);
+        viewAll.setTypeface(mDynoRegular);
     }
 
     @Override
@@ -531,10 +544,10 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
         return true;
     }
 
-   /* @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    /* @Override
+     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-      *//*  getMenuInflater().inflate(R.menu.item, menu);
+       *//*  getMenuInflater().inflate(R.menu.item, menu);
         return true;*//*
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -786,7 +799,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                                 singleItemModel.setName(name_category);
                                                 Log.e("name_category", name_category);
                                                 Log.e("image_url_category", image_url_category);
-                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1,productRandomId));
+                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1, productRandomId));
                                                 deals_list.add(singleItemModel);
 
                                                 Log.e("sections", "sectoims");
@@ -824,12 +837,9 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                                 int discount_price = jsonObject1.getInt("discount");
 
 
-
                                                 product_random_id = jsonObject1.getString("product_random_id");
                                                 category = jsonObject1.getString("category");
                                                 sub_category = jsonObject1.getString("sub_category");
-
-
 
 
                                                 int id = jsonObject1.getInt("id");
@@ -865,7 +875,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
                                                 }
 
-                                                SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2,product_random_id);
+                                                SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2, product_random_id);
                                                 //singleItem.setCategory(category);
                                                 singleItemList.add(singleItem);
 
@@ -884,7 +894,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                             my_recycler_view.setAdapter(adapter);
                                         }
                                     }
-                            }
+                                }
                             }
                             getRecipeTypeCategory();
                         } catch (Exception e) {
@@ -1080,18 +1090,18 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                                 .putString("extra", name);
 
 
-                                        final String temp=banner_typename.get(i);
+                                        final String temp = banner_typename.get(i);
 
                                         textSliderView.image(file_maps.get(name)).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                                             @Override
                                             public void onSliderClick(BaseSliderView slider) {
-                                                cust_search_home=1;
+                                                cust_search_home = 1;
 
                                                 Category_Fragment newFragment = new Category_Fragment();
                                                 Bundle args = new Bundle();
                                                 args.putString("search", temp);
                                                 newFragment.setArguments(args);
-                                                Log.e("searchword",temp);
+                                                Log.e("searchword", temp);
 
 
                                                 FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
@@ -1101,9 +1111,6 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
                                             }
                                         });
-
-
-
 
 
                                         imageSlider.addSlider(textSliderView);
@@ -1163,7 +1170,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
         private ArrayList<SectionDataModel> dataList;
         private Context mContext;
-        private Typeface mDynoRegular;
+        private Typeface mDynoRegular,mDynoBold;
 
         public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList) {
             this.dataList = dataList;
@@ -1191,6 +1198,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
             SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, transaction, singleSectionItems);
 
+
             itemRowHolder.recycler_view_list.setHasFixedSize(true);
             itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
@@ -1201,6 +1209,18 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
 
 
             }
+            if (i == 1) {
+                itemRowHolder.slider.setBackground(getResources().getDrawable(R.drawable.vegetables2));
+
+            }else
+            if (i == 0) {
+                itemRowHolder.slider.setBackground(getResources().getDrawable(R.drawable.veggiesbanner));
+
+            }
+            else
+            {
+                itemRowHolder.slider.setBackground(getResources().getDrawable(R.drawable.delivery_truck));
+            }
 
             if (transaction.equals("category")) {
                 itemRowHolder.viewall.setVisibility(View.VISIBLE);
@@ -1209,7 +1229,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                     public void onClick(View v) {
 
                         Home_Fragment.home_home_frag = 2;
-                        Customer_Fragment.cust_home_frag=1;
+                        Customer_Fragment.cust_home_frag = 1;
                         Customer_Fragment.cust_category_selected_name = singleSectionItems.get(0).getName();
 
 
@@ -1231,9 +1251,17 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                 });
 
 
-            }else
-            {
-                itemRowHolder.viewall.setVisibility(View.GONE);
+            } else {
+                itemRowHolder.viewall.setVisibility(View.VISIBLE);
+                itemRowHolder.viewall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Coming soon!!!" , Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
             }
 
 
@@ -1265,7 +1293,6 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                         public void onClickItem(View v, int position) {
 
 
-
                             if (transaction.equals("category")) {
                                 Log.i("Message", transaction);
                                 Customer_Fragment.cust_home_frag = 2;
@@ -1282,7 +1309,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                 transaction.addToBackStack("Some String");
                                 transaction.commit();
                             } else if (transaction.equals("product")) {
-                                cust_onclick=1;
+                                cust_onclick = 1;
                                 Product_Description_Fragment newFragment = new Product_Description_Fragment();
                                 Bundle args = new Bundle();
                                 /*args.putInt("position", position);
@@ -1293,9 +1320,9 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                 args.putString("qty_name", dataList.get(position).getAllItemsInSection().get(position).getProductQtyName());
                                 args.putString("price", singleSectionItems.get(position).getProductActualamount());
                                 args.putString("qty", singleSectionItems.get(position).getProductQuantity());*/
-                                args.putString("search_word",singleSectionItems.get(position).getProduct_random_id());
-                               // args.putString("amount","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
-                               // args.putString("search_word","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
+                                args.putString("search_word", singleSectionItems.get(position).getProduct_random_id());
+                                // args.putString("amount","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
+                                // args.putString("search_word","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
                                /* args.putString("product_price_id", singleSectionItems.get(position).getProductId());
                                 args.putInt("product_id", singleSectionItems.get(position).getId());
                                 args.putString("price_product_id", singleSectionItems.get(position).getProductId());
@@ -1310,7 +1337,7 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                                 }*/
                                 newFragment.setArguments(args);
 
-                                Log.e("args",args.toString());
+                                Log.e("args", args.toString());
 
                                 FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.rldContainer, newFragment);
@@ -1348,7 +1375,8 @@ public class Customer_Fragment extends Fragment implements IOnBackPressed, Searc
                 this.slider = (ImageView) view.findViewById(R.id.slider);
                 this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
                 mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
-                itemTitle.setTypeface(mDynoRegular);
+                mDynoBold = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Bold.ttf");
+                itemTitle.setTypeface(mDynoBold);
                 viewall.setTypeface(mDynoRegular);
 
 

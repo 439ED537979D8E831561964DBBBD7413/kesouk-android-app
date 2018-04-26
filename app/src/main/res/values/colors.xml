@@ -13,9 +13,11 @@
     <color name="dark_green">#599933</color>
     <color name="tab_line">#8E908F</color>
     <color name="brown">#5B5C5B</color>
+    <color name="bg_gray">#EBEBF1</color>
     <color name="gray">#DCDCDC</color>
     <color name="btn_add">#F08080</color>
     <color name="rating_star">#FFB402</color>
+    <color name="red">#e66167</color>
 
 
 </resources>

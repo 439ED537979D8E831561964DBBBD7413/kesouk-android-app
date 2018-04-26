@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/continue_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_15"
+        android:background="@drawable/green_solid"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="@string/continue_text"
         android:textColor="@color/white"
-        android:background="@drawable/green_solid"
         android:textSize="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_15"
+        android:visibility="gone"
 
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_80"
+        android:text=""
 
+
+        />
 </RelativeLayout>

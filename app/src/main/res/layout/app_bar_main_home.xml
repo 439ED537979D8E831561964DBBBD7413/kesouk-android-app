@@ -56,13 +56,13 @@
                     android:singleLine="true"
                     android:layout_marginTop="@dimen/padding10"
                     android:layout_marginBottom="@dimen/padding10"
-                    android:textColorHint="@color/black"
+                    android:textColorHint="@color/tab_line"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:layout_marginRight="@dimen/padding_30"
                     android:paddingLeft="5dp"
                     android:textSize="@dimen/padding_15"
-                    android:textColor="@color/black"
+                    android:textColor="@color/tab_line"
                     android:background="@drawable/round_button"
                     />
 
@@ -76,10 +76,11 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/padding_15"
                     android:textStyle="bold"
-                    android:textAlignment="viewStart"
                     android:id="@+id/toolbar_title"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:visibility="gone"
+
                     />
 
             </LinearLayout>

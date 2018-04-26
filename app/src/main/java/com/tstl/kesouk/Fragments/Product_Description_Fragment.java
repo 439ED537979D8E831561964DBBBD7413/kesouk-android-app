@@ -65,6 +65,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.tstl.kesouk.Activity.Navigation_Tab_Activity.bottomNavigationView;
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
+import static com.tstl.kesouk.Fragments.Category_Fragment.productDesc;
 import static com.tstl.kesouk.Fragments.Category_Fragment.wishCheckList;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_onclick;
 import static com.tstl.kesouk.Fragments.Home_Fragment.home_onclick;
@@ -81,7 +82,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
     DB db;
     //ImageView img_back, settings, search;
     // private TextView mToolbarTitle;
-    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products, other_price;
+    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products, other_price,tv_strike;
     Button mAddtoCart;
     ImageView mExpress;
     ToggleButton mFav;
@@ -89,13 +90,13 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
     RatingBar ratingBar;
     int wishStatus;
     RecyclerView similar_products_recylerview;
-    String product_random_id, is_express_delivery = "";
+    String product_random_id, is_express_delivery = "", similarProductID = "";
     int category_id;
     private ArrayList<String> imageslidinglist = new ArrayList<>();
     String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory, qty_name, search_word, amount, spinner_quantity, other_price_amount = "";
     TextSliderView textSliderView;
-    String product_price_id = "", price_product_id = "", addtocart, wishcheckId,wishListDAtaId;
-    int product_id = 1, favorite,tempWishCheck;
+    String product_price_id = "", price_product_id = "", addtocart, wishcheckId, wishListDAtaId;
+    int product_id = 1, favorite, tempWishCheck, similarClick = 0;
 
 
     public ArrayList<Browse_Category> list_browse_products, list_similar_products;
@@ -120,6 +121,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         supplier_information = (TextView) view.findViewById(R.id.supplr_info);
         textView = (TextView) view.findViewById(R.id.textview);
         similar_products = (TextView) view.findViewById(R.id.similar);
+        tv_strike = (TextView) view.findViewById(R.id.tv_strike);
         tab1 = (View) view.findViewById(R.id.tab_view1);
         tab2 = (View) view.findViewById(R.id.tab_view2);
         tab3 = (View) view.findViewById(R.id.tab_view3);
@@ -157,14 +159,57 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             Bundle bundle1 = this.getArguments();
             if (bundle1 != null) {
                 product_random_id = bundle1.getString("search_word");
-
+                getProductDescription();
+                getSimilarProducts();
             }
-        }else if (home_onclick == 1) {
+        } else if (home_onclick == 1) {
             Bundle bundle1 = this.getArguments();
             if (bundle1 != null) {
                 product_random_id = bundle1.getString("search_word");
+                getProductDescription();
+                getSimilarProducts();
+            }
+        } else if (productDesc == 1) {
+            Bundle bundle1 = this.getArguments();
+            if (bundle1 != null) {
+
+                category_id = bundle1.getInt("position");
+                product_random_id = bundle1.getString("product_random_id");
+
+                similar_category = bundle1.getString("category");
+                similar_subcategory = bundle1.getString("subcategory");
+                similar_id = bundle1.getString("id");
+
+                getProductDescription();
+                getSimilarProducts();
+
+                qty_name = bundle1.getString("qty_name");
+                amount = bundle1.getString("price");
+                other_price_amount = bundle1.getString("other_price");
+                spinner_quantity = bundle1.getString("qty");
+                search_word = bundle1.getString("search_word");
+                similar_products.setText("SIMILAR " + search_word);
+                product_id = bundle1.getInt("product_id");
+                product_price_id = bundle1.getString("product_price_id");
+                price_product_id = bundle1.getString("price_product_id");
+                addtocart = bundle1.getString("addtocart");
+                wishListDAtaId = bundle1.getString("wishcheckId");
+                favorite = bundle1.getInt("favorite");
+                mAddtoCart.setText(addtocart);
+                Log.e("getbundle", bundle1.toString());
+
+                if (favorite == 0) {
+                    mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_deselect_fav));
+
+                } else {
+                    mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_select_fav));
+
+                }
+                Log.e("else", "else");
 
             }
+
+
         } else {
             Bundle bundle1 = this.getArguments();
             if (bundle1 != null) {
@@ -179,7 +224,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 other_price_amount = bundle1.getString("other_price");
                 spinner_quantity = bundle1.getString("qty");
                 search_word = bundle1.getString("search_word");
-                similar_products.setText("SIMILAR " + search_word);
+                similar_products.setText("SIMILAR PRODUCTS");
                 product_id = bundle1.getInt("product_id");
                 product_price_id = bundle1.getString("product_price_id");
                 price_product_id = bundle1.getString("price_product_id");
@@ -187,7 +232,9 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 wishListDAtaId = bundle1.getString("wishcheckId");
                 favorite = bundle1.getInt("favorite");
                 mAddtoCart.setText(addtocart);
-
+                Log.e("getbundle", bundle1.toString());
+                getProductDescription();
+                getSimilarProducts();
                 if (favorite == 0) {
                     mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_deselect_fav));
 
@@ -195,13 +242,13 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                     mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_select_fav));
 
                 }
-
+                Log.e("else", "else");
 
             }
+
         }
 
-        getProductDescription();
-        getSimilarProducts();
+
 
 /*
         img_back.setOnClickListener(new View.OnClickListener() {
@@ -244,7 +291,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             public void onClick(View v) {
 
                 if (mAddtoCart.getText().toString().equals("GO TO CART")) {
-                   // bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                    // bottomNavigationView.getMenu().getItem(1).setChecked(true);
                     Fragment selectedFragment = Basket_Fragment.newInstance();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.rldContainer, selectedFragment);
@@ -271,7 +318,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                     params.put("product_id", String.valueOf((product_id)));
                     params.put("quantity", "1");
                     params.put("price_id", String.valueOf(product_price_id));
-                    Log.e("json",params.toString());
+                    Log.e("json", params.toString());
 
 
                     JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -432,7 +479,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                             mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_select_fav));
                                             wishcheckId = data_id;
                                             tempWishCheck = 1;
-                                            favorite=1;
+                                            favorite = 1;
                                             wishStatus = 1;
                                             if (db.getAllLogin().size() == 1) {
                                                 db.insert_wishlist_cust(data_id);
@@ -493,15 +540,12 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                     queue.add(jsonObjReq);
 
 
-                }
-                else if(tempWishCheck==1){
+                } else if (tempWishCheck == 1) {
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
                     Map<String, String> params = new HashMap<String, String>();
 
 
-
-                    if(wishStatus==1)
-                    {
+                    if (wishStatus == 1) {
                         if (db.getAllLogin().size() == 1) {
                             params.put("id", wishcheckId);
                             Log.e("id", wishcheckId);
@@ -510,9 +554,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                             Log.e("id", wishcheckId);
                         }
 
-                    }
-                    else
-                    {
+                    } else {
                         if (db.getAllLogin().size() == 1) {
                             params.put("id", wishListDAtaId);
                             Log.e("id", wishListDAtaId);
@@ -538,7 +580,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                         if (status.equals("Success")) {
                                             mFav.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_deselect_fav));
                                             wishcheckId = "0";
-                                            tempWishCheck=0;
+                                            tempWishCheck = 0;
                                             wishStatus = 0;
                                             // wishCheckList.set(category_id, "0");
                                             if (db.getAllLogin().size() == 1) {
@@ -599,16 +641,12 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     queue.add(jsonObjReq);
-                }
-
-                else {
+                } else {
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
                     Map<String, String> params = new HashMap<String, String>();
 
 
-
-                    if(wishStatus==1)
-                    {
+                    if (wishStatus == 1) {
                         if (db.getAllLogin().size() == 1) {
                             params.put("id", wishcheckId);
                             Log.e("id", wishcheckId);
@@ -617,9 +655,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                             Log.e("id", wishcheckId);
                         }
 
-                    }
-                    else
-                    {
+                    } else {
                         if (db.getAllLogin().size() == 1) {
                             params.put("id", wishListDAtaId);
                             Log.e("id", wishListDAtaId);
@@ -655,7 +691,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                 Log.e("fetch_removed_data", String.valueOf(db.getAllWishlist()));
                                             }
                                             getWishList();
-                                           // getProductList(product_name);
+                                            // getProductList(product_name);
                                         } else {
                                             String reason = object.getString("reason");
                                             Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
@@ -716,15 +752,19 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         Map<String, String> params = new HashMap<String, String>();
 
+        if (similarClick == 1) {
+            params.put("product_id", similarProductID);
+        } else {
+            params.put("product_id", product_random_id);
+        }
 
-        params.put("product_id", product_random_id);
         params.put("wishcheck", "0");
         params.put("localwish", "0");
         params.put("cartcheck", "0");
         params.put("customer_id", "0");
         params.put("localcart", "0");
         Log.e("json", String.valueOf(params));
-
+        similarClick = 0;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 Constants.GET_PRODUCT_DETAILS, new JSONObject(params),
@@ -820,7 +860,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
                                             }
 
-                                        }else  if (home_onclick == 1) {
+                                        } else if (home_onclick == 1) {
                                             JSONArray product_price = jsonObject.getJSONArray("product_price");
                                             //list_browse_products.add(id);
 
@@ -1011,6 +1051,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         textView.setTypeface(mDynoRegular);
         similar_products.setTypeface(mDynoRegular);
         mAddtoCart.setTypeface(mDynoRegular);
+        tv_strike.setTypeface(mDynoRegular);
 
     }
 
@@ -1071,6 +1112,10 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    similarClick = 1;
+                    similarProductID = browse_category.getProduct_random_id();
+                  // getProductDescription();
+                   // getSimilarProducts();
 
                  /*   Recipe_category_list_Fragment newFragment = new Recipe_category_list_Fragment();
                     Bundle args = new Bundle();
@@ -1144,6 +1189,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         params.put("id", similar_id);
         params.put("page", "1");
         params.put("per_page", "5");
+        Log.e("json", params.toString());
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -1171,10 +1217,25 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                         Log.e("datacount", String.valueOf(DataArray.length()));
                                         JSONObject jsonObject = DataArray.getJSONObject(i);
                                         product_name = jsonObject.getString("product_name");
+                                        product_random_id = jsonObject.getString("product_random_id");
                                         product_image = jsonObject.getString("display_image");
                                         product_price1 = jsonObject.getString("price");
                                         String description = jsonObject.getString("description");
                                         int id = jsonObject.getInt("id");
+
+                                        JSONArray product_price = jsonObject.getJSONArray("product_category_pivot");
+                                        //list_browse_products.add(id);
+
+                                        if (product_price.length() != 0) {
+                                            for (int j = 0; j < product_price.length(); j++) {
+                                                JSONObject jsonObject1 = product_price.getJSONObject(j);
+
+                                            }
+
+
+                                        } else {
+
+                                        }
 
 
                                         browse_category = new Browse_Category();
@@ -1183,6 +1244,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                         browse_category.setProduct_image(product_image);
                                         browse_category.setProduct_desc(description);
                                         browse_category.setProduct_id(id);
+                                        browse_category.setProduct_random_id(product_random_id);
 
                                         list_similar_products.add(browse_category);
                                         Log.e("similar_products", String.valueOf(list_similar_products));
@@ -1426,7 +1488,6 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             }) {
 
 
-
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String, String> params = new HashMap<>();
@@ -1454,7 +1515,6 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
 
     }
-
 
 
     private void getProductList(String product_search_name) {
@@ -1592,7 +1652,7 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
 
 
                                 }
-                            }catch (Exception e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 // Log.e("catch", e.getLocalizedMessage());
                             }

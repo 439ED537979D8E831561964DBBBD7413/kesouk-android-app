@@ -83,20 +83,21 @@
             </android.support.v7.widget.RecyclerView>
             <Button
                 android:id="@+id/checkout"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/padding_10"
+                android:layout_width="@dimen/padding_140"
+                android:layout_height="@dimen/padding_35"
+                android:gravity="center"
                 android:text="@string/checkout"
-                android:textSize="@dimen/padding_20"
+                android:textSize="@dimen/padding_18"
                 android:textColor="@color/white"
                 android:background="@drawable/round_button_brown"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/padding_5"
+                android:layout_marginRight="@dimen/padding_5"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/padding_10"
                 android:layout_marginBottom="@dimen/padding_80"
                 android:layout_below="@+id/recycler_main"
+                android:padding="@dimen/padding_5"
+
 
                 />
             <Button

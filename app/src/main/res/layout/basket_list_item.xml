@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@color/white"
-        android:layout_marginBottom="2dp"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -22,7 +21,7 @@
             <RelativeLayout
                 android:id="@+id/image_layout"
                 android:layout_width="100dp"
-                android:layout_height="140dp"
+                android:layout_height="90dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -33,13 +32,14 @@
                     android:src="@drawable/logo"
                     android:layout_marginLeft="10dp"
                     android:scaleType="fitXY"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="@dimen/padding_2"
+                    android:layout_marginTop="@dimen/padding_2"
 
                     />
                 <TextView
                     android:id="@+id/tag_price"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="33dp"
+                    android:layout_height="35dp"
                     android:background="@drawable/oval_red"
                     android:text="15 % off "
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -50,7 +50,6 @@
                     android:layout_alignParentLeft="true"
                     android:gravity="center_horizontal"
                     android:padding="5dp"
-                    android:visibility="gone"
                     />
             </RelativeLayout>
 
@@ -59,7 +58,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_5"
-                android:layout_marginTop="@dimen/padding_25"
                 android:layout_toRightOf="@+id/image_layout">
 
                 <TextView
@@ -80,8 +78,8 @@
 
                 <ImageView
                     android:id="@+id/bike"
-                    android:layout_width="@dimen/padding_35"
-                    android:layout_height="@dimen/padding_35"
+                    android:layout_width="@dimen/padding_25"
+                    android:layout_height="@dimen/padding_25"
                     android:layout_marginRight="@dimen/padding_5"
                     android:src="@drawable/bike_new"
                     android:layout_alignParentRight="true"
@@ -99,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name_layout"
                 android:layout_toRightOf="@+id/image_layout"
+                android:layout_marginBottom="@dimen/padding_5"
 
                 >
 
@@ -113,7 +112,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/padding_12"
                     android:textStyle="normal"
-                    android:layout_marginTop="@dimen/padding_10"
+                    android:layout_marginTop="@dimen/padding_5"
 
 
 
@@ -137,7 +136,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/price_layout"
-                android:layout_marginBottom="@dimen/padding_5"
                 android:layout_marginLeft="@dimen/padding_10"
                 android:layout_toRightOf="@+id/image_layout"
                 >
@@ -152,7 +150,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/padding_18"
                     android:textStyle="normal"
-                    android:layout_marginTop="@dimen/padding_10"
+                    android:layout_marginTop="@dimen/padding_5"
 
 
                     />
@@ -160,23 +158,21 @@
                 <RelativeLayout
                     android:id="@+id/cart1_layout"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/padding_28"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="@dimen/padding_5"
                     android:layout_marginRight="@dimen/padding_5"
                     android:background="@drawable/button_red"
-                    android:paddingLeft="@dimen/padding_5"
-                    android:paddingRight="@dimen/padding_5"
+                    android:padding="@dimen/padding_3"
 
 
                     >
 
                     <ImageView
                         android:id="@+id/minusimg"
-                        android:layout_width="@dimen/padding_15"
-                        android:layout_height="@dimen/padding_15"
+                        android:layout_width="@dimen/padding_18"
+                        android:layout_height="@dimen/padding_18"
                         android:src="@drawable/minus_icon"
-                        android:layout_marginTop="@dimen/padding_10"
+                        android:layout_marginTop="@dimen/padding_3"
                         />
 
                     <TextView
@@ -188,16 +184,16 @@
                         android:layout_toRightOf="@+id/minusimg"
                         android:text="1"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/padding_25"
+                        android:textSize="@dimen/padding_18"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/plusimg"
-                        android:layout_width="@dimen/padding_15"
-                        android:layout_height="@dimen/padding_15"
+                        android:layout_width="@dimen/padding_18"
+                        android:layout_height="@dimen/padding_18"
                         android:layout_toRightOf="@+id/count_cart"
                         android:src="@drawable/plus_icon"
-                        android:layout_marginTop="@dimen/padding_10"
+                        android:layout_marginTop="@dimen/padding_3"
 
 
                         />

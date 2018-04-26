@@ -53,7 +53,7 @@ public class CheckoutScreen3 extends AppCompatActivity{
     Button mContinue;
     private Typeface mDynoRegular;
     private Toolbar mToolbar;
-    private TextView toolbarTitle,carttext,address,date,time,charge;
+    private TextView toolbarTitle,carttext,address,date,time,charge,date_title,time_title,charge_title,orderText;
     ImageView img;
     DB db;
     public static String order_id;
@@ -80,6 +80,10 @@ public class CheckoutScreen3 extends AppCompatActivity{
         date = (TextView) findViewById(R.id.input_date);
         time = (TextView) findViewById(R.id.input_time);
         charge = (TextView) findViewById(R.id.input_charge);
+        date_title = (TextView) findViewById(R.id.date_title);
+        time_title = (TextView) findViewById(R.id.time_title);
+        charge_title = (TextView) findViewById(R.id.charge_title);
+        orderText = (TextView) findViewById(R.id.order_delivered_to);
 
         setFont();
 
@@ -137,6 +141,18 @@ public class CheckoutScreen3 extends AppCompatActivity{
                 "font/Roboto_Regular.ttf");
 
         toolbarTitle.setTypeface(mDynoRegular);
+        mContinue.setTypeface(mDynoRegular);
+        date.setTypeface(mDynoRegular);
+        time.setTypeface(mDynoRegular);
+        charge.setTypeface(mDynoRegular);
+        carttext.setTypeface(mDynoRegular);
+        address.setTypeface(mDynoRegular);
+        date_title.setTypeface(mDynoRegular);
+        time_title.setTypeface(mDynoRegular);
+        charge_title.setTypeface(mDynoRegular);
+        orderText.setTypeface(mDynoRegular);
+
+
     }
 
     public void getPlaceOrder() {

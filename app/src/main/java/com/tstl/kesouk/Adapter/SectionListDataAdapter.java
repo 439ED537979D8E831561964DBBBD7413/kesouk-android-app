@@ -116,7 +116,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
             this.tvTitle = (TextView) view.findViewById(R.id.products_name);
             this.itemImage = (ImageView) view.findViewById(R.id.image2);
-            mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
+            mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Bold.ttf");
+            
             tvTitle.setTypeface(mDynoRegular);
 
         }

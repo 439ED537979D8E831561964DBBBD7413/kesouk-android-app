@@ -150,9 +150,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
             android:orientation="horizontal"
-            android:gravity="center_horizontal"
+            android:gravity="left"
             android:layout_marginTop="@dimen/padding_12"
             android:layout_marginBottom="@dimen/padding_12"
             >
@@ -166,9 +166,10 @@
                 android:rating="5"
                 android:stepSize="1"
                 android:theme="@style/RatingBar"
-                style="?attr/ratingBarStyle"
-                android:scaleX=".5"
-                android:scaleY=".5"
+                style="?attr/ratingBarStyleSmall"
+                android:layout_marginTop="@dimen/padding_10"
+                android:layout_marginLeft="@dimen/padding_25"
+                android:layout_marginRight="@dimen/padding_10"
 
 
                 />
@@ -183,7 +184,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/padding_15"
                 android:textStyle="normal"
-                android:layout_marginTop="@dimen/padding_14"
+                android:layout_marginTop="@dimen/padding_10"
                 android:layout_marginRight="@dimen/padding_10"
                 android:gravity="center_horizontal"
 

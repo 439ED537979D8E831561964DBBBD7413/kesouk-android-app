@@ -95,12 +95,13 @@ import java.util.Map;
 
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
+import static com.tstl.kesouk.Fragments.Category_Tab_Fragment.searchCategory;
 
-public class Home_Fragment extends Fragment implements IOnBackPressed, SearchView.OnQueryTextListener,  BaseSliderView.OnSliderClickListener,
+public class Home_Fragment extends Fragment implements IOnBackPressed, SearchView.OnQueryTextListener, BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
     private Typeface mDynoRegular;
-   // private Toolbar mToolbar;
-    private TextView menu1, menu2;
+    // private Toolbar mToolbar;
+    private TextView viewall, menu2;
     // SearchView searchView;
     public static NavigationView navigationView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -116,16 +117,17 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     ArrayList<SectionDataModel> section_name_list = new ArrayList<>();
     Dialog dialog;
     TextView mShare, mCancel, mFacebook, mTwitter, mInstagram, mSnapchat, mFoodrecipes_sections;
-    public static int home_onclick=0;
+    public static int home_onclick = 0;
 
     public static ArrayList<Products> listChild;
     LinkedHashMap<String, List<Products>> listDataChild = new LinkedHashMap<String, List<Products>>();
     Products products = Products.getInstance();
     int sub_category_id, status, product_quantity_type;
-    String name, image_url, icon_url, product_name, product_image, product_discount,product_random_id,product_price_kesoukPrice;    private SliderLayout imageSlider;
+    String name, image_url, icon_url, product_name, product_image, product_discount, product_random_id, product_price_kesoukPrice;
+    private SliderLayout imageSlider;
     View.OnClickListener myOnClickListener;
     private List<Products> horizontal_category_list;
-    String product_qty,product_qty_name,productRandomId="";
+    String product_qty, product_qty_name, productRandomId = "";
     //Category_Adapter horizontal_category_adapter;
     public static List<String> home_categories_list = new ArrayList<String>();
     public static List<String> home_categories_image_list = new ArrayList<String>();
@@ -141,15 +143,15 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     boolean doubleBackToExitPressedOnce = false;
     int ad_status = 0, id;
     public static int home_signin_backpress = 0;
-    public  List<String> banner_typename = new ArrayList<String>();
-  String name_category, image_url_category, transaction_with, section_name, product_price_id,category,sub_category,product_price_MarketPrice;
+    public List<String> banner_typename = new ArrayList<String>();
+    String name_category, image_url_category, transaction_with, section_name, product_price_id, category, sub_category, product_price_MarketPrice;
 
 
-   // private TextView mToolbarTitle;
+    // private TextView mToolbarTitle;
     RecyclerView my_recycler_view;
     ArrayList<String> imageList = new ArrayList<>();
     RecyclerView foodrecyclerView;
-    public static int search_home=0;
+    public static int search_home = 0;
 
     Integer[] Bcatid = {
             R.drawable.prod4,
@@ -192,38 +194,45 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
         foodrecyclerView.setHasFixedSize(true);
         relativeLayout.setVisibility(View.GONE);
-        search_home=0;
+        search_home = 0;
+        viewall = (TextView) view.findViewById(R.id.viewall);
 
         getBannerImage();
 
         getSections();
 
+        viewall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Coming soon!", Toast.LENGTH_LONG).show();
 
+            }
+        });
         //  enableExpandableList();
         //search = (EditText) view.findViewById(R.id.search_new);
         my_recycler_view = (RecyclerView) view.findViewById(R.id.deals_list);
 
-      //  mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
-      //  mToolbar.setBackgroundColor(getResources().getColor(R.color.dark_green));
+        //  mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
+        //  mToolbar.setBackgroundColor(getResources().getColor(R.color.dark_green));
 
 
-       // ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        // ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
 
         setFont();
         search.setVisibility(View.VISIBLE);
         toolbar_title.setVisibility(View.GONE);
 
-       // drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
+        // drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
 
-      //  mActionBarDrawerToggle = new ActionBarDrawerToggle(
-       //         getActivity(), drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //  mActionBarDrawerToggle = new ActionBarDrawerToggle(
+        //         getActivity(), drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-       // drawer.setDrawerListener(mActionBarDrawerToggle);
+        // drawer.setDrawerListener(mActionBarDrawerToggle);
 
-      //  mActionBarDrawerToggle.syncState();
+        //  mActionBarDrawerToggle.syncState();
 
-       // navigationView = (NavigationView) view.findViewById(R.id.nav_view);
+        // navigationView = (NavigationView) view.findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
 
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -237,7 +246,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                     inputManager.hideSoftInputFromWindow(
                             getActivity().getCurrentFocus().getWindowToken(),
                             InputMethodManager.HIDE_NOT_ALWAYS);
-                    search_home = 1;
+                    searchCategory = 1;
                     home_category_flag = 5;
                     home_home_frag = 5;
 
@@ -296,7 +305,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
     private void enableExpandableList() {
 
-       // expandableList = (ExpandableListView) view.findViewById(R.id.left_drawer);
+        // expandableList = (ExpandableListView) view.findViewById(R.id.left_drawer);
 
 
 
@@ -486,8 +495,8 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
     private void setFont() {
 
         mDynoRegular = Typeface.createFromAsset(getActivity().getAssets(),
-                "font/Roboto_Regular.ttf");
-       // search.setTypeface(mDynoRegular);
+                "font/Roboto_Bold.ttf");
+        // search.setTypeface(mDynoRegular);
         mFoodrecipes_sections.setTypeface(mDynoRegular);
     }
 
@@ -744,7 +753,8 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 singleItemModel.setName(name_category);
                                                 Log.e("name_category", name_category);
                                                 Log.e("image_url_category", image_url_category);
-                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1,productRandomId));                                                deals_list.add(singleItemModel);
+                                                singleItem.add(new SingleItemModel(name_category, image_url_category, id, null, 1, productRandomId));
+                                                deals_list.add(singleItemModel);
 
                                                 Log.e("sections", "sectoims");
 
@@ -779,7 +789,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 name_category = jsonObject1.getString("product_name");
                                                 image_url_category = jsonObject1.getString("display_image");
                                                 int discount_price = jsonObject1.getInt("discount");
-                                              //  product_discount = jsonObject1.getString("actual_selling_amount");
+                                                //  product_discount = jsonObject1.getString("actual_selling_amount");
 
                                                 product_random_id = jsonObject1.getString("product_random_id");
                                                 category = jsonObject1.getString("category");
@@ -788,7 +798,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
                                                 singleItemModel.setProductRandomId(product_random_id);
                                                 int id = jsonObject1.getInt("id");
-                                               // int category = jsonObject1.getInt("category");
+                                                // int category = jsonObject1.getInt("category");
                                                 singleItemModel.setId(id);
                                                 singleItemModel.setDiscount_price(discount_price);
 
@@ -817,10 +827,9 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
                                                 }
 
-                                                SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2,product_random_id);
+                                                SingleItemModel singleItem = new SingleItemModel(name_category, image_url_category, id, null, 2, product_random_id);
                                                 //singleItem.setCategory(category);
                                                 singleItemList.add(singleItem);
-
 
 
                                                 Log.e("sections", "sectoims");
@@ -839,9 +848,6 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                     }
 
                                 }
-
-
-
 
 
                             }
@@ -1035,18 +1041,18 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                                 .setOnSliderClickListener(Home_Fragment.this);
 
 
-                                        final String temp=banner_typename.get(i);
+                                        final String temp = banner_typename.get(i);
 
                                         textSliderView.image(file_maps.get(name)).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                                             @Override
                                             public void onSliderClick(BaseSliderView slider) {
-                                                search_home=1;
+                                                search_home = 1;
 
                                                 Category_Fragment newFragment = new Category_Fragment();
                                                 Bundle args = new Bundle();
                                                 args.putString("search", temp);
                                                 newFragment.setArguments(args);
-                                                Log.e("searchword",temp);
+                                                Log.e("searchword", temp);
 
 
                                                 FragmentTransaction transaction = ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction();
@@ -1119,7 +1125,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
         private ArrayList<SectionDataModel> dataList;
         private Context mContext;
-        private Typeface mDynoRegular;
+        private Typeface mDynoRegular, mDynoBold;
 
         public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList) {
             this.dataList = dataList;
@@ -1157,7 +1163,15 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
 
             }
+            if (i == 1) {
+                itemRowHolder.slider.setBackground(getResources().getDrawable(R.drawable.vegetables2));
 
+            } else if (i == 0) {
+                itemRowHolder.slider.setBackground(getResources().getDrawable(R.drawable.veggiesbanner));
+
+            } else {
+                itemRowHolder.slider.setBackground(getResources().getDrawable(R.drawable.delivery_truck));
+            }
             if (transaction.equals("category")) {
                 itemRowHolder.viewall.setVisibility(View.VISIBLE);
                 itemRowHolder.viewall.setOnClickListener(new View.OnClickListener() {
@@ -1186,9 +1200,15 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                 });
 
 
-            }else
-            {
-                itemRowHolder.viewall.setVisibility(View.GONE);
+            } else {
+                itemRowHolder.viewall.setVisibility(View.VISIBLE);
+                itemRowHolder.viewall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Coming soon!!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
 
 /*
@@ -1235,7 +1255,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
 
                             } else if (transaction.equals("product")) {
 
-                                home_onclick=1;
+                                home_onclick = 1;
                                 Product_Description_Fragment newFragment = new Product_Description_Fragment();
                                 Bundle args = new Bundle();
                                 /*args.putInt("position", position);
@@ -1246,7 +1266,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                 args.putString("qty_name", dataList.get(position).getAllItemsInSection().get(position).getProductQtyName());
                                 args.putString("price", singleSectionItems.get(position).getProductActualamount());
                                 args.putString("qty", singleSectionItems.get(position).getProductQuantity());*/
-                                args.putString("search_word",singleSectionItems.get(position).getProduct_random_id());
+                                args.putString("search_word", singleSectionItems.get(position).getProduct_random_id());
                                 // args.putString("amount","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
                                 // args.putString("search_word","RlPqzeihOlGMlJcsVROF6NzjYTONopOlfJQTrm6x19_7");
                                /* args.putString("product_price_id", singleSectionItems.get(position).getProductId());
@@ -1263,7 +1283,7 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                                 }*/
                                 newFragment.setArguments(args);
 
-                                Log.e("args",args.toString());
+                                Log.e("args", args.toString());
 
                                 FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.rldContainer, newFragment);
@@ -1301,7 +1321,8 @@ public class Home_Fragment extends Fragment implements IOnBackPressed, SearchVie
                 this.slider = (ImageView) view.findViewById(R.id.slider);
                 this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
                 mDynoRegular = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Regular.ttf");
-                itemTitle.setTypeface(mDynoRegular);
+                mDynoBold = Typeface.createFromAsset(mContext.getAssets(), "font/Roboto_Bold.ttf");
+                itemTitle.setTypeface(mDynoBold);
                 viewall.setTypeface(mDynoRegular);
 
 

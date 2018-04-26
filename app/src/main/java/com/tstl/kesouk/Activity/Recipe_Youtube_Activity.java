@@ -63,7 +63,7 @@ import java.util.Map;
 
 public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener  {
 
-    private TextView mIngredients, mservings, mPrepare, mCooking, ingredients_title, quick_info, cooking_steps, textview, mToolbarTitle, textview1;
+    private TextView mIngredients, mservings, mPrepare, mCooking, ingredients_title, quick_info, cooking_steps, textview, mToolbarTitle, textview1,similarTitle;
     Button mAddtoBasket;
     RecyclerView similarProducts_recylerview, ingedients_recyclerview;
     private Typeface mDynoRegular;
@@ -78,7 +78,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
     View tab1,tab2,tab3;
     DB db;
     String title;
-    int simlartitle=0;
+    int simlartitle=0,ingredientsVisible=0;
 
 
   /*  public static com.tstl.kesouk.Fragments.Recipe_Fragment newInstance() {
@@ -108,6 +108,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
         cooking_steps = (TextView) findViewById(R.id.cooking_steps);
         textview = (TextView) findViewById(R.id.textview);
         textview1 = (TextView) findViewById(R.id.textview1);
+        similarTitle = (TextView)findViewById(R.id.deals);
         relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
 
         tab1 = (View) findViewById(R.id.tab_view1);
@@ -190,6 +191,7 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
         cooking_steps.setTypeface(mDynoRegular);
         textview.setTypeface(mDynoRegular);
         textview1.setTypeface(mDynoRegular);
+        similarTitle.setTypeface(mDynoRegular);
 
     }
     private void getSimilarProducts(int recipe_id,int category_id) {
@@ -412,10 +414,9 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
                             if (recipe_product.length() != 0) {
 
 
-                                for (int i = 0; i < recipe_product.length(); i++)
-                                {
+                                for (int i = 0; i < recipe_product.length(); i++) {
                                     JSONObject jsonObject1 = recipe_product.getJSONObject(i);
-                                    JSONObject jsonObject2=jsonObject1.getJSONObject("product");
+                                    JSONObject jsonObject2 = jsonObject1.getJSONObject("product");
                                     String product_name = jsonObject2.getString("product_name");
                                     String display_image = jsonObject2.getString("display_image");
                                     recipe = new Recipe();
@@ -431,9 +432,11 @@ public class Recipe_Youtube_Activity extends YouTubeBaseActivity implements YouT
                                 ingedients_recyclerview.setAdapter(adapter);
 
                             }
-                            else
-                            {
-                                Toast.makeText(Recipe_Youtube_Activity.this, "No Ingredients ", Toast.LENGTH_LONG).show();
+                            else {
+                                ingredientsVisible = 1;
+                                ingedients_recyclerview.setVisibility(View.GONE);
+                                mIngredients.setText("0" + "\n" + "Ingredients");
+                                // Toast.makeText(Recipe_Youtube_Activity.this, "No Ingredients ", Toast.LENGTH_LONG).show();
 
                             }
 

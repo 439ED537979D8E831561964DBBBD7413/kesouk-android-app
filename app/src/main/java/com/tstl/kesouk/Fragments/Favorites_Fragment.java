@@ -115,7 +115,7 @@ public class Favorites_Fragment extends Fragment {
     View view;
     private int mPosition = -1;
     DB db;
-    private TextView mB_lable, mBrowse_label, mLow, mHigh, mAlpha, mToolbarTitle, item_count;
+    private TextView mB_lable, mBrowse_label, mLow, mToolbarTitle, express, filter, item_count;
 
 
     ImageView mHL_Check, mAO_Check, mLH_Check;
@@ -134,7 +134,7 @@ public class Favorites_Fragment extends Fragment {
     String product_price_amount, product_selling_price, product_qty_name, product_random_id = "", is_express_delivery = "";
     int currentpage = 1, lastpage = 0;
     int product_discount;
-    String search_word = "";
+    String search_word = "", cartlistid = "";
     public ArrayList<String> quantityList;
     public ArrayList<String> pricelist;
     public ArrayList<String> actual_pricelist;
@@ -145,11 +145,15 @@ public class Favorites_Fragment extends Fragment {
     ArrayList<Browse_Category> cart_priceList = null;
     RelativeLayout filter_layout;
     public static int fav_logout_backpress = 0, fav_home_signin_backpress = 0;
+    private ArrayList<String> cartCheckList = new ArrayList<>();
+    private ArrayList<Integer> cartQuantityCheckList = new ArrayList<>();
 
     public static Favorites_Fragment newInstance() {
         Favorites_Fragment fragment = new Favorites_Fragment();
         return fragment;
     }
+
+    int cartQuanity = 0;
 
     public Favorites_Fragment() {
         // Required empty public constructor
@@ -193,6 +197,8 @@ public class Favorites_Fragment extends Fragment {
         no_wishlist = (TextView) view.findViewById(R.id.no_items);
         mExplore = (Button) view.findViewById(R.id.explore);
         item_count = (TextView) view.findViewById(R.id.item_count);
+        express = (TextView) view.findViewById(R.id.express);
+        filter = (TextView) view.findViewById(R.id.filter);
 
         //  mToolbarTitle.setVisibility(View.VISIBLE);
         //  mToolbarTitle.setText("FAVOURITES");
@@ -659,10 +665,10 @@ public class Favorites_Fragment extends Fragment {
             } else if (db.getAllLogin().size() == 0) {
                 object.put("customer_id", "0");
 
-            } else if (db.getAllLogin().size() == 2) {
+            }/* else if (db.getAllLogin().size() == 2) {
                 object.put("customer_id", db.getAllLogin().get(1));
 
-            }
+            }*/
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -675,15 +681,26 @@ public class Favorites_Fragment extends Fragment {
             } else if (db.getAllLogin().size() == 0) {
                 object.put("localwish", new JSONArray(db.getAllWishlist()));
 
-            } else if (db.getAllLogin().size() == 2) {
+            } /*else if (db.getAllLogin().size() == 2) {
                 object.put("localwish", new JSONArray(db.getAllWishlist()));
 
-            }
+            }*/
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try {
+            if (db.getAllLogin().size() == 1) {
+                object.put("localcart", "null");
+            } else if (db.getAllLogin().size() == 0) {
+                object.put("localcart", (new JSONArray(db.getAllData())));
 
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Log.e("json", object.toString());
 
@@ -701,7 +718,8 @@ public class Favorites_Fragment extends Fragment {
                                 Browse_Category browse_category = null;
                                 receipe_productQtyList = new ArrayList<>();
                                 list_browse_products = new ArrayList<>();
-
+                                cartCheckList = new ArrayList<>();
+                                cartQuantityCheckList = new ArrayList<>();
 
                                 String status = object.getString("status");
                                 if (status.equals("Success")) {
@@ -725,6 +743,17 @@ public class Favorites_Fragment extends Fragment {
                                             product_quantity_type = jsonObject.getInt("quantity_type");
                                             is_express_delivery = jsonObject.getString("is_express_delivery");
                                             int id = jsonObject.getInt("id");
+
+                                            if (jsonObject.has("cartlistid")) {
+                                                cartlistid = jsonObject.getString("cartlistid");
+                                                cartCheckList.add(cartlistid);
+                                                cartQuanity = jsonObject.getInt("cartquantity");
+                                                cartQuantityCheckList.add(cartQuanity);
+                                            } else {
+                                                cartCheckList.add("0");
+                                                cartQuantityCheckList.add(0);
+                                            }
+
                                             browse_category = new Browse_Category();
 
                                             if (jsonObject.has("category")) {
@@ -783,6 +812,16 @@ public class Favorites_Fragment extends Fragment {
                                                     product_price_id = jsonObject1.getString("id");
                                                     product_price_MarketPrice = jsonObject1.getString("price");
                                                     product_price_kesoukPrice = jsonObject1.getString("actual_selling_amount");
+
+                                                    if (jsonObject1.has("cartquantity")) {
+
+                                                        cartQuanity = jsonObject1.getInt("cartquantity");
+                                                        cartQuantityCheckList.add(cartQuanity);
+                                                    } else {
+                                                        cartQuantityCheckList.add(0);
+                                                    }
+
+
                                                     product_qty_name = jsonObject1.getString("quantity");
                                                     recipe.setProduct_priceId(product_price_id);
                                                     recipe.setQuantity_Marketprice(product_price_MarketPrice);
@@ -973,7 +1012,6 @@ public class Favorites_Fragment extends Fragment {
                 mAddtoCArt = (Button) view.findViewById(R.id.add_to_cart);
                 ratingBar = (RatingBar) view.findViewById(R.id.ratingbar_Small);
 
-                mAddtoCArt.setVisibility(View.GONE);
                 marketprice.setPaintFlags(marketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 db = new DB(mContext);
                 title.setTypeface(mDynoRegular);
@@ -1236,65 +1274,97 @@ public class Favorites_Fragment extends Fragment {
                 }
 
             });
-            holder.mAddtoCArt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-            /*    RequestQueue queue = Volley.newRequestQueue(mContext);
-                Map<String, String> params = new HashMap<String, String>();
+            if (!cartCheckList.get(position).equals("0")) {
 
-                Log.e("customer_id ","0");
-                Log.e("product_id ", String.valueOf((browse_category.getProduct_id())));
-                Log.e("quantity ","1");
-                Log.e("price_id ", String.valueOf(browse_category.getProduct_priceId()));
+                //  holder.cartLayout.setVisibility(View.VISIBLE);
+                // holder.mAddtoCArt.setVisibility(View.GONE);
+                holder.mAddtoCArt.setText("GO TO CART");
+                holder.mAddtoCArt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (holder.mAddtoCArt.getText().toString().equals("GO TO CART")) {
+                            Fragment selectedFragment = Basket_Fragment.newInstance();
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.rldContainer, selectedFragment);
+                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            transaction.addToBackStack("Some String");
+                            transaction.commit();
+                        }
+                    }
+                });
 
+            } else
+            {
+                holder.mAddtoCArt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (holder.mAddtoCArt.getText().toString().equals("GO TO CART")) {
+                            Fragment selectedFragment = Basket_Fragment.newInstance();
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.rldContainer, selectedFragment);
+                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            transaction.addToBackStack("Some String");
+                            transaction.commit();
+                        }
+                        else
+                        {
+                            RequestQueue queue = Volley.newRequestQueue(mContext);
+                            Map<String, String> params = new HashMap<String, String>();
 
-                if(db.getAllLogin().size()==1)
-                {
-                    params.put("customer_id", db.getAllLogin().get(0));
-
-                }
-                else if(db.getAllLogin().size()==0)
-                {
-                    params.put("customer_id", "0");
-
-                }
-                params.put("product_id", String.valueOf((browse_category.getProduct_id())));
-                params.put("quantity", "1");
-                params.put("price_id", String.valueOf(browse_category.getProduct_priceId()));
-
-
-
-
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                        Constants.ADDTOCART, new JSONObject(params),
-                        new Response.Listener<JSONObject>() {
-
-                            @Override
-                            public void onResponse(JSONObject object) {
-                                try {
-                                    Log.e("addtocart", String.valueOf(object));
-
-
-                                    String status=object.getString("status");
-                                    if(status.equals("Success"))
-                                    {
-                                        int  data_id = object.getInt("data");
-                                        String  data_id1 = object.getString("data");
-                                        Log.e("data_id", String.valueOf(data_id));
-
-                                        if(db.getAllLogin().size()==1)
-                                        {
-
-                                        }
-                                        else if(db.getAllLogin().size()==0)
-                                        {
-                                            db.insert(data_id1);
-                                            Log.e("fetch", String.valueOf(db.getAllData()));
-                                        }
+                            Log.e("customer_id ","0");
+                            Log.e("product_id ", String.valueOf((browse_category.getProduct_id())));
+                            Log.e("quantity ","1");
+                            Log.e("price_id ", String.valueOf(recipe.getProduct_priceId()));
 
 
-                                        AlertDialog.Builder builder =
+                            if(db.getAllLogin().size()==1)
+                            {
+                                params.put("customer_id", db.getAllLogin().get(0));
+
+                            }
+                            else if(db.getAllLogin().size()==0)
+                            {
+                                params.put("customer_id", "0");
+
+                            }
+                            params.put("product_id", String.valueOf((browse_category.getProduct_id())));
+                            params.put("quantity", "1");
+                            params.put("price_id", String.valueOf(recipe.getProduct_priceId()));
+
+
+
+
+                            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                                    Constants.ADDTOCART, new JSONObject(params),
+                                    new Response.Listener<JSONObject>() {
+
+                                        @Override
+                                        public void onResponse(JSONObject object) {
+                                            try {
+                                                Log.e("addtocart", String.valueOf(object));
+
+
+                                                String status=object.getString("status");
+                                                if(status.equals("Success"))
+                                                {
+                                                    int  data_id = object.getInt("data");
+                                                    String  data_id1 = object.getString("data");
+                                                    Log.e("data_id", String.valueOf(data_id));
+
+                                                    if(db.getAllLogin().size()==1)
+                                                    {
+
+                                                    }
+                                                    else if(db.getAllLogin().size()==0)
+                                                    {
+                                                        db.insert(data_id1);
+                                                        Log.e("fetch", String.valueOf(db.getAllData()));
+                                                    }
+
+                                                    holder.mAddtoCArt.setText("GO TO CART");
+                                                    dialog.dismiss();
+                                       /* AlertDialog.Builder builder =
                                                 new AlertDialog.Builder(mContext);
                                         builder.setTitle("Message");
                                         builder.setMessage(browse_category.getProd_name() +" Added to Cart !");
@@ -1319,64 +1389,68 @@ public class Favorites_Fragment extends Fragment {
                                                 });
                                         AlertDialog dialog = builder.create();
                                         // display dialog
-                                        dialog.show();
+                                        dialog.show();*/
+                                                }
+                                                else
+                                                {
+                                                    String reason=object.getString("reason");
+                                                    Toast.makeText(mContext, reason ,Toast.LENGTH_LONG).show();
+
+                                                }
+
+
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                    Log.e("verify_otp_error", "error" + volleyError);
+                                    if (volleyError instanceof TimeoutError) {
+                                        Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
                                     }
                                     else
-                                    {
-                                        String reason=object.getString("reason");
-                                        Toast.makeText(mContext, reason ,Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext, "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
-                                    }
+                                    VolleyLog.d("responseError", "Error: " + volleyError);
+
+                                }
+                            }) {
 
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    HashMap<String, String> params = new HashMap<>();
+
+
+                                    return params;
                                 }
 
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> header = new HashMap<String, String>();
+                                    header.put("Content-Type", "application/json; charset=utf-8");
+                                    return header;
+                                }
 
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+                            };
+                            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                                    Constants.MY_SOCKET_TIMEOUT_MS,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                            queue.add(jsonObjReq);
 
-                        Log.e("verify_otp_error", "error" + volleyError);
-                        if (volleyError instanceof TimeoutError) {
-                            Toast.makeText(mContext, "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
                         }
-                        else
-                            Toast.makeText(mContext, "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
 
-                        VolleyLog.d("responseError", "Error: " + volleyError);
 
                     }
-                }) {
+                });
 
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String, String> params = new HashMap<>();
-
-
-                        return params;
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> header = new HashMap<String, String>();
-                        header.put("Content-Type", "application/json; charset=utf-8");
-                        return header;
-                    }
-
-                };
-                jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                        Constants.MY_SOCKET_TIMEOUT_MS,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                queue.add(jsonObjReq);
-
-*/
-                }
-            });
+            }
 
 
         }

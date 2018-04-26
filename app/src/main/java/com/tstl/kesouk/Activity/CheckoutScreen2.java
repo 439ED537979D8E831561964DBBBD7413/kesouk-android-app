@@ -40,6 +40,7 @@ import com.tstl.kesouk.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,23 +68,36 @@ public class CheckoutScreen2 extends AppCompatActivity {
     String url, time, strDate;
     ArrayList<String> TimeSlotArraylist;
     ArrayList<String> TimeSlotIDArraylist;
-    ArrayList<Integer> Day1List;
-    ArrayList<Integer> Day2List;
-    ArrayList<Integer> Day3List;
-    ArrayList<Integer> Day4List;
-    ArrayList<Integer> Day5List;
-    ArrayList<Integer> Day6List;
-    ArrayList<Integer> Day7List;
+    ArrayList<Float> Day1List;
+    ArrayList<Float> Day2List;
+    ArrayList<Float> Day3List;
+    ArrayList<Float> Day4List;
+    ArrayList<Float> Day5List;
+    ArrayList<Float> Day6List;
+    ArrayList<Float> Day7List;
+
+    ArrayList<String> Day1ListString;
+    ArrayList<String> Day2ListString;
+    ArrayList<String> Day3ListString;
+    ArrayList<String> Day4ListString;
+    ArrayList<String> Day5ListString;
+    ArrayList<String> Day6ListString;
+    ArrayList<String> Day7ListString;
+    ArrayList<String> checkListToday;
+
     String tomorrow, day4, day5, day6, day7, timeslotId, timeslotID;
     int adapterCheck;
     Dialog dialog;
     ImageView mClose;
     Button firstBtn, lastBtn;
-    int firstClick = 0, lastClick = 0, continueCheck = 0, timeslotAmount;
+    int firstClick = 0, lastClick = 0, continueCheck = 0, dataCountToday = 0, allDataCount = 0;
     Date today1;
     public static String deliveryType;
     public static String passDate;
-    public static int a;
+    public static float a;
+    Float timeslotAmount;
+    int NACheck = 0;
+    Button continueMain;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,12 +106,14 @@ public class CheckoutScreen2 extends AppCompatActivity {
         isNext = 1;
         adapterCheck = 0;
         continueCheck = 0;
-        setContentView(R.layout.my_address_activity);
+         NACheck = 0;
+        checkListToday = new ArrayList<>();
+        setContentView(R.layout.checkout_main);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
         // recycler_view.setNestedScrollingEnabled(false);
         mToolbar = (Toolbar) findViewById(R.id.logintoolbar);
-
+        continueMain = (Button) findViewById(R.id.continue_btn);
 
         setSupportActionBar(mToolbar);
 
@@ -111,7 +127,6 @@ public class CheckoutScreen2 extends AppCompatActivity {
         search = (ImageView) findViewById(R.id.search);
         search.setVisibility(View.GONE);
 
-        setFont();
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +142,67 @@ public class CheckoutScreen2 extends AppCompatActivity {
             login_credentials.add(login);
 
         }
+
+        continueMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (continueCheck == 0) {
+                    Toast.makeText(CheckoutScreen2.this, "Please select any TimeSlots", Toast.LENGTH_LONG).show();
+                } else if(NACheck == 1)
+                {
+                    Toast.makeText(CheckoutScreen2.this, "Please select valid TimeSlots", Toast.LENGTH_LONG).show();
+
+                }else
+                {
+                    if (expressCount == cartcount) {
+                        deliveryType = "Express";
+                        Calendar calendar3 = Calendar.getInstance();
+                        final SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
+                        passDate = mdformat.format(calendar3.getTime());
+                        Intent intent = new Intent(CheckoutScreen2.this, CheckoutScreen3.class);
+                        intent.putExtra("date", passDate);
+                        intent.putExtra("time", "Within two hours");
+                        intent.putExtra("charge", "Kshs 50.00 (Express Delivery)");
+                        intent.putExtra("amount", "50");
+                        intent.putExtra("id", timeslotID);
+                        startActivity(intent);
+                    } else if (expressCount == 0) {
+                        deliveryType = "Standard";
+                        a = timeslotAmount;
+                        Intent intent = new Intent(CheckoutScreen2.this, CheckoutScreen3.class);
+                        intent.putExtra("date", passDate);
+                        intent.putExtra("time", timeslotId);
+                        intent.putExtra("charge", "Kshs " + a + " (Standard Delivery)");
+                        intent.putExtra("amount", a);
+                        intent.putExtra("id", timeslotID);
+                        startActivity(intent);
+                    } else if (cartcount > expressCount && (firstClick == 1)) {
+                        deliveryType = "Express";
+                        a = 50 + timeslotAmount;
+                        Intent intent = new Intent(CheckoutScreen2.this, CheckoutScreen3.class);
+                        intent.putExtra("date", passDate);
+                        intent.putExtra("amount", a);
+                        intent.putExtra("id", timeslotID);
+                        intent.putExtra("time", timeslotId + " (Standard Delivery)\nWithin two hours(Express Delivery)");
+                        intent.putExtra("charge", "Kshs " + a + " (Standard Delivery+Express Delivery)");
+                        startActivity(intent);
+                    } else if (cartcount > expressCount && (lastClick == 1)) {
+                        a = timeslotAmount;
+                        deliveryType = "Standard";
+
+                        Intent intent = new Intent(CheckoutScreen2.this, CheckoutScreen3.class);
+                        intent.putExtra("date", passDate);
+                        intent.putExtra("id", timeslotID);
+                        intent.putExtra("time", timeslotId);
+                        intent.putExtra("amount", a);
+                        intent.putExtra("charge", "Kshs " + a + " (Standard Delivery)");
+                        startActivity(intent);
+                    }
+
+                }
+
+            }
+        });
         Calendar calander = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
@@ -156,6 +232,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                 "font/Roboto_Regular.ttf");
 
         mToolbarTitle.setTypeface(mDynoRegular);
+        continueMain.setTypeface(mDynoRegular);
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -170,6 +247,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
         public String address_id;
         int selectedPosition = -1;
         int onClick = 0;
+
 
         public RecyclerViewAdapter(Context context) {
             this.mContext = context;
@@ -322,15 +400,21 @@ public class CheckoutScreen2 extends AppCompatActivity {
                         }
                     });
 
+
                 } else if (holder instanceof RecyclerViewAdapter.FooterViewHolder) {
                     FooterViewHolder footerHolder = (FooterViewHolder) holder;
-                    footerHolder.mContinue.setOnClickListener(new View.OnClickListener() {
+                   /* footerHolder.mContinue.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
                             if (continueCheck == 0) {
                                 Toast.makeText(CheckoutScreen2.this, "Please select any TimeSlots", Toast.LENGTH_LONG).show();
-                            } else {
+                            } else if(NACheck == 1)
+                            {
+                                Toast.makeText(CheckoutScreen2.this, "Please select valid TimeSlots", Toast.LENGTH_LONG).show();
+
+                            }else
+                                {
                                 if (expressCount == cartcount) {
                                     deliveryType = "Express";
                                     Calendar calendar3 = Calendar.getInstance();
@@ -349,7 +433,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     Intent intent = new Intent(CheckoutScreen2.this, CheckoutScreen3.class);
                                     intent.putExtra("date", passDate);
                                     intent.putExtra("time", timeslotId);
-                                    intent.putExtra("charge", "Kshs " + a + ".00 (Standard Delivery)");
+                                    intent.putExtra("charge", "Kshs " + a + " (Standard Delivery)");
                                     intent.putExtra("amount", a);
                                     intent.putExtra("id", timeslotID);
                                     startActivity(intent);
@@ -361,7 +445,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     intent.putExtra("amount", a);
                                     intent.putExtra("id", timeslotID);
                                     intent.putExtra("time", timeslotId + " (Standard Delivery)\nWithin two hours(Express Delivery)");
-                                    intent.putExtra("charge", "Kshs " + a + ".00 (Standard Delivery+Express Delivery)");
+                                    intent.putExtra("charge", "Kshs " + a + " (Standard Delivery+Express Delivery)");
                                     startActivity(intent);
                                 } else if (cartcount > expressCount && (lastClick == 1)) {
                                     a = timeslotAmount;
@@ -372,8 +456,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     intent.putExtra("id", timeslotID);
                                     intent.putExtra("time", timeslotId);
                                     intent.putExtra("amount", a);
-                                    intent.putExtra("charge", "Kshs " + a + ".00 (Standard Delivery)");
-                                    intent.putExtra("amount", a);
+                                    intent.putExtra("charge", "Kshs " + a + " (Standard Delivery)");
                                     startActivity(intent);
                                 }
 
@@ -383,7 +466,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                         }
 
                     });
-
+*/
 
                 } else if (holder instanceof ItemViewHolder) {
                     ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
@@ -404,9 +487,22 @@ public class CheckoutScreen2 extends AppCompatActivity {
                             // address_id = login_credentialsArrayList.get(position - 1).getAddId();
 
                             itemViewHolder.text1.setText(TimeSlotArraylist.get(position - 1));
-                            itemViewHolder.text2.setText("Kshs " + String.valueOf(Day1List.get(position - 1)));
-                            itemViewHolder.text3.setText("Kshs " + String.valueOf(Day2List.get(position - 1)));
-                            itemViewHolder.text4.setText("Kshs " + String.valueOf(Day3List.get(position - 1)));
+                            itemViewHolder.text2.setText( String.valueOf(Day1ListString.get(position - 1)));
+
+                            if (itemViewHolder.text2.getText().toString().equals("NA")) {
+
+                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_black));
+                                // continueCheck = 0;
+                               // NACheck = 1;
+                            } else {
+
+                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_listview));
+                               // NACheck = 0;
+                            }
+
+
+                            itemViewHolder.text3.setText("Kshs " + String.valueOf(Day2ListString.get(position - 1)));
+                            itemViewHolder.text4.setText("Kshs " + String.valueOf(Day3ListString.get(position - 1)));
 
                             if (lastSelectedPosition == position) {
                                 timeslotId = TimeSlotArraylist.get(position - 1);
@@ -420,9 +516,9 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                 } else {
                                     continueCheck = 1;
                                 }
-
+                                NACheck = 0;
                             } else {
-                                itemViewHolder.text1.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text1.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
                             if (text2position == position) {
@@ -431,17 +527,29 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                 timeslotId = TimeSlotArraylist.get(position - 1);
                                 Calendar calendar3 = Calendar.getInstance();
                                 timeslotID = TimeSlotIDArraylist.get(position - 1);
-                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_listview));
                                 passDate = mdformat.format(calendar3.getTime());
                                 Log.e("timeslotid", timeslotId);
                                 Log.e("timeslotAmount", String.valueOf(timeslotAmount));
+                                if(Day1ListString.get(position-1).equals("NA"))
+                                {
+                                    itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_black));
+                                    // continueCheck = 0;
+                                    NACheck = 1;
+                                }
+                                else
+                                {
+                                    itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_listview));
+                                    NACheck = 0;
+                                }
+
                                 if (cartcount == expressCount) {
                                     continueCheck = 1;
                                 } else {
                                     continueCheck = 1;
                                 }
+
                             } else {
-                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
                             if (text3position == position) {
@@ -465,8 +573,9 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                 } else {
                                     continueCheck = 1;
                                 }
+                                NACheck = 0;
                             } else {
-                                itemViewHolder.text3.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text3.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
                             if (text4position == position) {
@@ -490,8 +599,9 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                 } else {
                                     continueCheck = 1;
                                 }
+                                NACheck = 0;
                             } else {
-                                itemViewHolder.text4.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text4.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
 
@@ -639,7 +749,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
 
                 } else if (holder instanceof RecyclerViewAdapter.FooterViewHolder) {
                     FooterViewHolder footerHolder = (FooterViewHolder) holder;
-                    footerHolder.mContinue.setOnClickListener(new View.OnClickListener() {
+                 /*   footerHolder.mContinue.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
@@ -662,7 +772,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     Intent intent = new Intent(CheckoutScreen2.this, CheckoutScreen3.class);
                                     intent.putExtra("date", passDate);
                                     intent.putExtra("time", timeslotId);
-                                    intent.putExtra("charge", "Kshs " + a + ".00 (Standard Delivery)");
+                                    intent.putExtra("charge", "Kshs " + a + " (Standard Delivery)");
                                     intent.putExtra("amount", a);
                                     intent.putExtra("id", timeslotID);
                                     startActivity(intent);
@@ -674,7 +784,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     intent.putExtra("amount", a);
                                     intent.putExtra("id", timeslotID);
                                     intent.putExtra("time", timeslotId + " (Standard Delivery)\nWithin two hours(Express Delivery)");
-                                    intent.putExtra("charge", "Kshs " + a + ".00 (Standard Delivery+Express Delivery)");
+                                    intent.putExtra("charge", "Kshs " + a + " (Standard Delivery+Express Delivery)");
                                     startActivity(intent);
                                 } else if (cartcount > expressCount && (lastClick == 1)) {
                                     a = timeslotAmount;
@@ -684,7 +794,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     intent.putExtra("time", timeslotId);
                                     intent.putExtra("amount", a);
                                     intent.putExtra("id", timeslotID);
-                                    intent.putExtra("charge", "Kshs " + a + ".00 (Standard Delivery)");
+                                    intent.putExtra("charge", "Kshs " + a + " (Standard Delivery)");
                                     startActivity(intent);
                                 }
 
@@ -694,7 +804,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                         }
 
                     });
-
+*/
 
                 } else if (holder instanceof ItemViewHolder) {
                     ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
@@ -709,10 +819,10 @@ public class CheckoutScreen2 extends AppCompatActivity {
                     } else {
 
                         if (position > 0) {
-                            itemViewHolder.text1.setText("Kshs " + String.valueOf(Day4List.get(position - 1)));
-                            itemViewHolder.text2.setText("Kshs " + String.valueOf(Day5List.get(position - 1)));
-                            itemViewHolder.text3.setText("Kshs " + String.valueOf(Day6List.get(position - 1)));
-                            itemViewHolder.text4.setText("Kshs " + String.valueOf(Day7List.get(position - 1)));
+                            itemViewHolder.text1.setText("Kshs " + String.valueOf(Day4ListString.get(position - 1)));
+                            itemViewHolder.text2.setText("Kshs " + String.valueOf(Day5ListString.get(position - 1)));
+                            itemViewHolder.text3.setText("Kshs " + String.valueOf(Day6ListString.get(position - 1)));
+                            itemViewHolder.text4.setText("Kshs " + String.valueOf(Day7ListString.get(position - 1)));
 
 
                             if (lastSelectedPosition == position) {
@@ -737,7 +847,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     continueCheck = 1;
                                 }
                             } else {
-                                itemViewHolder.text1.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text1.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
                             if (text2position == position) {
@@ -761,7 +871,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     continueCheck = 1;
                                 }
                             } else {
-                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text2.setBackground(getResources().getDrawable(R.drawable.border_black));
                             }
                             if (text3position == position) {
                                 text3position = -1;
@@ -784,7 +894,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     continueCheck = 1;
                                 }
                             } else {
-                                itemViewHolder.text3.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text3.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
 
@@ -809,7 +919,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     continueCheck = 1;
                                 }
                             } else {
-                                itemViewHolder.text4.setBackground(getResources().getDrawable(R.drawable.border_unselected));
+                                itemViewHolder.text4.setBackground(getResources().getDrawable(R.drawable.border_black));
 
                             }
 
@@ -882,12 +992,12 @@ public class CheckoutScreen2 extends AppCompatActivity {
         }
 
         private class FooterViewHolder extends RecyclerView.ViewHolder {
-            Button mContinue;
+           // Button mContinue;
 
             public FooterViewHolder(View view) {
                 super(view);
-                mContinue = (Button) view.findViewById(R.id.continue_btn);
-                mContinue.setTypeface(mDynoRegular);
+              //  mContinue = (Button) view.findViewById(R.id.continue_btn);
+              //  mContinue.setTypeface(mDynoRegular);
             }
         }
 
@@ -1008,41 +1118,131 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                 progressDialog.cancel();
                                 JSONObject JObject = new JSONObject(String.valueOf(response));
                                 JSONArray dataArray = JObject.getJSONArray("data");
-                                if (dataArray.length() != 0) {
-                                    Day1List = new ArrayList<>();
+                                dataCountToday = dataArray.length();
+
+                                JSONArray allDataArray = JObject.getJSONArray("alldata");
+                                allDataCount = allDataArray.length();
+
+                                if (dataCountToday == allDataCount) {
+
+                                    if (dataArray.length() != 0) {
+                                        Day1List = new ArrayList<>();
+
+                                        Day1ListString = new ArrayList<>();
+
+                                        for (int i = 0; i < dataArray.length(); i++) {
+                                            Log.e("datacount", String.valueOf(dataArray.length()));
+                                            JSONObject jsonObject = dataArray.getJSONObject(i);
+                                            float day1 = BigDecimal.valueOf(jsonObject.getDouble("day_1")).floatValue();
+
+                                            Day1List.add(day1);
+                                            String day1String = jsonObject.getString("day_1");
+
+                                            Day1ListString.add("Kshs " + day1String);
+
+                                        }
+
+                                    } else {
+                                        progressDialog.cancel();
+
+                                    }
+
+
+                                } else {
+                                    if (dataArray.length() != 0) {
+                                        Day1List = new ArrayList<>();
+                                        int add = allDataCount - dataCountToday;
+
+                                        Day1ListString = new ArrayList<>();
+                                        for (int j = 0; j < add; j++) {
+                                            Day1List.add((float) 0.0);
+                                            Day1ListString.add("NA");
+                                        }
+
+                                        for (int i = 0; i < dataArray.length(); i++) {
+                                            Log.e("datacount", String.valueOf(dataArray.length()));
+                                            JSONObject jsonObject = dataArray.getJSONObject(i);
+                                            float day1 = BigDecimal.valueOf(jsonObject.getDouble("day_1")).floatValue();
+
+                                            Day1List.add(day1);
+
+                                            String day1String = jsonObject.getString("day_1");
+
+                                            Day1ListString.add("Kshs " + day1String);
+
+                                        }
+
+                                    } else {
+                                        progressDialog.cancel();
+
+                                    }
+
+                                }
+                                Log.e("Day1ListString", Day1ListString.toString());
+                                Log.e("Day1List", Day1List.toString());
+                                if (allDataArray.length() != 0) {
+                                  //  Day1List = new ArrayList<>();
                                     Day2List = new ArrayList<>();
                                     Day3List = new ArrayList<>();
                                     Day4List = new ArrayList<>();
                                     Day5List = new ArrayList<>();
                                     Day6List = new ArrayList<>();
                                     Day7List = new ArrayList<>();
+
+                                  //  Day1ListString = new ArrayList<>();
+                                    Day2ListString = new ArrayList<>();
+                                    Day3ListString = new ArrayList<>();
+                                    Day4ListString = new ArrayList<>();
+                                    Day5ListString = new ArrayList<>();
+                                    Day6ListString = new ArrayList<>();
+                                    Day7ListString = new ArrayList<>();
                                     TimeSlotArraylist = new ArrayList<>();
                                     TimeSlotIDArraylist = new ArrayList<>();
 
-                                    for (int i = 0; i < dataArray.length(); i++) {
-                                        Log.e("datacount", String.valueOf(dataArray.length()));
-                                        JSONObject jsonObject = dataArray.getJSONObject(i);
+                                    for (int i = 0; i < allDataArray.length(); i++) {
+                                        Log.e("datacount", String.valueOf(allDataArray.length()));
+                                        JSONObject jsonObject = allDataArray.getJSONObject(i);
                                         String open_time_formatted = jsonObject.getString("open_time_formatted");
                                         String id = jsonObject.getString("id");
                                         String close_time_formatted = jsonObject.getString("close_time_formatted");
 
-                                        int day1 = jsonObject.getInt("day_1");
-                                        int day2 = jsonObject.getInt("day_2");
-                                        int day3 = jsonObject.getInt("day_3");
-                                        int day4 = jsonObject.getInt("day_4");
-                                        int day5 = jsonObject.getInt("day_5");
-                                        int day6 = jsonObject.getInt("day_6");
-                                        int day7 = jsonObject.getInt("day_7");
+
+                                      //  float day1 = jsonObject.getInt("day_1");
+                                        float day2 = BigDecimal.valueOf(jsonObject.getDouble("day_2")).floatValue();
+                                        float day3 = BigDecimal.valueOf(jsonObject.getDouble("day_3")).floatValue();
+                                        float day4 = BigDecimal.valueOf(jsonObject.getDouble("day_4")).floatValue();
+                                        float day5 = BigDecimal.valueOf(jsonObject.getDouble("day_5")).floatValue();
+                                        float day6 = BigDecimal.valueOf(jsonObject.getDouble("day_6")).floatValue();
+                                        float day7 = BigDecimal.valueOf(jsonObject.getDouble("day_7")).floatValue();
 
 
                                         TimeSlotArraylist.add(open_time_formatted + " - " + close_time_formatted);
-                                        Day1List.add(day1);
+                                      //  Day1List.add(day1);
                                         Day2List.add(day2);
                                         Day3List.add(day3);
                                         Day4List.add(day4);
                                         Day5List.add(day5);
                                         Day6List.add(day6);
                                         Day7List.add(day7);
+
+                                       // String day1String = jsonObject.getString("day_1");
+                                        String day2String = jsonObject.getString("day_2");
+                                        String day3String = jsonObject.getString("day_3");
+                                        String day4String = jsonObject.getString("day_4");
+                                        String day5String = jsonObject.getString("day_5");
+                                        String day6String = jsonObject.getString("day_6");
+                                        String day7String = jsonObject.getString("day_7");
+
+
+                                        //Day1ListString.add(day1String);
+                                        Day2ListString.add(day2String);
+                                        Day3ListString.add(day3String);
+                                        Day4ListString.add(day4String);
+                                        Day5ListString.add(day5String);
+                                        Day6ListString.add(day6String);
+                                        Day7ListString.add(day7String);
+
+
                                         TimeSlotIDArraylist.add(id);
 
 
@@ -1058,6 +1258,7 @@ public class CheckoutScreen2 extends AppCompatActivity {
                                     progressDialog.cancel();
 
                                 }
+
 
                             } else {
 

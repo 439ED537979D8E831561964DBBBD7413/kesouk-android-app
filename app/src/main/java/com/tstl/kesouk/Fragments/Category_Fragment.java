@@ -40,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,7 @@ import java.util.Map;
 
 import static com.tstl.kesouk.Activity.TabMain_Activity.search;
 import static com.tstl.kesouk.Activity.TabMain_Activity.toolbar_title;
+import static com.tstl.kesouk.Fragments.Category_Tab_Fragment.searchCategory;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_category_selected_name;
 import static com.tstl.kesouk.Fragments.Customer_Fragment.cust_search_home;
 import static com.tstl.kesouk.Fragments.Home_Fragment.home_category_selected_name;
@@ -109,9 +111,10 @@ public class Category_Fragment extends Fragment {
     };
     int temp_search_home = 0, temp_cust_home = 0;
     View view;
+    public static int productDesc=0;
     private int mPosition = -1;
     DB db;
-    private TextView mB_lable, mBrowse_label, mLow, mHigh, mAlpha, mToolbarTitle, item_count;
+    private TextView mB_lable, mBrowse_label, mLow, mHigh, filter, Express, item_count;
     public static ArrayList<String> wishCheckList = new ArrayList<>();
     private ArrayList<String> cartCheckList = new ArrayList<>();
     private ArrayList<Integer> cartQuantityCheckList = new ArrayList<>();
@@ -179,6 +182,8 @@ public class Category_Fragment extends Fragment {
 
         //  mToolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
         item_count = (TextView) view.findViewById(R.id.item_count);
+        Express = (TextView) view.findViewById(R.id.express);
+        filter = (TextView) view.findViewById(R.id.filter);
 
         //  mToolbarTitle.setVisibility(View.VISIBLE);
 
@@ -255,6 +260,19 @@ public class Category_Fragment extends Fragment {
 
             }
         } else if (cust_search_home == 1) {
+            Bundle bundle2 = this.getArguments();
+            if (bundle2 != null) {
+
+                search_word1 = bundle2.getString("search");
+                search.setVisibility(View.GONE);
+                toolbar_title.setVisibility(View.VISIBLE);
+                toolbar_title.setText(search_word1.toUpperCase());
+
+
+            }
+        }
+        else if(searchCategory==1)
+        {
             Bundle bundle2 = this.getArguments();
             if (bundle2 != null) {
 
@@ -731,6 +749,7 @@ public class Category_Fragment extends Fragment {
 
                                 }
                             }
+                            searchCategory=0;
 
                            /* if (spinner.getSelectedItemPosition() == 0) {
 
@@ -1120,6 +1139,8 @@ public class Category_Fragment extends Fragment {
 
         // mToolbarTitle.setTypeface(mDynoRegular);
         item_count.setTypeface(mDynoRegular);
+        item_count.setTypeface(mDynoRegular);
+        item_count.setTypeface(mDynoRegular);
     }
 
 
@@ -1148,6 +1169,7 @@ public class Category_Fragment extends Fragment {
             public ToggleButton toggleButton;
             Button mAddtoCArt;
             RatingBar ratingBar;
+            RelativeLayout cartLayout;
 
             // public CircleImageView circleImageView;
 
@@ -1169,6 +1191,7 @@ public class Category_Fragment extends Fragment {
                 cardView = (CardView) view.findViewById(R.id.card_view);
                 mAddtoCArt = (Button) view.findViewById(R.id.add_to_cart);
                 ratingBar = (RatingBar) view.findViewById(R.id.ratingbar_Small);
+                cartLayout = (RelativeLayout) view.findViewById(R.id.cart_layout1);
 
                 marketprice.setPaintFlags(marketprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 db = new DB(mContext);
@@ -1739,7 +1762,8 @@ public class Category_Fragment extends Fragment {
                     {
                         togglebtnStatus = 0;
                     }
-
+                    productDesc=1;
+                    Browse_Category browse_category = browse_categoryArrayList.get(position);
                     Product_Description_Fragment newFragment = new Product_Description_Fragment();
                     Bundle args = new Bundle();
                     args.putInt("position", position);
@@ -1771,7 +1795,7 @@ public class Category_Fragment extends Fragment {
 
                     }
                     newFragment.setArguments(args);
-
+                    Log.e("getbundle",args.toString());
                     FragmentTransaction transaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.rldContainer, newFragment);
                     transaction.addToBackStack("Some String");

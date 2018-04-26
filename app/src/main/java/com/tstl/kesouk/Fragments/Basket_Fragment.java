@@ -265,6 +265,7 @@ public class Basket_Fragment extends Fragment {
                 "font/Roboto_Regular.ttf");
         // mToolbarTitle.setTypeface(mDynoRegular);
         item_count.setTypeface(mDynoRegular);
+        mCheckout.setTypeface(mDynoRegular);
     }
 
 
@@ -383,7 +384,7 @@ public class Basket_Fragment extends Fragment {
 
                                                 Log.e("product_name", cart.getProduct_name());
                                                 Log.e("product_image", cart.getImage_url());
-                                                Log.e("product_price", cart.getDukanPrice());
+                                              //  Log.e("product_price", cart.getDukanPrice());
                                                 cartArrayList.add(cart);
                                             }
 
@@ -1903,10 +1904,12 @@ public class Basket_Fragment extends Fragment {
                                                 product_price_id = jsonObject.getString("price_id");
                                                 cart_quantity = jsonObject.getInt("quantity");
                                                 int id = jsonObject.getInt("id");
+                                                cart_productid = jsonObject.getString("product_id");
                                                 browse_category = new Browse_Category();
                                                 browse_category.setCart_price_id(product_price_id);
                                                 browse_category.setCart_quantity(cart_quantity);
                                                 browse_category.setData_id(id);
+                                                browse_category.setCart_productId(cart_productid);
 
 
                                                 Log.e("product_price_cart", browse_category.getCart_price_id());

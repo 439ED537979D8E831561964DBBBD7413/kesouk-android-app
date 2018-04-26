@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import com.tstl.kesouk.DB.DB;
 import com.tstl.kesouk.Fragments.Basket_Fragment;
+import com.tstl.kesouk.Fragments.Category_Tab_Fragment;
 import com.tstl.kesouk.Fragments.Customer_Fragment;
 import com.tstl.kesouk.Fragments.Favorites_Fragment;
 import com.tstl.kesouk.Fragments.Home_Fragment;
@@ -155,7 +156,7 @@ public class TabMain_Activity extends AppCompatActivity implements  NavigationVi
 
                     return true;
                 case R.id.action_item2:
-                    fragment = new Login_Fragment();
+                    fragment = new Category_Tab_Fragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.action_item3:

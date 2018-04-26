@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/category_list_toolbar" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_5"
+        android:textStyle="bold"
+        android:id="@+id/defaultaddr"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+
+        />
+    <Button
+        android:id="@+id/continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@string/continue_text"
+        android:textColor="@color/white"
+        android:background="@drawable/green_solid"
+        android:textSize="@dimen/padding_15"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+
+        />
+
+
+</RelativeLayout>
