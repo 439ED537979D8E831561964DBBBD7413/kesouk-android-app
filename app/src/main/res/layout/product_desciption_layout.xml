@@ -113,7 +113,7 @@
                 <Button
                     android:id="@+id/add_to_cart"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="@dimen/padding_28"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/padding_5"
                     android:background="@drawable/button_red"
@@ -129,7 +129,51 @@
                     android:layout_marginTop="@dimen/padding_2"
 
                     />
+            <RelativeLayout
+                android:id="@+id/cart_layout1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_28"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_5"
+                android:background="@drawable/button_red"
+                android:padding="@dimen/padding_3"
+                android:layout_below="@+id/slider"
+                android:visibility="gone"
 
+
+                >
+
+                <ImageView
+                    android:id="@+id/minusimg"
+                    android:layout_width="@dimen/padding_18"
+                    android:layout_height="@dimen/padding_18"
+                    android:src="@drawable/minus_icon"
+                    android:layout_marginTop="@dimen/padding_3"
+                    />
+
+                <TextView
+                    android:id="@+id/count_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:layout_marginRight="@dimen/padding_10"
+                    android:layout_toRightOf="@+id/minusimg"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/padding_18"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/plusimg"
+                    android:layout_width="@dimen/padding_18"
+                    android:layout_height="@dimen/padding_18"
+                    android:layout_toRightOf="@+id/count_cart"
+                    android:src="@drawable/plus_icon"
+                    android:layout_marginTop="@dimen/padding_3"
+
+
+                    />
+            </RelativeLayout>
 
         </RelativeLayout>
 

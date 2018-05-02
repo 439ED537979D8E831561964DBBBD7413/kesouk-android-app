@@ -82,30 +82,30 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
     DB db;
     //ImageView img_back, settings, search;
     // private TextView mToolbarTitle;
-    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products, other_price,tv_strike;
+    TextView mProductName, mAmount, mRatingText, description_title, nutrition_title, supplier_information, textView, similar_products, other_price,tv_strike,cart_count;
     Button mAddtoCart;
-    ImageView mExpress;
+    ImageView mExpress,mMinusImage, mPlusImage;
     ToggleButton mFav;
     SliderLayout slider;
     RatingBar ratingBar;
     int wishStatus;
     RecyclerView similar_products_recylerview;
-    String product_random_id, is_express_delivery = "", similarProductID = "";
+    String product_random_id, is_express_delivery = "", similarProductID = "",cartKesoukPrice,cartMarketPrice;
     int category_id;
     private ArrayList<String> imageslidinglist = new ArrayList<>();
     String product_name, product_image, product_price1, nutrition_info, product_image_array, description, similar_id, similar_category, similar_subcategory, qty_name, search_word, amount, spinner_quantity, other_price_amount = "";
     TextSliderView textSliderView;
     String product_price_id = "", price_product_id = "", addtocart, wishcheckId, wishListDAtaId;
-    int product_id = 1, favorite, tempWishCheck, similarClick = 0;
-
-
+    int product_id = 1, favorite, tempWishCheck, similarClick = 0,addtocartQty,dataId;
+    RelativeLayout cartLayout;
+    private ArrayList<Integer> cartQuantityCheckList = new ArrayList<>();
     public ArrayList<Browse_Category> list_browse_products, list_similar_products;
 
     public static Product_Description_Fragment newInstance() {
         Product_Description_Fragment fragment = new Product_Description_Fragment();
         return fragment;
     }
-
+    int quan;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -121,7 +121,6 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         supplier_information = (TextView) view.findViewById(R.id.supplr_info);
         textView = (TextView) view.findViewById(R.id.textview);
         similar_products = (TextView) view.findViewById(R.id.similar);
-        tv_strike = (TextView) view.findViewById(R.id.tv_strike);
         tab1 = (View) view.findViewById(R.id.tab_view1);
         tab2 = (View) view.findViewById(R.id.tab_view2);
         tab3 = (View) view.findViewById(R.id.tab_view3);
@@ -131,8 +130,10 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         slider = (SliderLayout) view.findViewById(R.id.slider);
         ratingBar = (RatingBar) view.findViewById(R.id.ratingbar);
         similar_products_recylerview = (RecyclerView) view.findViewById(R.id.list_similar_products);
-
-
+        cartLayout = (RelativeLayout) view.findViewById(R.id.cart_layout1);
+        cart_count = (TextView) view.findViewById(R.id.count_cart);
+        mMinusImage = (ImageView) view.findViewById(R.id.minusimg);
+        mPlusImage = (ImageView) view.findViewById(R.id.plusimg);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
       /*  mToolbar = (Toolbar) view.findViewById(R.id.logintoolbar);
         img_back = (ImageView) view.findViewById(R.id.img);
@@ -180,9 +181,6 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 similar_subcategory = bundle1.getString("subcategory");
                 similar_id = bundle1.getString("id");
 
-                getProductDescription();
-                getSimilarProducts();
-
                 qty_name = bundle1.getString("qty_name");
                 amount = bundle1.getString("price");
                 other_price_amount = bundle1.getString("other_price");
@@ -195,7 +193,24 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 addtocart = bundle1.getString("addtocart");
                 wishListDAtaId = bundle1.getString("wishcheckId");
                 favorite = bundle1.getInt("favorite");
-                mAddtoCart.setText(addtocart);
+                cartKesoukPrice = bundle1.getString("cartprice");
+                cartMarketPrice = bundle1.getString("cartother_price");
+                addtocartQty = bundle1.getInt("addtocartQty");
+
+
+                if(addtocart.equals("ADD"))
+                {
+                    mAddtoCart.setText("ADD");
+                }
+                else
+                {
+                    cartLayout.setVisibility(View.VISIBLE);
+                    mAddtoCart.setVisibility(View.GONE);
+                    cart_count.setText(String.valueOf(addtocartQty));
+
+                }
+
+
                 Log.e("getbundle", bundle1.toString());
 
                 if (favorite == 0) {
@@ -205,7 +220,10 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                     mFav.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_select_fav));
 
                 }
-                Log.e("else", "else");
+                Log.e("else", "elseP");
+
+                getProductDescription();
+                getSimilarProducts();
 
             }
 
@@ -226,12 +244,29 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                 search_word = bundle1.getString("search_word");
                 similar_products.setText("SIMILAR PRODUCTS");
                 product_id = bundle1.getInt("product_id");
+                dataId = bundle1.getInt("dataId");
                 product_price_id = bundle1.getString("product_price_id");
                 price_product_id = bundle1.getString("price_product_id");
                 addtocart = bundle1.getString("addtocart");
+                cartKesoukPrice = bundle1.getString("cartprice");
+                cartMarketPrice = bundle1.getString("cartother_price");
+                addtocartQty = bundle1.getInt("addtocartQty");
+
+                if(addtocart.equals("ADD"))
+                {
+                    mAddtoCart.setText("ADD");
+                }
+                else
+                {
+                    cartLayout.setVisibility(View.VISIBLE);
+                    mAddtoCart.setVisibility(View.GONE);
+                    cart_count.setText(String.valueOf(addtocartQty));
+
+                }
+
                 wishListDAtaId = bundle1.getString("wishcheckId");
                 favorite = bundle1.getInt("favorite");
-                mAddtoCart.setText(addtocart);
+
                 Log.e("getbundle", bundle1.toString());
                 getProductDescription();
                 getSimilarProducts();
@@ -247,6 +282,351 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
             }
 
         }
+
+
+
+       mMinusImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // int quantity = browse_category.getCart_quantity();
+                int quantity = Integer.parseInt(cart_count.getText().toString());
+
+                if (quantity <= 1) {
+
+                } else {
+
+
+                    Log.e("minus", "clicked");
+
+
+
+
+                    if (quantity <= 1) {
+                        //holder.img_minus.setVisibility(View.GONE);
+
+                    } else {
+                        mMinusImage.setVisibility(View.VISIBLE);
+                         quan = quantity - 1;
+                        cart_count.setText(String.valueOf(quan));
+
+                        String dukan_price = cartKesoukPrice;
+                        float price = Float.parseFloat(dukan_price);
+                        float Dukanprice = price * quan;
+                        mAmount.setText("$ " + String.valueOf(Dukanprice));
+
+                        if(other_price.equals("empty"))
+                        {
+
+                        }
+                        else
+                        {
+                            String off_price =cartMarketPrice;
+                            float price1 = Float.parseFloat(off_price);
+                            float Offer_price = price1 * quan;
+                            other_price.setText("$ " + String.valueOf(Offer_price));
+
+                            other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                        }
+
+
+                    }
+
+
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
+
+
+                    params.put("id", String.valueOf(dataId));
+                    params.put("quantity", String.valueOf(quan));
+                    Log.e("id", String.valueOf(dataId));
+                    Log.e("quantity", String.valueOf(quan));
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.CART_QUANTITY, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("minus_cart", String.valueOf(object));
+
+
+                                        String status = object.getString("status");
+                                        if (status.equals("Success")) {
+                                            // getUpdatedCart();
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+                                        }
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                            VolleyLog.d("responseError", "Error: " + volleyError);
+
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
+
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
+
+                }
+
+            }
+        });
+
+
+
+        mPlusImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                int quantity = Integer.parseInt(cart_count.getText().toString());
+
+               cart_count.setText(String.valueOf(quantity));
+
+
+                if (quantity <= 1) {
+
+                    quan = 2;
+                   cart_count.setText(String.valueOf(quan));
+
+
+                    String dukan_price = cartKesoukPrice;
+                    float price = Float.parseFloat(dukan_price);
+                    float Dukanprice = price * quan;
+                    mAmount.setText("$ " + String.valueOf(Dukanprice));
+
+                    if(other_price.equals("empty"))
+                    {
+
+                    }
+                    else
+                    {
+                        String off_price =cartMarketPrice;
+                        float price1 = Float.parseFloat(off_price);
+                        float Offer_price = price1 * quan;
+                        other_price.setText("$ " + String.valueOf(Offer_price));
+
+                        other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                    }
+
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
+
+
+                    params.put("id", String.valueOf(dataId));
+                    params.put("quantity", String.valueOf(quan));
+                    Log.e("json", params.toString());
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.CART_QUANTITY, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("change_cart", String.valueOf(object));
+
+
+                                        String status = object.getString("status");
+                                        if (status.equals("Success")) {
+                                            // getProductList(search_word1);
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+                                        }
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                            VolleyLog.d("responseError", "Error: " + volleyError);
+
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
+
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
+
+
+                } else {
+                    mMinusImage.setVisibility(View.VISIBLE);
+                     quan = quantity + 1;
+                    cart_count.setText(String.valueOf(quan));
+
+                    String dukan_price = cartKesoukPrice;
+                    float price = Float.parseFloat(dukan_price);
+                    float Dukanprice = price * quan;
+                    mAmount.setText("$ " + String.valueOf(Dukanprice));
+
+                    if(other_price.equals("empty"))
+                    {
+
+                    }
+                    else {
+                        String off_price = cartMarketPrice;
+                        float price1 = Float.parseFloat(off_price);
+                        float Offer_price = price1 * quan;
+                        other_price.setText("$ " + String.valueOf(Offer_price));
+
+                        other_price.setPaintFlags(other_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                    }
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    Map<String, String> params = new HashMap<String, String>();
+
+
+                    params.put("id", String.valueOf(dataId));
+                    params.put("quantity", String.valueOf(quan));
+                    Log.e("id", String.valueOf(dataId));
+                    Log.e("quantity", String.valueOf(quan));
+
+                    JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                            Constants.CART_QUANTITY, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject object) {
+                                    try {
+                                        Log.e("change_cart", String.valueOf(object));
+
+
+                                        String status = object.getString("status");
+                                        if (status.equals("Success")) {
+                                            // getProductList(search_word1);
+                                            // getCart();
+                                        } else {
+                                            String reason = object.getString("reason");
+                                            Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+                                        }
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+
+                            Log.e("verify_otp_error", "error" + volleyError);
+                            if (volleyError instanceof TimeoutError) {
+                                Toast.makeText(getActivity(), "Connection was timeout. Please check your internet connection ", Toast.LENGTH_LONG).show();
+                            } else
+                                Toast.makeText(getActivity(), "Please check your internet connection or server is not connected", Toast.LENGTH_LONG).show();
+
+                            VolleyLog.d("responseError", "Error: " + volleyError);
+
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<>();
+
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> header = new HashMap<String, String>();
+                            header.put("Content-Type", "application/json; charset=utf-8");
+                            return header;
+                        }
+
+                    };
+                    jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                            Constants.MY_SOCKET_TIMEOUT_MS,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    queue.add(jsonObjReq);
+
+
+                }
+                Log.e("plus", "clicked");
+
+
+            }
+        });
+
+
 
 
 
@@ -344,9 +724,10 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
                                                 Log.e("fetch", String.valueOf(db.getAllData()));
                                             }
 
-                                            mAddtoCart.setText("GO TO CART");
+                                           // mAddtoCart.setText("GO TO CART");
                                             getCart();
-
+                                            cartLayout.setVisibility(View.VISIBLE);
+                                            mAddtoCart.setVisibility(View.GONE);
                                            /* AlertDialog.Builder builder =
                                                     new AlertDialog.Builder(getActivity());
                                             builder.setTitle("Message");
@@ -1051,8 +1432,8 @@ public class Product_Description_Fragment extends Fragment implements BaseSlider
         textView.setTypeface(mDynoRegular);
         similar_products.setTypeface(mDynoRegular);
         mAddtoCart.setTypeface(mDynoRegular);
-        tv_strike.setTypeface(mDynoRegular);
-
+        other_price.setTypeface(mDynoRegular);
+        cart_count.setTypeface(mDynoRegular);
     }
 
 
